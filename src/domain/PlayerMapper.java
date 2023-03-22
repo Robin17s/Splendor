@@ -28,7 +28,7 @@ public class PlayerMapper {
                 statement.setString(1, player.getLastname());
                 statement.setString(2, player.getFirstname());
                 statement.setShort(3, player.getDateOfBirth());
-                return statement.executeUpdate() == 1 ? true : false;
+                return statement.executeUpdate() == 1;
 
             }
         } catch (SQLException exception) {
@@ -46,7 +46,7 @@ public class PlayerMapper {
                     int id = set.getInt("spelerID");
                     try (PreparedStatement statement1 = connection.prepareStatement("DELETE FROM Speler WHERE spelerID = ?")){
                         statement1.setString(1, Integer.toString(id));
-                        return statement1.executeUpdate() == 1 ? true : false;
+                        return statement1.executeUpdate() == 1;
                     }
                 }
             }

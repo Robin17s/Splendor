@@ -1,10 +1,10 @@
 package domain;
 
-public class Bonus {
+public class GemAmount {
     private final Crystal type;
     private final byte amount;
 
-    public Bonus(Crystal type, byte amount) {
+    public GemAmount(Crystal type, byte amount) {
         this.type = type;
         this.amount = amount;
     }

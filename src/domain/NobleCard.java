@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NobleCard extends Card {
-    private final List<Bonus> bonuses;
+    private final List<GemAmount> price;
 
     public NobleCard(byte prestige) {
         super (prestige);
-        this.bonuses = new ArrayList<>();
+        this.price = new ArrayList<>();
     }
 }

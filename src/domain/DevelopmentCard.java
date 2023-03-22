@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DevelopmentCard extends Card {
-    private final List<Bonus> price;
+    private final List<GemAmount> price;
     private final Crystal bonus;
     private final byte level;
 
