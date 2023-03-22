@@ -1,5 +1,6 @@
 package cui;
 
+import domain.Player;
 import domain.PlayerMapper;
 
 import java.sql.SQLException;
@@ -10,6 +11,9 @@ public class test {
         /*System.out.print(playerMapper.findPlayer("'Thomas'").getFirstname());
         System.out.println(playerMapper.findPlayer("'Thomas'").getLastname());
         System.out.println(playerMapper.findPlayer("'Thomas'").getDateOfBirth());*/
-        playerMapper.findPlayer("Thomas");
+        Player player = playerMapper.findPlayer("Thomas");
+        System.out.println(player.getFirstname());
+        Player test = new Player("Friso", "De Backer", (short)2004);
+        playerMapper.createPlayer(test);
     }
 }
