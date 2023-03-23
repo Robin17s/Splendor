@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PlayerMapper {
-    public Player findPlayer(String firstname) {
+    public Player findPlayer(String name, Short yearOfBirth) {
         try (Connection connection = ConnectionFactory.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("SELECT voornaam, naam, geboortedatum FROM Speler WHERE voornaam = ?")) {
-                statement.setString(1, firstname);
-
+            try (PreparedStatement statement = connection.prepareStatement("SELECT voornaam, naam, geboortedatum FROM Speler WHERE voornaam = ? AND geboortedatum = ?")) {
+                statement.setString(1, name);
+                statement.setShort(2, yearOfBirth);
                 try (ResultSet set = statement.executeQuery()) {
-                    if (!(set.next())) throw new IllegalStateException("Expected Data to be present!"); // TODO Make more good
+                    if (!(set.next())) throw new IllegalStateException("No player found!"); // TODO Make more good
                     return new Player(set.getString("voornaam"), set.getString("naam"), set.getShort("geboortedatum"));
                 }
             }
