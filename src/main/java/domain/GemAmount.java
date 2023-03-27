@@ -2,14 +2,14 @@ package domain;
 
 public class GemAmount {
     private final Crystal type;
-    private final byte amount;
+    private final int amount;
 
-    public GemAmount(Crystal type, byte amount) {
+    public GemAmount(Crystal type, int amount) {
         this.type = type;
         this.amount = amount;
     }
 
     public Crystal getType() { return type; }
 
-    public byte getAmount() { return amount; }
+    public int getAmount() { return amount; }
 }

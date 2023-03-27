@@ -1,9 +1,9 @@
 package domain;
 
 public abstract class Card {
-    private final byte prestige;
+    private final int prestige;
 
-    public Card(byte prestige) { this.prestige = prestige; }
+    public Card(int prestige) { this.prestige = prestige; }
 
-    public byte getPrestige() { return prestige; }
+    public int getPrestige() { return prestige; }
 }
