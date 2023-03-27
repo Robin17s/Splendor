@@ -16,5 +16,7 @@ public class DomainController{
     }
     public void startGame() throws IOException {
         splendor.generateDevelopmentCards();
+        splendor.generateGemStack();
+        splendor.generateNobleCards();
     }
 }

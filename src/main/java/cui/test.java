@@ -1,9 +1,6 @@
 package cui;
 
-import domain.DomainController;
-import domain.Game;
-import domain.Player;
-import domain.PlayerMapper;
+import domain.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,7 +12,7 @@ public class test {
         app.start();
     }
     public void start() throws IOException {
-        /*Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         ask("Do you want to start a game?[Y/N]: ");
         if (scanner.next().toUpperCase().equals("Y")){
             DomainController domainController = new DomainController();
@@ -36,10 +33,7 @@ public class test {
                     domainController.givePlayers()) {
                 System.out.printf("Name: %s, year of birth: %d\n", player.getName(), player.getDateOfBirth());
             }
-        }*/
-        Game game = new Game();
-        game.generateDevelopmentCards();
-        game.printDevelopmentCards();
+        }
     }
     private void ask(String question){
         System.out.print(question);
