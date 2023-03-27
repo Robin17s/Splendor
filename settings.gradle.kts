@@ -1,0 +1,1 @@
+rootProject.name = "splendor-g-53"
