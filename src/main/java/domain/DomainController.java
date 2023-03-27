@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.IOException;
 import java.util.List;
 
 public class DomainController{
@@ -13,7 +14,7 @@ public class DomainController{
     public List<Player> givePlayers(){
         return splendor.getPlayers();
     }
-    public void startGame(){
-
+    public void startGame() throws IOException {
+        splendor.generateDevelopmentCards();
     }
 }

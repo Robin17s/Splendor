@@ -1,29 +1,21 @@
 package cui;
 
 import domain.DomainController;
+import domain.Game;
 import domain.Player;
 import domain.PlayerMapper;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class test {
-    public static void main(String[] args) {
-        //PlayerMapper playerMapper = new PlayerMapper();
-        /*System.out.println(playerMapper.findPlayer("Thomas").getFirstname());
-        System.out.println(playerMapper.findPlayer("Thomas").getLastname());
-        System.out.println(playerMapper.findPlayer("Thomas").getDateOfBirth());*/
-        //Player player = playerMapper.findPlayer("De Backer");
-        //System.out.println(player.getFirstname());
-        //Player test = new Player("Robin", "idk", (short)2000);
-        //playerMapper.createPlayer(test);
-        //System.out.println(playerMapper.removePlayer("Friso"));
-        //System.out.println(playerMapper.findPlayer("De Backer"));
+    public static void main(String[] args) throws IOException {
         test app = new test();
         app.start();
     }
-    public void start(){
-        Scanner scanner = new Scanner(System.in);
+    public void start() throws IOException {
+        /*Scanner scanner = new Scanner(System.in);
         ask("Do you want to start a game?[Y/N]: ");
         if (scanner.next().toUpperCase().equals("Y")){
             DomainController domainController = new DomainController();
@@ -44,7 +36,10 @@ public class test {
                     domainController.givePlayers()) {
                 System.out.printf("Name: %s, year of birth: %d\n", player.getName(), player.getDateOfBirth());
             }
-        }
+        }*/
+        Game game = new Game();
+        game.generateDevelopmentCards();
+        game.printDevelopmentCards();
     }
     private void ask(String question){
         System.out.print(question);
