@@ -8,12 +8,12 @@ import java.sql.SQLException;
 public class PlayerMapper {
     public Player findPlayer(String name, Short yearOfBirth) {
         try (Connection connection = ConnectionFactory.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("SELECT voornaam, naam, geboortedatum FROM Speler WHERE voornaam = ? AND geboortedatum = ?")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT Name, YearOfBirth FROM Speler WHERE Name = ? AND YearOfBirth = ?")) {
                 statement.setString(1, name);
                 statement.setShort(2, yearOfBirth);
                 try (ResultSet set = statement.executeQuery()) {
                     if (!(set.next())) throw new IllegalStateException("No player found!"); // TODO Make more good
-                    return new Player(set.getString("voornaam"), set.getString("naam"), set.getShort("geboortedatum"));
+                    return new Player(set.getString("Name"), set.getInt("YearOfBirth"));
                 }
             }
         } catch (SQLException exception) {
@@ -22,7 +22,10 @@ public class PlayerMapper {
 
         return null; // TODO Optional?
     }
-    public boolean createPlayer(Player player){
+
+    //geen zin om onderstaande code te fixen, onnodig anyways
+
+    /*public boolean createPlayer(Player player){
         try (Connection connection = ConnectionFactory.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Speler (naam, voornaam, geboortedatum, emailadres) VALUES (?, ?, ?, null)")) {
                 statement.setString(1, player.getLastname());
@@ -54,5 +57,5 @@ public class PlayerMapper {
             exception.printStackTrace();
             return false;
         }
-    }
+    }*/
 }

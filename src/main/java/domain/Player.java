@@ -4,27 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private final String firstname;
-    private final String lastname;
-    private final Short dateOfBirth;
+    private final String name;
+    private final int dateOfBirth;
     private List<DevelopmentCard> developmentCards;
     private NobleCard nobleCard;
-    public Player(String firstname, String lastname, Short dateOfBirth){
+    public Player(String name, int dateOfBirth){
         developmentCards = new ArrayList<>();
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.name = name;
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getName() {
+        return name;
     }
 
-    public String getLastname() {
-        return lastname;
-    }
-
-    public Short getDateOfBirth() {
+    public int getDateOfBirth() {
         return dateOfBirth;
     }
 

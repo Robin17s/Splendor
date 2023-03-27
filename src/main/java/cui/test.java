@@ -42,7 +42,7 @@ public class test {
             System.out.println("Game created with the following players:");
             for (Player player :
                     domainController.givePlayers()) {
-                System.out.printf("Name: %s, year of birth: %d\n", player.getFirstname(), player.getDateOfBirth());
+                System.out.printf("Name: %s, year of birth: %d\n", player.getName(), player.getDateOfBirth());
             }
         }
     }

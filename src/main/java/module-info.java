@@ -7,6 +7,7 @@ module splendor {
     requires javafx.base;
     requires javafx.graphics;
     requires javafx.controls;
+    requires java.sql;
 
     opens gui to javafx.graphics;
 }
