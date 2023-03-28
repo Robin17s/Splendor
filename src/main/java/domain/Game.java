@@ -167,4 +167,8 @@ public class Game {
             cardsOnTable.addAll(cards);
         }
     }
+    
+    public void sortPlayers() {
+    	Collections.sort(players, (p1, p2) -> p1.getDateOfBirth()-p2.getDateOfBirth());
+    }
 }

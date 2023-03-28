@@ -39,4 +39,12 @@ public class Player {
     public void addDevelopmentCard(DevelopmentCard developmentCard){
         developmentCards.add(developmentCard);
     }
+    
+    public int getPrestige() {
+    	return prestige;
+    }
+    
+    public void addPrestige(int prestige) {
+    	this.prestige += prestige;
+    }
 }

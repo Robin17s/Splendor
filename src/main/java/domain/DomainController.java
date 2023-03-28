@@ -31,4 +31,8 @@ public class DomainController{
     public List<GemAmount> getGemStack(){
         return splendor.getGemStack();
     }
+    
+    public void sortPlayers() {
+    	splendor.sortPlayers();
+    }
 }

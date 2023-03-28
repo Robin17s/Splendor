@@ -31,6 +31,7 @@ public class DemoUc1Console {
             }
             domainController.startGame();
             System.out.println("Game created with the following players:");
+            domainController.sortPlayers();
             for (Player player :
                     domainController.givePlayers()) {
                 System.out.printf("Name: %s, year of birth: %d\n", player.getName(), player.getDateOfBirth());
