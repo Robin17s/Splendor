@@ -14,7 +14,7 @@ public class DemoUc1Console {
     public void start() throws IOException {
         Scanner scanner = new Scanner(System.in);
         ask("Do you want to start a game?[Y/N]: ");
-        if (scanner.next().toUpperCase().equals("Y")){
+        if (scanner.next().equalsIgnoreCase("Y")){
             DomainController domainController = new DomainController();
             while (domainController.givePlayers().size() < 2 || domainController.givePlayers().size() < 4){
                 ask("Enter the players name: ");
@@ -26,7 +26,7 @@ public class DemoUc1Console {
                     ask("Do you want to add another player?[Y/N]: ");
                 if (domainController.givePlayers().size() == 4)
                     break;
-                if (domainController.givePlayers().size() >= 2 && scanner.next().toUpperCase().equals("N"))
+                if (domainController.givePlayers().size() >= 2 && scanner.next().equalsIgnoreCase("N"))
                     break;
             }
             domainController.startGame();
