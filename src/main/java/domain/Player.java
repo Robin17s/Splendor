@@ -6,12 +6,14 @@ import java.util.List;
 public class Player {
     private final String name;
     private final int dateOfBirth;
+    private int prestige;
     private List<DevelopmentCard> developmentCards;
     private NobleCard nobleCard;
     public Player(String name, int dateOfBirth){
         developmentCards = new ArrayList<>();
         this.name = name;
         this.dateOfBirth = dateOfBirth;
+        prestige = 0;
     }
 
     public String getName() {
@@ -21,7 +23,7 @@ public class Player {
     public int getDateOfBirth() {
         return dateOfBirth;
     }
-
+    
     public List<DevelopmentCard> getDevelopmentCards() {
         return developmentCards;
     }
