@@ -8,8 +8,8 @@ public class DomainController{
     public DomainController(){
         splendor = new Game();
     }
-    public void playerLogOn(String name, Short yearOfBirth){
-        splendor.addPlayerToGame(name, yearOfBirth);
+    public String playerLogOn(String name, int yearOfBirth){
+        return splendor.addPlayerToGame(name, yearOfBirth);
     }
     public List<Player> givePlayers(){
         return splendor.getPlayers();
@@ -18,5 +18,17 @@ public class DomainController{
         splendor.generateDevelopmentCards();
         splendor.generateGemStack();
         splendor.generateNobleCards();
+        splendor.fillTableCardsDeck();
+    }
+    public List<? extends Card>getTable(String cardType){
+        if (cardType.equals("development")){
+            return splendor.getCardsOnTable();
+        } else if (cardType.equals("noble")) {
+            return splendor.getNobleCards();
+        } else
+            return null;
+    }
+    public List<GemAmount> getGemStack(){
+        return splendor.getGemStack();
     }
 }

@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PlayerMapper {
-    public Player findPlayer(String name, Short yearOfBirth) {
+    public Player findPlayer(String name, int yearOfBirth) {
         try (Connection connection = ConnectionFactory.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT Name, YearOfBirth FROM Speler WHERE Name = ? AND YearOfBirth = ?")) {
                 statement.setString(1, name);
-                statement.setShort(2, yearOfBirth);
+                statement.setInt(2, yearOfBirth);
                 try (ResultSet set = statement.executeQuery()) {
                     if (!(set.next())) throw new IllegalStateException("No player found!"); // TODO Make more good
                     return new Player(set.getString("Name"), set.getInt("YearOfBirth"));

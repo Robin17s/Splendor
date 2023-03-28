@@ -17,4 +17,8 @@ public class DevelopmentCard extends Card {
     public String showCard(){
         return String.format("Level: %s, Gem: %s, Prestige: %s", level, bonus, getPrestige());
     }
+
+    public int getLevel() {
+        return level;
+    }
 }

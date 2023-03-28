@@ -10,4 +10,7 @@ public class NobleCard extends Card {
         super (prestige);
         this.price = cost;
     }
+    public String showCard(){
+        return String.format("Prestige: %s", getPrestige());
+    }
 }

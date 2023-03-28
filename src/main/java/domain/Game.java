@@ -28,21 +28,64 @@ import java.util.stream.Stream;
         cardsOnTable = new ArrayList<>();
         playerMapper = new PlayerMapper();
     }
-    public void addPlayerToGame(String name, Short yearOfBirth){
-        players.add(playerMapper.findPlayer(name, yearOfBirth));
-    }
 
-    public List<Player> getPlayers() {
+     public List<NobleCard> getNobleCards() {
+         return nobleCards;
+     }
+
+     public List<DevelopmentCard> getCardsOnTable() {
+         return cardsOnTable;
+     }
+
+     /*public void addPlayerToGame(String name, int yearOfBirth){
+        players.add(playerMapper.findPlayer(name, yearOfBirth));
+     }*/
+     public String addPlayerToGame(String name, int yearOfBirth) {
+         for (Player player : players) {
+             if (player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth) {
+                 return "Player already added!";
+             }
+         }
+         Player player = playerMapper.findPlayer(name, yearOfBirth);
+         if (player == null) {
+             return "Player not found!";
+         }
+         players.add(player);
+         return "Player added successfully!";
+     }
+
+     public List<GemAmount> getGemStack() {
+         return gemStack;
+     }
+
+     public List<Player> getPlayers() {
         return players;
     }
-    public void generateGemStack(){
-        gemStack = Arrays.asList(
-                new GemAmount(Crystal.Diamond, 5),
-                new GemAmount(Crystal.Onyx, 5),
-                new GemAmount(Crystal.Emerald, 5),
-                new GemAmount(Crystal.Sapphire, 5),
-                new GemAmount(Crystal.Ruby, 5));
-    }
+     public void generateGemStack() {
+         int numPlayers = getPlayers().size();
+         int numGems;
+         switch (numPlayers) {
+             case 2:
+                 numGems = 4;
+                 break;
+             case 3:
+                 numGems = 5;
+                 break;
+             case 4:
+                 numGems = 7;
+                 break;
+             default:
+                 // handle invalid number of players
+                 return;
+         }
+         gemStack = Arrays.asList(
+                 new GemAmount(Crystal.Diamond, numGems),
+                 new GemAmount(Crystal.Onyx, numGems),
+                 new GemAmount(Crystal.Emerald, numGems),
+                 new GemAmount(Crystal.Sapphire, numGems),
+                 new GemAmount(Crystal.Ruby, numGems));
+     }
+
 
     /*public void generateDevelopmentCards() throws IOException {
         //csv info: [Level, Bonus gem, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]
@@ -185,7 +228,30 @@ import java.util.stream.Stream;
      }
 
      public void generateNobleCards() throws IOException {
-         nobleCards = (List<NobleCard>) readCardsFromFile("nobleCards.csv", "noble");
+         int numPlayers = getPlayers().size();
+         int limit = switch (numPlayers) {
+             case 2 -> 3;
+             case 3 -> 4;
+             case 4 -> 5;
+             default -> 0; // handle invalid player counts
+         };
+         nobleCards = (List<NobleCard>) readCardsFromFile("nobleCards.csv", "noble").stream().limit(limit).collect(Collectors.toList());
+     }
+     public void fillTableCardsDeck() {
+         // loop through the different levels of development cards
+         for (int level = 1; level <= 3; level++) {
+             // declare finalLevel variable and assign it the value of the loop variable
+             int finalLevel = level;
+             // create a stream of the developmentCards list, filter the cards by level, limit the cards to 4, and collect them into a new list named cards
+             List<DevelopmentCard> cards = developmentCards.stream()
+                     .filter(x -> x.getLevel() == finalLevel)
+                     .limit(4)
+                     .collect(Collectors.toList());
+             // remove the selected cards from the developmentCards list
+             developmentCards.removeAll(cards);
+             // add the selected cards to the cardsOnTable list
+             cardsOnTable.addAll(cards);
+         }
      }
      /*public List<NobleCard> getNobleCards(){
         return nobleCards;
