@@ -189,7 +189,7 @@ public class Game {
     
     
     public void sortPlayers() {
-    	players.sort(Comparator.comparingInt(Player::getDateOfBirth));
+    	players.sort(Comparator.comparingInt(Player::getDateOfBirth).reversed());
     }
     
     public void determineFirstPlayer() {
