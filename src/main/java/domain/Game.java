@@ -22,6 +22,7 @@ public class Game {
     private Player currentPlayer;
     private Player firstPlayer;
     private int numberOfPlayers;
+    private DevelopmentCard[][] matrix = new DevelopmentCard[3][4];
 
     public Game() {
         players = new ArrayList<>();
@@ -166,6 +167,26 @@ public class Game {
             cardsOnTable.addAll(cards);
         }
     }
+    
+    public void placeCardsOnBoard() {
+    	
+    	for(int level = 0; level < 3; level++) {
+    		int lvl = level + 1;
+    		List<DevelopmentCard> cards = cardsOnTable.stream()
+                    .filter(x -> x.getLevel() == lvl)
+                    .limit(4)
+                    .toList();
+    		for(int col = 0; col < 4; col++) {
+    			matrix[level][col] = cards.get(0);
+    			cards.remove(0);
+    		}
+    	}
+    }
+    
+    public DevelopmentCard[][] getCardsOnBoard(){
+    	return matrix;
+    }
+    
     
     public void sortPlayers() {
     	players.sort(Comparator.comparingInt(Player::getDateOfBirth));

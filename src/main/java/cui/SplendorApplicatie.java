@@ -17,19 +17,18 @@ public class SplendorApplicatie {
 		String startgame = ask ("Do you want to start a game?[Y/N]: ",scanner);
 		if (startgame.equalsIgnoreCase("Y")) {
 			DomainController domainController = new DomainController();
-			while (domainController.givePlayers().size() < 2 || domainController.givePlayers().size() < 4) {
-				ask("Enter the players name: ",scanner);
-				String name = scanner.next();
-				ask("Enter the players year of birth: ",scanner);
-				int date = scanner.nextInt();
-				System.out.println(domainController.playerLogOn(name, date));
-				if (domainController.givePlayers().size() >= 2 && domainController.givePlayers().size() < 4)
-					ask("Do you want to add another player?[Y/N]: ",scanner);
-				if (domainController.givePlayers().size() == 4)
-					break;
-				if (domainController.givePlayers().size() >= 2 && scanner.next().equalsIgnoreCase("N"))
-					break;
+			
+			
+			String playercount = ask("Provide the number of players >2 <=4", scanner);
+			int pc = Integer.parseInt(playercount);
+			for(int i = 1; i <= pc; i++) {
+				String name = ask("Enter the players name: ",scanner);
+				String yearofbirth = ask("Enter the players year of birth: ",scanner);
+				System.out.println(domainController.playerLogOn(name, Integer.parseInt(yearofbirth)));
 			}
+			
+			
+			
 			domainController.startGame();
 			System.out.println("Game created with the following players:");
 			for (Player player : domainController.givePlayers()) {
