@@ -30,6 +30,7 @@ public class SplendorApplicatie {
 			
 			
 			domainController.startGame();
+			domainController.sortPlayers();
 			System.out.println("Game created with the following players:");
 			for (Player player : domainController.givePlayers()) {
 				System.out.printf("Name: %s, year of birth: %d\n", player.getName(), player.getDateOfBirth());
