@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Player {
@@ -9,6 +10,8 @@ public class Player {
     private int prestige;
     private List<DevelopmentCard> developmentCards;
     private NobleCard nobleCard;
+    private List<GemAmount> gemStack;
+    
     public Player(String name, int dateOfBirth){
         developmentCards = new ArrayList<>();
         this.name = name;
@@ -46,5 +49,26 @@ public class Player {
     
     public void addPrestige(int prestige) {
     	this.prestige += prestige;
+    }
+    
+    public void generateGemStack() {
+        gemStack = Arrays.asList(
+                new GemAmount(Crystal.Diamond, 0),
+                new GemAmount(Crystal.Onyx, 0),
+                new GemAmount(Crystal.Emerald, 0),
+                new GemAmount(Crystal.Sapphire, 0),
+                new GemAmount(Crystal.Ruby, 0));
+    }
+    
+    public void addGems() {
+    	
+    }
+    
+    public void removeGems() {
+    	
+    }
+    
+    public List<GemAmount> getGems() {
+    	return gemStack;
     }
 }

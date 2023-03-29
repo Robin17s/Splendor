@@ -32,7 +32,14 @@ public class DomainController{
         return splendor.getGemStack();
     }
     
+    
+    	
+    
     public void sortPlayers() {
     	splendor.sortPlayers();
+    }
+    
+    public void determineFirstPlayer() {
+    	splendor.determineFirstPlayer();
     }
 }

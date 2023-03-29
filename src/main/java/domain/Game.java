@@ -19,6 +19,9 @@ public class Game {
     private List<NobleCard> nobleCards;
     private List<GemAmount> gemStack;
     private final List<DevelopmentCard> cardsOnTable;
+    private Player currentPlayer;
+    private Player firstPlayer;
+    private int numberOfPlayers;
 
     public Game() {
         players = new ArrayList<>();
@@ -167,4 +170,19 @@ public class Game {
     public void sortPlayers() {
     	players.sort(Comparator.comparingInt(Player::getDateOfBirth));
     }
+    
+    public void determineFirstPlayer() {
+    	numberOfPlayers = players.size();
+    	firstPlayer = players.get(0);
+    	currentPlayer = players.get(0);
+    }
+    
+    public Player getFirstPlayer() {
+    	return firstPlayer;
+    }
+    
+    public Player getCurrentPlayer() {
+    	return currentPlayer;
+    }
+    
 }
