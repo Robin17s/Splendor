@@ -22,7 +22,7 @@ public class Game {
     private Player currentPlayer;
     private Player firstPlayer;
     private int numberOfPlayers;
-    private DevelopmentCard[][] matrix = new DevelopmentCard[3][4];
+    private DevelopmentCard[][] matrix;
 
     public Game() {
         players = new ArrayList<>();
@@ -31,6 +31,7 @@ public class Game {
         gemStack = new ArrayList<>();
         cardsOnTable = new ArrayList<>();
         playerMapper = new PlayerMapper();
+        matrix = new DevelopmentCard[3][4];
     }
 
     public List<NobleCard> getNobleCards() {
