@@ -38,12 +38,12 @@ public class DemoUc1Console {
             }
             System.out.println("Game created with the following development cards on table:");
             for (DevelopmentCard card :
-                    (List<DevelopmentCard>)domainController.getTable("development")) {
+                    domainController.getTable("development").stream().map(card -> (DevelopmentCard) card).toList()) {
                 System.out.println(card.showCard());
             }
             System.out.println("Game created with the following noble cards on table:");
             for (NobleCard card :
-                    (List<NobleCard>)domainController.getTable("noble")) {
+                    domainController.getTable("noble").stream().map(card -> (NobleCard) card).toList()) {
                 System.out.println(card.showCard());
             }
             System.out.println("Game created with the following gems on table:");
