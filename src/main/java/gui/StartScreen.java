@@ -53,6 +53,7 @@ public final class StartScreen extends Pane {
         playButton.setMinWidth(250);
         playButton.setMinHeight(50);
         VBox.setMargin(playButton, new Insets(8, 0, 8, 0));
+        playButton.setOnAction(this::onPlayButtonClick);
 
         quitButton.setMinWidth(250);
         quitButton.setMinHeight(50);
@@ -62,6 +63,8 @@ public final class StartScreen extends Pane {
         box.getChildren().addAll(titleLabel, versionLabel, playButton, quitButton);
         this.getChildren().add(box);
     }
+
+    private void onPlayButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new AddPlayersScreen()); }
 
     private void onQuitButtonClick(ActionEvent event) { System.exit(0); }
 }
