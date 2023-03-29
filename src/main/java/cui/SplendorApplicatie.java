@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class SplendorApplicatie {
 	public static void main(String[] args) throws IOException {
-		DemoUc1Console app = new DemoUc1Console();
+		SplendorApplicatie app = new SplendorApplicatie();
 		app.start();
 	}
 
