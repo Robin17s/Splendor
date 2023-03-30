@@ -18,7 +18,7 @@ public class DomainController{
         splendor.generateDevelopmentCards();
         splendor.generateGemStack();
         splendor.generateNobleCards();
-        splendor.fillTableCardsDeck();
+        splendor.placeCardsOnBoard();
     }
     public List<? extends Card>getTable(String cardType){
         if (cardType.equals("development")){

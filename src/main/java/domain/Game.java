@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -67,18 +68,13 @@ public class Game {
         int numPlayers = getPlayers().size();
         int numGems;
         switch (numPlayers) {
-            case 2:
-                numGems = 4;
-                break;
-            case 3:
-                numGems = 5;
-                break;
-            case 4:
-                numGems = 7;
-                break;
-            default:
+            case 2 -> numGems = 4;
+            case 3 -> numGems = 5;
+            case 4 -> numGems = 7;
+            default -> {
                 // handle invalid number of players
                 return;
+            }
         }
         gemStack = Arrays.asList(
                 new GemAmount(Crystal.Diamond, numGems),
@@ -142,7 +138,7 @@ public class Game {
     }
 
     public void generateDevelopmentCards() throws IOException {
-        developmentCards = (List<DevelopmentCard>) readCardsFromFile("splendorCards.csv", "development");
+        developmentCards = readCardsFromFile("splendorCards.csv", "development").stream().map(card -> (DevelopmentCard) card).collect(Collectors.toList());
     }
 
     public void generateNobleCards() throws IOException {
@@ -153,7 +149,7 @@ public class Game {
             case 4 -> 5;
             default -> 0; // handle invalid player counts
         };
-        nobleCards = (List<NobleCard>) readCardsFromFile("nobleCards.csv", "noble").stream().limit(limit).collect(Collectors.toList());
+        nobleCards = readCardsFromFile("nobleCards.csv", "noble").stream().limit(limit).map(card -> (NobleCard) card).collect(Collectors.toList());
     }
 
     public void fillTableCardsDeck() {
@@ -165,7 +161,7 @@ public class Game {
             List<DevelopmentCard> cards = developmentCards.stream()
                     .filter(x -> x.getLevel() == finalLevel)
                     .limit(4)
-                    .collect(Collectors.toList());
+                    .toList();
             // remove the selected cards from the developmentCards list
             developmentCards.removeAll(cards);
             // add the selected cards to the cardsOnTable list
@@ -177,10 +173,10 @@ public class Game {
 
     	for(int level = 0; level < 3; level++) {
     		int lvl = level + 1;
-    		List<DevelopmentCard> cards = cardsOnTable.stream()
+    		List<DevelopmentCard> cards = developmentCards.stream()
                     .filter(x -> x.getLevel() == lvl)
                     .limit(4)
-                    .toList();
+                    .collect(Collectors.toList());
     		for(int col = 0; col < 4; col++) {
     			matrix[level][col] = cards.get(0);
     			cards.remove(0);
@@ -194,7 +190,7 @@ public class Game {
 
 
     public void sortPlayers() {
-    	Collections.sort(players, (p1, p2) -> p1.getDateOfBirth()-p2.getDateOfBirth());
+    	players.sort(Comparator.comparingInt(Player::getDateOfBirth));
     	Collections.reverse(players);
     }
 
