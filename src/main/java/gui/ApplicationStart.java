@@ -1,5 +1,6 @@
 package gui;
 
+import domain.DomainController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -7,6 +8,7 @@ import javafx.stage.Stage;
 
 public class ApplicationStart extends Application {
     private static ApplicationStart instance;
+    private final DomainController controller = new DomainController();
 
     private Stage primary;
 
@@ -29,4 +31,6 @@ public class ApplicationStart extends Application {
     public static void main(String[] args) { launch(args); }
 
     public static ApplicationStart getInstance() { return instance; }
+
+    public DomainController getController() { return controller; }
 }
