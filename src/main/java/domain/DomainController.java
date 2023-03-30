@@ -8,25 +8,21 @@ public class DomainController{
     public DomainController(){
         splendor = new Game();
     }
+
     public String playerLogOn(String name, int yearOfBirth){
         return splendor.addPlayerToGame(name, yearOfBirth);
     }
+
     public List<Player> givePlayers(){
         return splendor.getPlayers();
     }
+
     public void startGame() throws IOException {
         splendor.generateDevelopmentCards();
         splendor.generateGemStack();
         splendor.generateNobleCards();
         splendor.placeCardsOnBoard();
-    }
-    public List<? extends Card>getTable(String cardType){
-        if (cardType.equals("development")){
-            return splendor.getCardsOnTable();
-        } else if (cardType.equals("noble")) {
-            return splendor.getNobleCards();
-        } else
-            return null;
+        splendor.sortPlayers();
     }
 
     public List<NobleCard> getNobles(){
@@ -39,16 +35,5 @@ public class DomainController{
 
     public List<GemAmount> getGemStack(){
         return splendor.getGemStack();
-    }
-    
-    
-    	
-    
-    public void sortPlayers() {
-    	splendor.sortPlayers();
-    }
-    
-    public void determineFirstPlayer() {
-    	splendor.determineFirstPlayer();
     }
 }

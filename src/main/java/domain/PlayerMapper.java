@@ -6,6 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PlayerMapper {
+    /**
+     * Tries to find a player based on the given parameters. If no player is found NULL will be returned
+     * @param name The name of the player
+     * @param yearOfBirth The year of birth of the player
+     * @return an object of type Player
+     */
     public Player findPlayer(String name, int yearOfBirth) {
         try (Connection connection = ConnectionFactory.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT Name, YearOfBirth FROM Speler WHERE Name = ? AND YearOfBirth = ?")) {

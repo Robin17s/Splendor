@@ -18,10 +18,6 @@ public class Game {
     private List<DevelopmentCard> developmentCards;
     private List<NobleCard> nobleCards;
     private List<GemAmount> gemStack;
-    private final List<DevelopmentCard> cardsOnTable;
-    private Player currentPlayer;
-    private Player firstPlayer;
-    private int numberOfPlayers;
     private DevelopmentCard[][] matrix;
 
     public Game() {
@@ -29,31 +25,13 @@ public class Game {
         developmentCards = new ArrayList<>();
         nobleCards = new ArrayList<>();
         gemStack = new ArrayList<>();
-        cardsOnTable = new ArrayList<>();
         playerMapper = new PlayerMapper();
         matrix = new DevelopmentCard[3][4];
     }
 
+    //region [getters and setters]
     public List<NobleCard> getNobleCards() {
         return nobleCards;
-    }
-
-    public List<DevelopmentCard> getCardsOnTable() {
-        return cardsOnTable;
-    }
-
-    public String addPlayerToGame(String name, int yearOfBirth) {
-        for (Player player : players) {
-            if (player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth) {
-                return "Player already added!";
-            }
-        }
-        Player player = playerMapper.findPlayer(name, yearOfBirth);
-        if (player == null) {
-            return "Player not found!";
-        }
-        players.add(player);
-        return "Player added successfully!";
     }
 
     public List<GemAmount> getGemStack() {
@@ -64,6 +42,45 @@ public class Game {
         return players;
     }
 
+    public DevelopmentCard[][] getCardsOnBoard(){
+        return matrix;
+    }
+    //endregion
+
+    //region [Game preparation methods]
+    /**
+     * Generates all the development cards when called
+     * @throws IOException when a problem occurs when reading the csv file
+     */
+    public void generateDevelopmentCards() throws IOException {
+        developmentCards = readCardsFromFile("splendorCards.csv", "development")
+                .stream()
+                .map(card -> (DevelopmentCard) card)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Generates the noble cards based on the amount of players when called
+     * @throws IOException when a problem occurs when reading the csv file
+     */
+    public void generateNobleCards() throws IOException {
+        int numPlayers = getPlayers().size();
+        int limit = switch (numPlayers) {
+            case 2 -> 3;
+            case 3 -> 4;
+            case 4 -> 5;
+            default -> 0; // handle invalid player counts
+        };
+        nobleCards = readCardsFromFile("nobleCards.csv", "noble")
+                .stream()
+                .limit(limit)
+                .map(card -> (NobleCard) card)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Generates the gems on the game board based on the amount of players
+     */
     public void generateGemStack() {
         int numPlayers = getPlayers().size();
         int numGems;
@@ -84,26 +101,23 @@ public class Game {
                 new GemAmount(Crystal.Ruby, numGems));
     }
 
-    private Crystal parseCrystal(String string) {
-        return switch (string) {
-            case "Onyx" -> Crystal.Onyx;
-            case "Diamond" -> Crystal.Diamond;
-            case "Sapphire" -> Crystal.Sapphire;
-            case "Ruby" -> Crystal.Ruby;
-            case "Emerald" -> Crystal.Emerald;
-            default -> null;
-        };
-    }
-
-    private List<GemAmount> parseCost(String[] values) {
-        List<GemAmount> list = new ArrayList<>();
-        for (int i = 3; i < values.length; i++) {
-            int amount = Integer.parseInt(values[i]);
-            if (amount != 0) {
-                list.add(new GemAmount(Crystal.values()[i - 3], amount));
+    public void placeCardsOnBoard() {
+        for(int level = 0; level < 3; level++) {
+            int lvl = level + 1;
+            List<DevelopmentCard> cards = developmentCards.stream()
+                    .filter(x -> x.getLevel() == lvl)
+                    .limit(4)
+                    .collect(Collectors.toList());
+            for(int col = 0; col < 4; col++) {
+                matrix[level][col] = cards.get(0);
+                cards.remove(0);
             }
         }
-        return list;
+    }
+
+    public void sortPlayers() {
+        players.sort(Comparator.comparingInt(Player::getDateOfBirth));
+        Collections.reverse(players);
     }
 
     private List<? extends Card> readCardsFromFile(String fileName, String cardType) throws IOException {
@@ -137,63 +151,40 @@ public class Game {
         return result;
     }
 
-    public void generateDevelopmentCards() throws IOException {
-        developmentCards = readCardsFromFile("splendorCards.csv", "development")
-                .stream()
-                .map(card -> (DevelopmentCard) card)
-                .collect(Collectors.toList());
-    }
-
-    public void generateNobleCards() throws IOException {
-        int numPlayers = getPlayers().size();
-        int limit = switch (numPlayers) {
-            case 2 -> 3;
-            case 3 -> 4;
-            case 4 -> 5;
-            default -> 0; // handle invalid player counts
+    private Crystal parseCrystal(String string) {
+        return switch (string) {
+            case "Onyx" -> Crystal.Onyx;
+            case "Diamond" -> Crystal.Diamond;
+            case "Sapphire" -> Crystal.Sapphire;
+            case "Ruby" -> Crystal.Ruby;
+            case "Emerald" -> Crystal.Emerald;
+            default -> null;
         };
-        nobleCards = readCardsFromFile("nobleCards.csv", "noble")
-                .stream()
-                .limit(limit)
-                .map(card -> (NobleCard) card)
-                .collect(Collectors.toList());
-    }
-    
-    public void placeCardsOnBoard() {
-    	for(int level = 0; level < 3; level++) {
-    		int lvl = level + 1;
-    		List<DevelopmentCard> cards = developmentCards.stream()
-                    .filter(x -> x.getLevel() == lvl)
-                    .limit(4)
-                    .collect(Collectors.toList());
-    		for(int col = 0; col < 4; col++) {
-    			matrix[level][col] = cards.get(0);
-    			cards.remove(0);
-    		}
-    	}
     }
 
-    public DevelopmentCard[][] getCardsOnBoard(){
-    	return matrix;
+    private List<GemAmount> parseCost(String[] values) {
+        List<GemAmount> list = new ArrayList<>();
+        for (int i = 3; i < values.length; i++) {
+            int amount = Integer.parseInt(values[i]);
+            if (amount != 0) {
+                list.add(new GemAmount(Crystal.values()[i - 3], amount));
+            }
+        }
+        return list;
     }
+    //endregion
 
-
-    public void sortPlayers() {
-    	players.sort(Comparator.comparingInt(Player::getDateOfBirth));
-    	Collections.reverse(players);
-    }
-
-    public Player getFirstPlayer() {
-    	return firstPlayer;
-    }
-
-    public Player getCurrentPlayer() {
-    	return currentPlayer;
-    }
-
-    public void determineFirstPlayer() {
-        numberOfPlayers = players.size();
-        firstPlayer = players.get(0);
-        currentPlayer = players.get(0);
+    public String addPlayerToGame(String name, int yearOfBirth) {
+        for (Player player : players) {
+            if (player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth) {
+                return "Player already added!";
+            }
+        }
+        Player player = playerMapper.findPlayer(name, yearOfBirth);
+        if (player == null) {
+            return "Player not found!";
+        }
+        players.add(player);
+        return "Player added successfully!";
     }
 }
