@@ -138,7 +138,10 @@ public class Game {
     }
 
     public void generateDevelopmentCards() throws IOException {
-        developmentCards = readCardsFromFile("splendorCards.csv", "development").stream().map(card -> (DevelopmentCard) card).collect(Collectors.toList());
+        developmentCards = readCardsFromFile("splendorCards.csv", "development")
+                .stream()
+                .map(card -> (DevelopmentCard) card)
+                .collect(Collectors.toList());
     }
 
     public void generateNobleCards() throws IOException {
@@ -149,28 +152,14 @@ public class Game {
             case 4 -> 5;
             default -> 0; // handle invalid player counts
         };
-        nobleCards = readCardsFromFile("nobleCards.csv", "noble").stream().limit(limit).map(card -> (NobleCard) card).collect(Collectors.toList());
-    }
-
-    public void fillTableCardsDeck() {
-        // loop through the different levels of development cards
-        for (int level = 1; level <= 3; level++) {
-            // declare finalLevel variable and assign it the value of the loop variable
-            int finalLevel = level;
-            // create a stream of the developmentCards list, filter the cards by level, limit the cards to 4, and collect them into a new list named cards
-            List<DevelopmentCard> cards = developmentCards.stream()
-                    .filter(x -> x.getLevel() == finalLevel)
-                    .limit(4)
-                    .toList();
-            // remove the selected cards from the developmentCards list
-            developmentCards.removeAll(cards);
-            // add the selected cards to the cardsOnTable list
-            cardsOnTable.addAll(cards);
-        }
+        nobleCards = readCardsFromFile("nobleCards.csv", "noble")
+                .stream()
+                .limit(limit)
+                .map(card -> (NobleCard) card)
+                .collect(Collectors.toList());
     }
     
     public void placeCardsOnBoard() {
-
     	for(int level = 0; level < 3; level++) {
     		int lvl = level + 1;
     		List<DevelopmentCard> cards = developmentCards.stream()

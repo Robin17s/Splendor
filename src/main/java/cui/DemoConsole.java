@@ -3,12 +3,11 @@ package cui;
 import domain.*;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
-public class DemoUc1Console {
+public class DemoConsole {
     public static void main(String[] args) throws IOException {
-        DemoUc1Console app = new DemoUc1Console();
+        DemoConsole app = new DemoConsole();
         app.start();
     }
     public void start() throws IOException {
