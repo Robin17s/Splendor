@@ -37,13 +37,14 @@ public class DemoUc1Console {
                 System.out.printf("Name: %s, year of birth: %d\n", player.getName(), player.getDateOfBirth());
             }
             System.out.println("Game created with the following development cards on table:");
-            for (DevelopmentCard card :
-                    domainController.getTable("development").stream().map(card -> (DevelopmentCard) card).toList()) {
-                System.out.println(card.showCard());
+            for (int level = 0; level < 3; level++){
+                for (int card = 0; card < 4; card++){
+                    System.out.println(domainController.getDevelopmentCardsOntable()[level][card].showCard());
+                }
             }
             System.out.println("Game created with the following noble cards on table:");
             for (NobleCard card :
-                    domainController.getTable("noble").stream().map(card -> (NobleCard) card).toList()) {
+                    domainController.getNobles()) {
                 System.out.println(card.showCard());
             }
             System.out.println("Game created with the following gems on table:");

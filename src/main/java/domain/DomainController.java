@@ -28,6 +28,15 @@ public class DomainController{
         } else
             return null;
     }
+
+    public List<NobleCard> getNobles(){
+        return splendor.getNobleCards();
+    }
+
+    public DevelopmentCard[][] getDevelopmentCardsOntable(){
+        return splendor.getCardsOnBoard();
+    }
+
     public List<GemAmount> getGemStack(){
         return splendor.getGemStack();
     }
