@@ -205,4 +205,9 @@ public class Game {
     	return currentPlayer;
     }
 
+    public void determineFirstPlayer() {
+        numberOfPlayers = players.size();
+        firstPlayer = players.get(0);
+        currentPlayer = players.get(0);
+    }
 }
