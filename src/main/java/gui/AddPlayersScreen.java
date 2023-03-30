@@ -46,14 +46,24 @@ public final class AddPlayersScreen extends BorderPane {
         bottomBox.getChildren().addAll(spacer, backButton, buttonSpacer, playButton);
 
         VBox center = new VBox();
+        center.setPadding(new Insets(16));
+
         Label usernameLabel = new Label("Username");
         this.usernameField = new TextField();
+
+        Region space = new Region();
+        space.setPadding(new Insets(4));
+
         Label yobLabel = new Label("Year of Birth");
         this.yobField = new TextField();
+
+        Region space2 = new Region();
+        space2.setPadding(new Insets(4));
+
         Button addPlayerButton = new Button("Add");
 
         addPlayerButton.setOnAction(this::onAddPlayerButtonClick);
-        center.getChildren().addAll(usernameLabel, usernameField, yobLabel, yobField, addPlayerButton);
+        center.getChildren().addAll(usernameLabel, usernameField, space, yobLabel, yobField, space2, addPlayerButton);
 
         this.setBottom(bottomBox);
         this.setCenter(center);
