@@ -14,7 +14,7 @@ public class SplendorApplicatie {
 
 	public void start() throws IOException {
 		Scanner scanner = new Scanner(System.in);
-		String startgame = ask ("Do you want to start a game?[Y/N]: ",scanner);
+		String startgame = ask ("Shall we play a game of Splendor? [Y/N]: ",scanner);
 		if (startgame.equalsIgnoreCase("Y")) {
 			DomainController domainController = new DomainController();
 			

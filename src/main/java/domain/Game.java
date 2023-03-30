@@ -195,6 +195,7 @@ public class Game {
 
     public void sortPlayers() {
     	Collections.sort(players, (p1, p2) -> p1.getDateOfBirth()-p2.getDateOfBirth());
+    	Collections.reverse(players);
     }
 
     public Player getFirstPlayer() {
