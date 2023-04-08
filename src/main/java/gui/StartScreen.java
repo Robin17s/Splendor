@@ -40,7 +40,7 @@ public final class StartScreen extends Pane {
         box.setBackground(new Background(new BackgroundFill(new Color(0.9, 0.9, 0.9, 0.5), CornerRadii.EMPTY, new Insets(128, 256, 128, 256))));
 
         Label titleLabel = new Label("Splendor");
-        Label versionLabel = new Label("G53 Half-baked Edition");
+        Label versionLabel = new Label("G53 *still* Half-baked Edition");
         Button playButton = new Button("Play");
         Button quitButton = new Button("Quit");
 

@@ -19,7 +19,7 @@ public class ApplicationStart extends Application {
 
         setScene(new StartScreen());
 
-        primary.setTitle("Splendor - G53 Half-baked Edition");
+        primary.setTitle("Splendor - G53 Edition");
         primary.show();
     }
 

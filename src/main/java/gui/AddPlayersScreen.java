@@ -1,6 +1,5 @@
 package gui;
 
-import domain.DomainController;
 import domain.Player;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -13,7 +12,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -83,7 +81,7 @@ public final class AddPlayersScreen extends BorderPane {
     private String addPlayerList() {
         List<Player> players = ApplicationStart.getInstance().getController().givePlayers();
 
-        return players.stream().map(player -> String.format("%s: %d", player.getName(), player.getDateOfBirth())).collect(Collectors.joining("\n"));
+        return players.stream().map(player -> String.format("%s - %d", player.getName(), player.getDateOfBirth())).collect(Collectors.joining("\n"));
     }
 
     private void onAddPlayerButtonClick(ActionEvent event) {
