@@ -70,6 +70,7 @@ public final class AddPlayersScreen extends BorderPane {
         Button removePlayerButton = new Button("-");
 
         removePlayerButton.prefWidthProperty().bind(leftPane.widthProperty().subtract(16));
+        removePlayerButton.setOnAction(this::onRemovePlayerButtonClick);
 
         leftPane.getChildren().add(playerPane);
         leftPane.getChildren().add(removePlayerButton);
@@ -163,4 +164,13 @@ public final class AddPlayersScreen extends BorderPane {
     }
 
     private void addPlayerToPane(String username, int year) { playerPane.getItems().add("%s - %d".formatted(username, year)); }
+
+    private void onRemovePlayerButtonClick(ActionEvent event) {
+        String selectedItem = playerPane.selectionModelProperty().get().getSelectedItems().get(0);
+        playerPane.getItems().remove(selectedItem);
+        String name = selectedItem.split("-")[0].trim();
+        int year = Integer.parseInt(selectedItem.split("-")[1].trim());
+
+        ApplicationStart.getInstance().getController().removePlayerFromGame(name, year);
+    }
 }

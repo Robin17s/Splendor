@@ -187,4 +187,6 @@ public class Game {
         players.add(player);
         return "Player added successfully!";
     }
+
+    public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth); }
 }

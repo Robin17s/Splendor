@@ -13,6 +13,8 @@ public class DomainController{
         return splendor.addPlayerToGame(name, yearOfBirth);
     }
 
+    public void removePlayerFromGame(String name, int yearOfBirth) { splendor.removePlayerFromGame(name, yearOfBirth); }
+
     public List<Player> givePlayers(){
         return splendor.getPlayers();
     }
