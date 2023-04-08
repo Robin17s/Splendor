@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -66,5 +67,5 @@ public final class StartScreen extends Pane {
 
     private void onPlayButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new AddPlayersScreen()); }
 
-    private void onQuitButtonClick(ActionEvent event) { System.exit(0); }
+    private void onQuitButtonClick(ActionEvent event) { Platform.exit(); }
 }

@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public final class AddPlayersScreen extends BorderPane {
     private final TextField usernameField;
     private final TextField yobField;
+    private final ListView<String> playerPane;
 
     public AddPlayersScreen() {
         HBox bottomBox = new HBox();
@@ -63,6 +65,21 @@ public final class AddPlayersScreen extends BorderPane {
         addPlayerButton.setOnAction(this::onAddPlayerButtonClick);
         center.getChildren().addAll(usernameLabel, usernameField, space, yobLabel, yobField, space2, addPlayerButton);
 
+        VBox leftPane = new VBox();
+        this.playerPane = new ListView<>();
+        Button removePlayerButton = new Button("-");
+
+        removePlayerButton.prefWidthProperty().bind(leftPane.widthProperty().subtract(16));
+
+        leftPane.getChildren().add(playerPane);
+        leftPane.getChildren().add(removePlayerButton);
+
+        VBox.setVgrow(playerPane, Priority.ALWAYS);
+        VBox.setMargin(removePlayerButton, new Insets(8));
+
+        ApplicationStart.getInstance().getController().givePlayers().forEach(player -> addPlayerToPane(player.getName(), player.getDateOfBirth()));
+
+        this.setLeft(leftPane);
         this.setBottom(bottomBox);
         this.setCenter(center);
     }
@@ -120,6 +137,8 @@ public final class AddPlayersScreen extends BorderPane {
         alert.setAlertType(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
 
+        boolean proceed = false;
+
         switch (result) {
             case "Player already added!" -> alert.setContentText("The player is already added.");
             case "Player not found!" -> alert.setContentText("The requested player has not been found.");
@@ -127,6 +146,7 @@ public final class AddPlayersScreen extends BorderPane {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setContentText("The player has been successfully added to the list.");
+                proceed = true;
             }
             default -> {
                 alert.setAlertType(Alert.AlertType.ERROR);
@@ -136,5 +156,11 @@ public final class AddPlayersScreen extends BorderPane {
         }
 
         alert.showAndWait();
+
+        if (!(proceed)) return;
+
+        addPlayerToPane(username, year);
     }
+
+    private void addPlayerToPane(String username, int year) { playerPane.getItems().add("%s - %d".formatted(username, year)); }
 }
