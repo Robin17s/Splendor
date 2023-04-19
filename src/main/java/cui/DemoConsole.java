@@ -43,20 +43,30 @@ public class DemoConsole {
             domainController.startGame();
 
             // print players
-            System.out.println("Game created with the following players:");
+            System.out.println("\nGame created with the following players:");
             printPlayers(domainController);
 
             // print table
-            System.out.println("Game created with the following development cards on table:");
+            System.out.println("\nGame created with the following development cards on table:");
             printDevelopmentCards(domainController);
 
             // print nobles
-            System.out.println("Game created with the following noble cards on table:");
+            System.out.println("\nGame created with the following noble cards on table:");
             printNobles(domainController);
 
             // print gems
-            System.out.println("Game created with the following gems on table:");
+            System.out.println("\nGame created with the following gems on table:");
             printAvailableGems(domainController);
+
+            // print starting player (first player in the list)
+            System.out.print("\nStarting player: ");
+            System.out.println(domainController.givePlayers().get(0).getName());
+
+            domainController.addItemsToPlayers();
+
+            // print all players with the items they have
+            System.out.print("\nPlayers and the items they have: ");
+            printPlayersWithCardsAndGems(domainController);
         }
     }
     private void ask(String question){
@@ -64,9 +74,11 @@ public class DemoConsole {
     }
 
     private void printDevelopmentCards(DomainController domainController){
+        int cardCount = 1;
         for (int level = 0; level < 3; level++){
             for (int card = 0; card < 4; card++){
-                System.out.println(domainController.getDevelopmentCardsOntable()[level][card].showCard());
+                System.out.println(String.format("Card %d: %s", cardCount, domainController.getDevelopmentCardsOntable()[level][card].showCard()));
+                cardCount++;
             }
         }
     }
@@ -105,5 +117,11 @@ public class DemoConsole {
             }
         }
         System.out.println(domainController.playerLogOn(playerName, birthYear));
+    }
+
+    private void printPlayersWithCardsAndGems(DomainController domainController){
+        for (Player player : domainController.givePlayers()){
+            System.out.println(String.format("\nPlayer %s has the following items:\n%s\n%s", player.getName(), player.getDevelopmentCardsAsString(), player.getGemsAsString()));
+        }
     }
 }

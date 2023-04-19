@@ -120,6 +120,12 @@ public class Game {
         Collections.reverse(players);
     }
 
+    public void preparePlayerGems(){
+        for (Player player : players){
+            player.generateGemStack();
+        }
+    }
+
     private List<? extends Card> readCardsFromFile(String fileName, String cardType) throws IOException {
         //csv info development: [Level, Gem, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]
         //csv info noble: [Filler, Filler, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]

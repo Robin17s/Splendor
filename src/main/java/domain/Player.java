@@ -16,6 +16,7 @@ public class Player {
         developmentCards = new ArrayList<>();
         this.name = name;
         this.dateOfBirth = dateOfBirth;
+        gemStack = new ArrayList<>();
         prestige = 0;
     }
 
@@ -60,8 +61,20 @@ public class Player {
                 new GemAmount(Crystal.Ruby, 0));
     }
     
-    public void addGems() {
-    	
+    public void addGems(List<GemAmount> gems) {
+    	switch (gems.size()){
+            case 0 -> {
+                break;
+            }
+            case 1 -> {
+                gemStack.stream().filter(gem -> gem.getType() == gems.get(0).getType()).findFirst().ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 2)));
+            }
+            case 3 -> {
+                for (GemAmount amount : gems){
+                    gemStack.stream().filter(gem -> gem.getType() == amount.getType()).findFirst().ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 1)));
+                }
+            }
+        }
     }
     
     public void removeGems() {
@@ -70,5 +83,21 @@ public class Player {
     
     public List<GemAmount> getGems() {
     	return gemStack;
+    }
+    public String getGemsAsString(){
+        String output = "";
+        for(GemAmount cost : gemStack){
+            if (cost.getAmount() > 0)
+                output += String.format("[%s: %d]\n", cost.getType(), cost.getAmount());
+        }
+        return output.substring(0, output.length() - (output.isEmpty() ? 0 : 1));
+    }
+    public String getDevelopmentCardsAsString(){
+        String output = "";
+        for(DevelopmentCard card : developmentCards){
+            output += String.format("[%s]\n", card.showCard());
+        }
+        //return output.isEmpty() ? output : output.substring(0, output.length() - 1);
+        return output.substring(0, output.length() - (output.isEmpty() ? 0 : 1));
     }
 }

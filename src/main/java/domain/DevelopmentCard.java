@@ -15,7 +15,16 @@ public class DevelopmentCard extends Card {
         this.level = level;
     }
     public String showCard(){
-        return String.format("Level: %s, Gem: %s, Prestige: %s", level, bonus, getPrestige());
+        return String.format("[Level: %s] [Bonus gem: %s] [Prestige: %s] [COST: %s]", level, bonus, getPrestige(), makeCostString());
+    }
+
+    private String makeCostString(){
+        String output = "";
+        for(GemAmount cost : price){
+            if (cost.getAmount() > 0)
+                output += String.format("[%s: %d] ", cost.getType(), cost.getAmount());
+        }
+        return output.substring(0, output.length() - 1);
     }
 
     public int getLevel() {
