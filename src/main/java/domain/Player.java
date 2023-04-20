@@ -11,6 +11,7 @@ public class Player {
     private List<DevelopmentCard> developmentCards;
     private NobleCard nobleCard;
     private List<GemAmount> gemStack;
+    private int index;
     
     public Player(String name, int dateOfBirth){
         developmentCards = new ArrayList<>();
@@ -99,5 +100,13 @@ public class Player {
         }
         //return output.isEmpty() ? output : output.substring(0, output.length() - 1);
         return output.substring(0, output.length() - (output.isEmpty() ? 0 : 1));
+    }
+    
+    public int getIndex() {
+    	return index;
+    }
+    
+    public void setIndex(int index) {
+    	this.index = index;
     }
 }
