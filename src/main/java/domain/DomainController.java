@@ -51,4 +51,10 @@ public class DomainController{
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems));
         }
     }
+    
+    public void givePlayersIndex() {
+    	for(int a = 0; a < splendor.getPlayers().size(); a++) {
+    		splendor.getPlayers().get(a).setIndex(a + 1);
+    	}
+    }
 }
