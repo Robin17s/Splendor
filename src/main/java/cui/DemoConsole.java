@@ -41,6 +41,7 @@ public class DemoConsole {
 
             // start the game; this method basically loads everything needed to get started
             domainController.startGame();
+            domainController.givePlayersIndex();
 
             // print players
             System.out.println("\nGame created with the following players:");
@@ -97,7 +98,7 @@ public class DemoConsole {
 
     private void printPlayers(DomainController domainController){
         for (Player player : domainController.givePlayers()) {
-            System.out.printf("Name: %s, year of birth: %d\n", player.getName(), player.getDateOfBirth());
+            System.out.printf("Name: %s, year of birth: %d, Index: %d\n", player.getName(), player.getDateOfBirth(), player.getIndex());
         }
     }
 
