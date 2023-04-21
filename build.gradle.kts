@@ -25,3 +25,14 @@ javafx {
     version = "17.0.2"
     modules = arrayListOf("javafx.controls", "javafx.fxml")
 }
+
+application {
+    mainModule.set("splendor")
+    mainClass.set("gui.ApplicationStart")
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "gui.ApplicationStart"
+    }
+}
