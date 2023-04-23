@@ -1,5 +1,6 @@
 package gui;
 
+import domain.DevelopmentCard;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -90,5 +91,14 @@ public final class BoardScreen extends Pane {
 
         // Add the grid to the pane
         this.getChildren().add(gridPane);
+    }
+
+    public void getDevelopmentCard(){
+        for(int level = 1; level < 3; level++){
+            for(int card = 1; card < 4; card++){
+                UC2DEMOGUI.getInstance().getController().getDevelopmentCardsOntable()[level][card].showCard();
+            }
+        }
+
     }
 }
