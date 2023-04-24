@@ -43,6 +43,7 @@ public class Player {
 
     public void addDevelopmentCard(DevelopmentCard developmentCard){
         developmentCards.add(developmentCard);
+        updatePrestige();
     }
     
     public int getPrestige() {
@@ -52,7 +53,27 @@ public class Player {
     public void addPrestige(int prestige) {
     	this.prestige += prestige;
     }
-    
+
+    private void updatePrestige(){
+        prestige = 0;
+        for(DevelopmentCard developmentCard : developmentCards){
+            prestige += developmentCard.getPrestige();
+        }
+    }
+
+    public List<GemAmount> getBonusGems(){
+        List<GemAmount> temp = new ArrayList<>();
+        temp.addAll(Arrays.asList(new GemAmount(Crystal.Diamond, 0),
+                new GemAmount(Crystal.Onyx, 0),
+                new GemAmount(Crystal.Emerald, 0),
+                new GemAmount(Crystal.Sapphire, 0),
+                new GemAmount(Crystal.Ruby, 0)));
+        for (DevelopmentCard developmentCard : developmentCards){
+            temp.stream().filter(x -> x.getType() == developmentCard.getBonusGem()).findFirst().ifPresent(x -> temp.set(temp.indexOf(x), new GemAmount(x.getType(), x.getAmount() + 1)));
+        }
+        return temp;
+    }
+
     public void generateGemStack() {
         gemStack = Arrays.asList(
                 new GemAmount(Crystal.Diamond, 0),

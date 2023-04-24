@@ -33,6 +33,10 @@ public class DevelopmentCard extends Card {
         return price;
     }
 
+    public Crystal getBonusGem(){
+        return bonus;
+    }
+
     public int getLevel() {
         return level;
     }
