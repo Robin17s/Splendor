@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Game {
@@ -19,6 +20,7 @@ public class Game {
     private List<NobleCard> nobleCards;
     private List<GemAmount> gemStack;
     private DevelopmentCard[][] matrix;
+    private int currentPlayerIndex;
 
     public Game() {
         players = new ArrayList<>();
@@ -27,6 +29,7 @@ public class Game {
         gemStack = new ArrayList<>();
         playerMapper = new PlayerMapper();
         matrix = new DevelopmentCard[3][4];
+        currentPlayerIndex = 0;
     }
 
     //region [getters and setters]
@@ -45,6 +48,11 @@ public class Game {
     public DevelopmentCard[][] getCardsOnBoard(){
         return matrix;
     }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+
     //endregion
 
     //region [Game preparation methods]
@@ -112,6 +120,7 @@ public class Game {
                 matrix[level][col] = cards.get(0);
                 cards.remove(0);
             }
+            developmentCards.removeAll(cards);
         }
     }
 
@@ -192,6 +201,42 @@ public class Game {
         }
         players.add(player);
         return "Player added successfully!";
+    }
+
+    public void endTurn(){
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    }
+
+    public void takeThreeGems(List<GemAmount> gems){
+        for(GemAmount gem : gems){
+            int index = getIndexOfGem(gem);
+            gemStack.get(index).subtractOne();
+        }
+        players.get(currentPlayerIndex).addGems(gems);
+    }
+
+    public void takeOneGem(GemAmount gem){
+        gemStack.get(getIndexOfGem(gem)).subtractTwo();
+        List<GemAmount> gemList = new ArrayList<>();
+        gemList.add(gem);
+        players.get(currentPlayerIndex).addGems(gemList);
+    }
+
+    public void takeDevelopmentCard(DevelopmentCard card){
+        int index = 0;
+        for (int i = 0; i<4; i++){
+            if (matrix[card.getLevel()][i] == card){
+                index = i;
+                break;
+            }
+        }
+        matrix[card.getLevel()][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
+        developmentCards.remove(matrix[card.getLevel()][index]);
+        players.get(currentPlayerIndex).addDevelopmentCard(card);
+    }
+
+    private int getIndexOfGem(GemAmount gem){
+        return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().getAsInt();
     }
 
     public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth); }

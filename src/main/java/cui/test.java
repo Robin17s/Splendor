@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class DemoConsole {
+public class test {
     public static void main(String[] args) throws IOException {
-        DemoConsole app = new DemoConsole();
+        test app = new test();
         app.start();
     }
     public void start() throws IOException {
@@ -63,11 +63,23 @@ public class DemoConsole {
             System.out.print("\nStarting player: ");
             System.out.println(domainController.givePlayers().get(0).getName());
 
-            domainController.addItemsToPlayers();
+            //domainController.addItemsToPlayers();
 
             // print all players with the items they have
             System.out.print("\nPlayers and the items they have: ");
             printPlayersWithCardsAndGems(domainController);
+
+            domainController.takeOneGem(new GemAmount(Crystal.Diamond, 0));
+
+            // print gems
+            System.out.println("\nGame created with the following gems on table:");
+            printAvailableGems(domainController);
+
+            // print all players with the items they have
+            System.out.print("\nPlayers and the items they have: ");
+            printPlayersWithCardsAndGems(domainController);
+
+            System.out.println(domainController.getCurrentPlayerIndex());
         }
     }
     private void ask(String question){

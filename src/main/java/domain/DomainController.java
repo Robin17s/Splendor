@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DomainController{
-	private Game splendor;
+    private Game splendor;
     public DomainController(){
         splendor = new Game();
     }
@@ -51,10 +51,38 @@ public class DomainController{
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems));
         }
     }
-    
-    public void givePlayersIndex() {
-    	for(int a = 0; a < splendor.getPlayers().size(); a++) {
-    		splendor.getPlayers().get(a).setIndex(a + 1);
-    	}
+    /**
+     *
+     * @param gem the gem the player takes. The amount does not matter!
+     */
+    public void takeOneGem(GemAmount gem){
+        splendor.takeOneGem(gem);
+        splendor.endTurn();
+    }
+
+    /**
+     *
+     * @param gems a list of gems that the player wants to take. The amounts do not matter!
+     */
+    public void takeThreeGems(List<GemAmount> gems){
+        splendor.takeThreeGems(gems);
+        splendor.endTurn();
+    }
+
+    /**
+     *
+     * @param card the development card the player wants to take.
+     */
+    public void takeDevelopmentCard(DevelopmentCard card){
+        splendor.takeDevelopmentCard(card);
+        splendor.endTurn();
+    }
+
+    /**
+     *
+     * @return the index of the player whos turn it is.
+     */
+    public int getCurrentPlayerIndex(){
+        return splendor.getCurrentPlayerIndex();
     }
 }

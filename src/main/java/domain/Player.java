@@ -68,11 +68,19 @@ public class Player {
                 break;
             }
             case 1 -> {
-                gemStack.stream().filter(gem -> gem.getType() == gems.get(0).getType()).findFirst().ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 2)));
+                gemStack
+                        .stream()
+                        .filter(gem -> gem.getType() == gems.get(0).getType())
+                        .findFirst()
+                        .ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 2)));
             }
             case 3 -> {
                 for (GemAmount amount : gems){
-                    gemStack.stream().filter(gem -> gem.getType() == amount.getType()).findFirst().ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 1)));
+                    gemStack
+                            .stream()
+                            .filter(gem -> gem.getType() == amount.getType())
+                            .findFirst()
+                            .ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 1)));
                 }
             }
         }
