@@ -235,6 +235,22 @@ public class Game {
         players.get(currentPlayerIndex).addDevelopmentCard(card);
     }
 
+    public boolean canPlayerAffordCard(DevelopmentCard card){
+        for (GemAmount cost : card.getPrice()) {
+            boolean hasGem = false;
+            for (GemAmount temp : players.get(currentPlayerIndex).getGems()) {
+                if (temp.getType() == cost.getType() && temp.getAmount() >= cost.getAmount()) {
+                    hasGem = true;
+                    break;
+                }
+            }
+            if (!hasGem) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private int getIndexOfGem(GemAmount gem){
         return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().getAsInt();
     }

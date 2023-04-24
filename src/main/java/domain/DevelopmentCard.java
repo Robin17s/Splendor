@@ -27,6 +27,10 @@ public class DevelopmentCard extends Card {
         return output.substring(0, output.length() - 1);
     }
 
+    public List<GemAmount> getPrice(){
+        return price;
+    }
+
     public int getLevel() {
         return level;
     }

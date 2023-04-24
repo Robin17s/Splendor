@@ -3,7 +3,9 @@ package cui;
 import domain.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class test {
@@ -70,6 +72,23 @@ public class test {
             printPlayersWithCardsAndGems(domainController);
 
             domainController.takeOneGem(new GemAmount(Crystal.Diamond, 0));
+
+            // print gems
+            System.out.println("\nGame created with the following gems on table:");
+            printAvailableGems(domainController);
+
+            // print all players with the items they have
+            System.out.print("\nPlayers and the items they have: ");
+            printPlayersWithCardsAndGems(domainController);
+
+            System.out.println(domainController.getCurrentPlayerIndex());
+
+            List<GemAmount> gems = new ArrayList<>();
+            gems.add(new GemAmount(Crystal.Diamond, 1));
+            gems.add(new GemAmount(Crystal.Onyx, 1));
+            gems.add(new GemAmount(Crystal.Ruby, 1));
+
+            domainController.takeThreeGems(gems);
 
             // print gems
             System.out.println("\nGame created with the following gems on table:");
