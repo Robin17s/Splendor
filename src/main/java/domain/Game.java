@@ -147,14 +147,15 @@ public class Game {
         }
 
         List<Card> result = new ArrayList<>();
-        for (String card : cards) {
+        for (String card : cards) { //  1,Onyx,0,1,1,1,1,0,1Onyx011110
             String[] values = card.split(",");
             if (cardType.equals("development")) {
                 result.add(new DevelopmentCard(
                         Integer.parseInt(values[2]),  // Prestige value
                         parseCrystal(values[1]),      // Bonus gem
                         Integer.parseInt(values[0]),  // Level
-                        parseCost(values)));          // Cost
+                        parseCost(values),            // Cost
+                        values[8]));                  // AssetName
             } else if (cardType.equals("noble")) {
                 result.add(new NobleCard(
                         Integer.parseInt(values[2]),  // Prestige value
@@ -179,7 +180,7 @@ public class Game {
 
     private List<GemAmount> parseCost(String[] values) {
         List<GemAmount> list = new ArrayList<>();
-        for (int i = 3; i < values.length; i++) {
+        for (int i = 3; i < values.length-1; i++) {
             int amount = Integer.parseInt(values[i]);
             if (amount != 0) {
                 list.add(new GemAmount(Crystal.values()[i - 3], amount));
@@ -225,13 +226,13 @@ public class Game {
     public void takeDevelopmentCard(DevelopmentCard card){
         int index = 0;
         for (int i = 0; i<4; i++){
-            if (matrix[card.getLevel()][i] == card){
+            if (matrix[card.getLevel()-1][i] == card){
                 index = i;
                 break;
             }
         }
-        matrix[card.getLevel()][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
-        developmentCards.remove(matrix[card.getLevel()][index]);
+        matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
+        developmentCards.remove(matrix[card.getLevel()-1][index]);
         players.get(currentPlayerIndex).addDevelopmentCard(card);
     }
 

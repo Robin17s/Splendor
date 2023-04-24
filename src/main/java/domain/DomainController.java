@@ -48,7 +48,7 @@ public class DomainController{
         gems.add(new GemAmount(Crystal.Ruby, 1));
         for (Player player : splendor.getPlayers()){
             player.addGems(gems);
-            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems));
+            //player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems));
         }
     }
     /**

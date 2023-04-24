@@ -7,12 +7,14 @@ public class DevelopmentCard extends Card {
     private final List<GemAmount> price;
     private final Crystal bonus;
     private final int level;
+    private final String assetName;
 
-    public DevelopmentCard(int prestige, Crystal bonus, int level, List<GemAmount> price) {
+    public DevelopmentCard(int prestige, Crystal bonus, int level, List<GemAmount> price, String assetName) {
         super (prestige);
         this.price = price;
         this.bonus = bonus;
         this.level = level;
+        this.assetName = assetName;
     }
     public String showCard(){
         return String.format("[Level: %s] [Bonus gem: %s] [Prestige: %s] [COST: %s]", level, bonus, getPrestige(), makeCostString());
@@ -33,5 +35,9 @@ public class DevelopmentCard extends Card {
 
     public int getLevel() {
         return level;
+    }
+    // TODO: Asset name return
+    public String getAssetName() {
+        return "1Onyx011110";
     }
 }
