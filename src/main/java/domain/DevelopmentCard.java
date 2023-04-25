@@ -42,6 +42,6 @@ public class DevelopmentCard extends Card {
     }
     // TODO: Asset name return
     public String getAssetName() {
-        return "1Onyx011110";
+        return assetName;
     }
 }
