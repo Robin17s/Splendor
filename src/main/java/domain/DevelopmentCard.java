@@ -1,6 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DevelopmentCard extends Card {
@@ -40,7 +39,7 @@ public class DevelopmentCard extends Card {
     public int getLevel() {
         return level;
     }
-    // TODO: Asset name return
+
     public String getAssetName() {
         return assetName;
     }
