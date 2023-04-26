@@ -33,6 +33,8 @@ public final class BoardScreen extends Pane {
         gridPane.setAlignment(CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(15);
+        gridPane.setScaleX(0.5);
+        gridPane.setScaleY(0.5);
 
         // Add the grid to the pane
         this.getChildren().add(gridPane);
