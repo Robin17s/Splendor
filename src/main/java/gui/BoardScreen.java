@@ -18,10 +18,7 @@ import static javafx.geometry.Pos.CENTER;
 public final class BoardScreen extends Pane {
 
     private GridPane gridPane;
-    private final DomainController controller;
-    public BoardScreen(DomainController controller) {
-        this.controller = controller;
-
+    public BoardScreen() {
         this.setBackground(new Background(
                 new BackgroundImage(
                         new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/title_screen_felt.jpg"))),
@@ -45,7 +42,7 @@ public final class BoardScreen extends Pane {
 
         for (int row = 2;row>=0;row--) {
             for (int column = 0; column < 4; column++) {
-                DevelopmentCard card = controller.getDevelopmentCardsOntable()[2-row][column];
+                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[2-row][column];
                 Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+card.getAssetName()+".JPG")));
                 Button b = new Button();
                 b.setGraphic(new ImageView(img));

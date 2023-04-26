@@ -1,6 +1,8 @@
 package gui;
 
 import domain.Player;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -18,6 +20,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,12 +91,30 @@ public final class AddPlayersScreen extends BorderPane {
     private void onBackButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new StartScreen()); }
 
     private void onPlayButtonClick(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText("Splendor | Not Yet Implemented");
-        alert.setContentText("The part of the application you are trying to access is not yet implemented. Please try again later.\n\nPlayer list:\n" + addPlayerList());
+        if (ApplicationStart.getInstance().getController().givePlayers().size() < 2) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Splendor | Not Enough Players!");
+            alert.setContentText("There aren't enough players to start the game. Please add more players, and try again.");
 
-        alert.showAndWait();
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            BoardScreen boardScreen = new BoardScreen();
+            ApplicationStart.getInstance().setScene(boardScreen);
+            ApplicationStart.getInstance().getController().startGame();
+            boardScreen.ShowCards();
+        } catch (IOException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Fatal Error");
+            alert.setHeaderText("Splendor | Failed to start game!");
+            alert.setContentText("Something went wrong whilst trying to start the game. Splendor will now exit.");
+
+            alert.showAndWait();
+            Platform.exit();
+        }
     }
 
     private String addPlayerList() {
