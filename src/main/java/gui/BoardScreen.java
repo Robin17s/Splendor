@@ -1,19 +1,18 @@
 package gui;
 
 import domain.DevelopmentCard;
-import domain.DomainController;
+import domain.GemAmount;
+import domain.NobleCard;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import java.util.Objects;
 
-import static javafx.geometry.Pos.CENTER;
 
 public final class BoardScreen extends Pane {
 
@@ -29,25 +28,62 @@ public final class BoardScreen extends Pane {
         ));
 
         gridPane = new GridPane();
+        gridPane.setLayoutX(10);
+        gridPane.setLayoutY(10);
         gridPane.setPadding(new Insets(10));
-        gridPane.setAlignment(CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(15);
         gridPane.setScaleX(0.5);
         gridPane.setScaleY(0.5);
-
         // Add the grid to the pane
         this.getChildren().add(gridPane);
     }
 
-    public void ShowCards() {
+    public void ShowGems() {
+        int rowCounter = 0;
+        for (GemAmount gemAmount : ApplicationStart.getInstance().getController().getGemStack()){
+            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+gemAmount.getType()+".JPG")));
+            ImageView imgView = new ImageView(img);
+            gridPane.add(imgView, 0, rowCounter);
+            rowCounter++;
+        }
+    }
 
-        for (int row = 2;row>=0;row--) {
-            for (int column = 0; column < 4; column++) {
-                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[2-row][column];
+    public void ShowNobles() {
+        int colCounter = 1;
+        for (NobleCard noble : ApplicationStart.getInstance().getController().getNobles()){
+            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+noble.getAssetName()+".JPG")));
+            ImageView imgView = new ImageView(img);
+            gridPane.add(imgView, colCounter, 0);
+            colCounter++;
+        }
+    }
+
+    public void ShowDevelopmentCardPiles() {
+        Image img1 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/DevLevel3Back.JPG")));
+        ImageView imgView1 = new ImageView(img1);
+        gridPane.add(imgView1, 1, 1);
+
+        Image img2 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/DevLevel2Back.JPG")));
+        ImageView imgView2 = new ImageView(img2);
+        gridPane.add(imgView2, 1, 2);
+
+        Image img3 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/DevLevel1Back.JPG")));
+        ImageView imgView3 = new ImageView(img3);
+        gridPane.add(imgView3, 1, 3);
+    }
+
+    public void ShowDevelopmentCards() {
+
+        for (int row = 3;row>=1;row--) {
+            for (int column = 2; column < 6; column++) {
+                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[3-row][column-2];
                 Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+card.getAssetName()+".JPG")));
                 Button b = new Button();
-                b.setGraphic(new ImageView(img));
+                ImageView imgView = new ImageView(img);
+                imgView.setFitHeight(300);
+                imgView.setFitWidth(150);
+                b.setGraphic(imgView);
                 b.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -64,4 +100,5 @@ public final class BoardScreen extends Pane {
             }
         }
     }
+
 }

@@ -65,7 +65,9 @@ public final class StartScreen extends Pane {
         this.getChildren().add(box);
     }
 
-    private void onPlayButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new AddPlayersScreen()); }
+    private void onPlayButtonClick(ActionEvent event) {
+        ApplicationStart.getInstance().setScene(new AddPlayersScreen());
+        }
 
     private void onQuitButtonClick(ActionEvent event) { Platform.exit(); }
 }

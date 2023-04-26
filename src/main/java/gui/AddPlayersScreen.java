@@ -86,6 +86,13 @@ public final class AddPlayersScreen extends BorderPane {
         this.setLeft(leftPane);
         this.setBottom(bottomBox);
         this.setCenter(center);
+
+
+        // Quick Debug bypass method, PUT IN COMMENT IF YOU DONT NEED
+        ApplicationStart.getInstance().getController().playerLogOn("thomas", 1987);
+        addPlayerToPane("thomas", 1987);
+        ApplicationStart.getInstance().getController().playerLogOn("brent", 2005);
+        addPlayerToPane("brent", 2005);
     }
 
     private void onBackButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new StartScreen()); }
@@ -105,7 +112,10 @@ public final class AddPlayersScreen extends BorderPane {
             BoardScreen boardScreen = new BoardScreen();
             ApplicationStart.getInstance().setScene(boardScreen);
             ApplicationStart.getInstance().getController().startGame();
-            boardScreen.ShowCards();
+            boardScreen.ShowGems();
+            boardScreen.ShowNobles();
+            boardScreen.ShowDevelopmentCardPiles();
+            boardScreen.ShowDevelopmentCards();
         } catch (IOException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fatal Error");

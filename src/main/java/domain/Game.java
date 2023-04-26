@@ -159,6 +159,7 @@ public class Game {
             } else if (cardType.equals("noble")) {
                 result.add(new NobleCard(
                         Integer.parseInt(values[2]),  // Prestige value
+                        values[8],                    // AssetName
                         parseCost(values)));          // Cost
             }
         }
