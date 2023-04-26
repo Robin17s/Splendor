@@ -6,11 +6,14 @@ import domain.NobleCard;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+
 import java.util.Objects;
 
 
@@ -99,6 +102,30 @@ public final class BoardScreen extends Pane {
                 gridPane.add(b, column, row);
             }
         }
+    }
+    public void showPlayers() {
+        int numPlayers = ApplicationStart.getInstance().getController().givePlayers().size();
+
+        // Create a VBox layout for the players
+        VBox playersBox = new VBox();
+        playersBox.setAlignment(Pos.CENTER);
+        playersBox.setSpacing(10);
+        playersBox.setPadding(new Insets(10));
+
+        // Add the players to the VBox layout
+        for (int i = 0; i < numPlayers; i++) {
+            String playerName = ApplicationStart.getInstance().getController().givePlayers().get(i).getName();
+            int playerPoints = ApplicationStart.getInstance().getController().givePlayers().get(i).getPrestige();
+            String playerText = String.format("%s - %d prestige points\n%s", playerName, playerPoints, ApplicationStart.getInstance().getController().givePlayers().get(i).getGemsAsString());
+            Font font = new Font(32);
+            Button playerButton = new Button(playerText);
+            playerButton.setFont(font);
+            playerButton.setMaxWidth(Double.MAX_VALUE);
+            playersBox.getChildren().add(playerButton);
+        }
+
+        // Add the VBox to the BoardScreen
+        gridPane.add(playersBox, gridPane.getColumnCount(), 0, 1, 3);
     }
 
 }

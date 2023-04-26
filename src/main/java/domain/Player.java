@@ -117,7 +117,7 @@ public class Player {
     public String getGemsAsString(){
         String output = "";
         for(GemAmount cost : gemStack){
-            if (cost.getAmount() > 0)
+            //if (cost.getAmount() > 0)
                 output += String.format("[%s: %d]\n", cost.getType(), cost.getAmount());
         }
         return output.substring(0, output.length() - (output.isEmpty() ? 0 : 1));

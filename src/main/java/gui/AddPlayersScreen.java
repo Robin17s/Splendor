@@ -120,6 +120,7 @@ public final class AddPlayersScreen extends BorderPane {
             boardScreen.ShowNobles();
             boardScreen.ShowDevelopmentCardPiles();
             boardScreen.ShowDevelopmentCards();
+            boardScreen.showPlayers();
         } catch (IOException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fatal Error");
