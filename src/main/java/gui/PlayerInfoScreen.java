@@ -29,6 +29,9 @@ public class PlayerInfoScreen extends BorderPane {
                         BackgroundPosition.CENTER,
                         BackgroundSize.DEFAULT)
         ));
+        pane.setPadding(new Insets(10));
+        pane.setHgap(25);
+        pane.setVgap(25);
         this.setCenter(pane);
         showPlayers();
         showPlayerDevelopmentCards();
@@ -42,26 +45,7 @@ public class PlayerInfoScreen extends BorderPane {
         if (!domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getDevelopmentCards().equals(0)){
             int row = 0;
             int column = 0;
-        /*for (byte b = 0; b < 3; b++) {
-            for (byte c = 0; c < 4; c++) {
-                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[b][c];
-                Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
-                Button button = new Button();
-                ImageView view = new ImageView(image);
 
-                button.setGraphic(view);
-                button.setOnAction(event -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Card Clicked");
-                    alert.setHeaderText(null);
-                    alert.setContentText(card.showCard());
-
-                    alert.showAndWait();
-                });
-
-                pane.add(button, c + 1, 2 - b);
-            }
-        }*/
             for (DevelopmentCard card : domainController.givePlayers().get(selectedPlayerIndex).getDevelopmentCards()){
                 Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
                 Button button = new Button();
@@ -79,7 +63,7 @@ public class PlayerInfoScreen extends BorderPane {
 
                 pane.add(button, column, row);
                 column++;
-                if (column == 3){
+                if (column == 6){
                     column = 0;
                     row++;
                 }
