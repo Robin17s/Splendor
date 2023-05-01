@@ -78,6 +78,10 @@ public class DomainController{
         splendor.endTurn();
     }
 
+    public boolean canPlayerAffordCard(DevelopmentCard card){
+        return splendor.canPlayerAffordCard(card);
+    }
+
     /**
      *
      * @return the index of the player whos turn it is.
