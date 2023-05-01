@@ -45,7 +45,7 @@ public final class BoardScreen extends Pane {
     public void ShowGems() {
         int rowCounter = 0;
         for (GemAmount gemAmount : ApplicationStart.getInstance().getController().getGemStack()){
-            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+gemAmount.getType()+".JPG")));
+            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+gemAmount.getType()+".PNG")));
             ImageView imgView = new ImageView(img);
             gridPane.add(imgView, 0, rowCounter);
             rowCounter++;
@@ -85,7 +85,7 @@ public final class BoardScreen extends Pane {
                 Button b = new Button();
                 ImageView imgView = new ImageView(img);
                 imgView.setFitHeight(300);
-                imgView.setFitWidth(150);
+                imgView.setFitWidth(200);
                 b.setGraphic(imgView);
                 b.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
