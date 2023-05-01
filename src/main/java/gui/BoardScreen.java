@@ -99,6 +99,7 @@ public final class BoardScreen extends BorderPane {
     }
     public void showPlayers() {
         int numPlayers = ApplicationStart.getInstance().getController().givePlayers().size();
+        PlayerInfoScreen playerInfoScreen = new PlayerInfoScreen();
 
         // Create a VBox layout for the players
         VBox playersBox = new VBox();
@@ -117,7 +118,7 @@ public final class BoardScreen extends BorderPane {
             playerButton.setMaxWidth(Double.MAX_VALUE);
 
             playerButton.setOnAction(event -> {
-                PlayerInfoScreen playerInfoScreen = new PlayerInfoScreen();
+                playerInfoScreen.refresh();
                 ApplicationStart.getInstance().setScene(playerInfoScreen);
             });
 

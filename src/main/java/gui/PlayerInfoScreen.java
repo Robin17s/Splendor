@@ -1,6 +1,7 @@
 package gui;
 
 import domain.DevelopmentCard;
+import domain.DomainController;
 import domain.GemAmount;
 import domain.NobleCard;
 import javafx.geometry.Insets;
@@ -16,7 +17,7 @@ import java.util.Objects;
 
 public class PlayerInfoScreen extends BorderPane {
     private final GridPane pane = new GridPane();
-
+    DomainController domainController = ApplicationStart.getInstance().getController();
     public PlayerInfoScreen() {
         this.setBackground(new Background(
                 new BackgroundImage(
@@ -26,13 +27,62 @@ public class PlayerInfoScreen extends BorderPane {
                         BackgroundPosition.CENTER,
                         BackgroundSize.DEFAULT)
         ));
-
         this.setCenter(pane);
         showPlayers();
+        showPlayerDevelopmentCards();
     }
 
     public void refresh(){
         showPlayers();
+    }
+
+    public void showPlayerDevelopmentCards() {
+        if (!domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getDevelopmentCards().equals(0)){
+            int row = 0;
+            int column = 0;
+        /*for (byte b = 0; b < 3; b++) {
+            for (byte c = 0; c < 4; c++) {
+                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[b][c];
+                Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
+                Button button = new Button();
+                ImageView view = new ImageView(image);
+
+                button.setGraphic(view);
+                button.setOnAction(event -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Card Clicked");
+                    alert.setHeaderText(null);
+                    alert.setContentText(card.showCard());
+
+                    alert.showAndWait();
+                });
+
+                pane.add(button, c + 1, 2 - b);
+            }
+        }*/
+            for (DevelopmentCard card : domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getDevelopmentCards()){
+                Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
+                Button button = new Button();
+                ImageView view = new ImageView(image);
+
+                button.setGraphic(view);
+                button.setOnAction(event -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Card Clicked");
+                    alert.setHeaderText(null);
+                    alert.setContentText(card.showCard());
+
+                    alert.showAndWait();
+                });
+
+                pane.add(button, column, row);
+                column++;
+                if (column == 3){
+                    column = 0;
+                    row++;
+                }
+            }
+        }
     }
 
     public void showPlayers() {
