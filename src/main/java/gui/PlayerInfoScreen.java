@@ -34,18 +34,17 @@ public class PlayerInfoScreen extends BorderPane {
         pane.setVgap(25);
         this.setCenter(pane);
         showPlayers();
-        showPlayerDevelopmentCards();
+        showPlayerCards();
     }
 
     public void refresh(){
         showPlayers();
     }
 
-    public void showPlayerDevelopmentCards() {
+    public void showPlayerCards() {
+        int row = 0;
+        int column = 0;
         if (!domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getDevelopmentCards().equals(0)){
-            int row = 0;
-            int column = 0;
-
             for (DevelopmentCard card : domainController.givePlayers().get(selectedPlayerIndex).getDevelopmentCards()){
                 Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
                 Button button = new Button();
@@ -68,6 +67,24 @@ public class PlayerInfoScreen extends BorderPane {
                     row++;
                 }
             }
+        }
+        if (domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getNobleCard() != null){
+            NobleCard card = domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getNobleCard();
+            Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
+            Button button = new Button();
+            ImageView view = new ImageView(image);
+
+            button.setGraphic(view);
+            button.setOnAction(event -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Card Clicked");
+                alert.setHeaderText(null);
+                alert.setContentText(card.showCard());
+
+                alert.showAndWait();
+            });
+
+            pane.add(button, column, row);
         }
     }
 

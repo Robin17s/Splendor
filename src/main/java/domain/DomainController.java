@@ -50,6 +50,7 @@ public class DomainController{
         for (Player player : splendor.getPlayers()){
             player.addGems(gems);
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            //player.setNobleCard(splendor.getNobleCards().get(0));
         }
         /*for (int i = 0; i<10;i++){
             splendor.getPlayers().get(0).addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][0].getAssetName()));
