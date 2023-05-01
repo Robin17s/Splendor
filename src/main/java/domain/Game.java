@@ -116,11 +116,11 @@ public class Game {
                     .filter(x -> x.getLevel() == lvl)
                     .limit(4)
                     .collect(Collectors.toList());
+            developmentCards.removeAll(cards);
             for(int col = 0; col < 4; col++) {
                 matrix[level][col] = cards.get(0);
                 cards.remove(0);
             }
-            developmentCards.removeAll(cards);
         }
     }
 
