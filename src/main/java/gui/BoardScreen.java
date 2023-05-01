@@ -5,6 +5,7 @@ import domain.GemAmount;
 import domain.NobleCard;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -114,6 +115,11 @@ public final class BoardScreen extends BorderPane {
                     ButtonType buttonTypeCancel = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
 
                     alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+                    if (!ApplicationStart.getInstance().getController().canPlayerAffordCard(card)) {
+                        Node yesButton = alert.getDialogPane().lookupButton(buttonTypeOne);
+                        yesButton.setDisable(true);
+                    }
+
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
                         // if canPlayerAffordCard then takeDevelopmentCard
