@@ -31,17 +31,30 @@ public final class BoardScreen extends BorderPane {
         this.setCenter(pane);
     }
 
+    // en hier dan ewa gem logica okay brent? ja
     public void showGems() {
         VBox box = new VBox(2);
 
         for (GemAmount amount : ApplicationStart.getInstance().getController().getGemStack()) {
             Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + amount.getType().name().toLowerCase() + ".png")));
+            Button button = new Button();
+            button.setBackground(null);
             ImageView view = new ImageView(image);
 
             view.setFitWidth(100);
             view.setFitHeight(100);
             view.setPreserveRatio(true);
 
+            button.setGraphic(view);
+            button.setOnAction(event -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Gem Clicked");
+                alert.setHeaderText(null);
+                alert.setContentText(amount.showGems());
+                alert.showAndWait();
+            });
+
+            box.getChildren().add(button);
             box.getChildren().add(view);
         }
 
