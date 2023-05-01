@@ -148,8 +148,10 @@ public final class BoardScreen extends BorderPane {
             playerButton.setFont(font);
             playerButton.setMaxWidth(Double.MAX_VALUE);
 
+            playerButton.setUserData(i);
+
             playerButton.setOnAction(event -> {
-                PlayerInfoScreen playerInfoScreen = new PlayerInfoScreen();
+                PlayerInfoScreen playerInfoScreen = new PlayerInfoScreen((int)playerButton.getUserData());
                 ApplicationStart.getInstance().setScene(playerInfoScreen);
             });
 
