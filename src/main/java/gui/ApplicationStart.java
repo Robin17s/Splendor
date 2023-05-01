@@ -24,7 +24,7 @@ public class ApplicationStart extends Application {
     }
 
     public void setScene(Pane pane) {
-        Scene scene = new Scene(pane, 1280, 720);
+        Scene scene = new Scene(pane, 1600, 900);
         primary.setScene(scene);
     }
 

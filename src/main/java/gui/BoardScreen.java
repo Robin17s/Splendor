@@ -111,10 +111,15 @@ public final class BoardScreen extends BorderPane {
             String playerName = ApplicationStart.getInstance().getController().givePlayers().get(i).getName();
             int playerPoints = ApplicationStart.getInstance().getController().givePlayers().get(i).getPrestige();
             String playerText = String.format("%s - %d prestige points\n%s", playerName, playerPoints, ApplicationStart.getInstance().getController().givePlayers().get(i).getGemsAsString());
-            Font font = new Font(32);
+            Font font = new Font(16);
             Button playerButton = new Button(playerText);
             playerButton.setFont(font);
             playerButton.setMaxWidth(Double.MAX_VALUE);
+
+            playerButton.setOnAction(event -> {
+                PlayerInfoScreen playerInfoScreen = new PlayerInfoScreen();
+                ApplicationStart.getInstance().setScene(playerInfoScreen);
+            });
 
             if (i == ApplicationStart.getInstance().getController().getCurrentPlayerIndex()) {
                 playerButton.setStyle("-fx-background-color: yellow;");
