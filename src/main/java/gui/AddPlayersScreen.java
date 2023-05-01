@@ -69,7 +69,7 @@ public final class AddPlayersScreen extends BorderPane {
 
         VBox leftPane = new VBox();
         this.playerPane = new ListView<>();
-        Button removePlayerButton = new Button("-");
+        Button removePlayerButton = new Button("Remove player");
 
         removePlayerButton.prefWidthProperty().bind(leftPane.widthProperty().subtract(16));
         removePlayerButton.setOnAction(this::onRemovePlayerButtonClick);
@@ -112,6 +112,10 @@ public final class AddPlayersScreen extends BorderPane {
         }
 
         try {
+            /*ApplicationStart.getInstance().getController().startGame();
+            PlayerInfoScreen playerInfoScreen = new PlayerInfoScreen();
+            ApplicationStart.getInstance().setScene(playerInfoScreen);*/
+
             BoardScreen boardScreen = new BoardScreen();
             ApplicationStart.getInstance().setScene(boardScreen);
             ApplicationStart.getInstance().getController().startGame();
@@ -201,11 +205,13 @@ public final class AddPlayersScreen extends BorderPane {
     private void addPlayerToPane(String username, int year) { playerPane.getItems().add("%s - %d".formatted(username, year)); }
 
     private void onRemovePlayerButtonClick(ActionEvent event) {
-        String selectedItem = playerPane.selectionModelProperty().get().getSelectedItems().get(0);
-        playerPane.getItems().remove(selectedItem);
-        String name = selectedItem.split("-")[0].trim();
-        int year = Integer.parseInt(selectedItem.split("-")[1].trim());
+        if (playerPane.selectionModelProperty().get().getSelectedItems().size() != 0){
+            String selectedItem = playerPane.selectionModelProperty().get().getSelectedItems().get(0);
+            playerPane.getItems().remove(selectedItem);
+            String name = selectedItem.split("-")[0].trim();
+            int year = Integer.parseInt(selectedItem.split("-")[1].trim());
 
-        ApplicationStart.getInstance().getController().removePlayerFromGame(name, year);
+            ApplicationStart.getInstance().getController().removePlayerFromGame(name, year);
+        }
     }
 }
