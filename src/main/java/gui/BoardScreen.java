@@ -7,12 +7,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import java.util.Objects;
+import java.util.Optional;
 
 
 public final class BoardScreen extends BorderPane {
@@ -31,7 +34,7 @@ public final class BoardScreen extends BorderPane {
         this.setCenter(pane);
     }
 
-    // en hier dan ewa gem logica okay brent? ja
+
     public void showGems() {
         VBox box = new VBox(2);
 
@@ -44,6 +47,9 @@ public final class BoardScreen extends BorderPane {
             view.setFitWidth(100);
             view.setFitHeight(100);
             view.setPreserveRatio(true);
+
+            // ik klik op een gem en de gem komt bij de speler terecht
+
 
             button.setGraphic(view);
             button.setOnAction(event -> {
@@ -89,24 +95,37 @@ public final class BoardScreen extends BorderPane {
     }
 
     public void showDevelopmentCards() {
-        for (byte b = 0; b < 3; b++) {
-            for (byte c = 0; c < 4; c++) {
-                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[b][c];
+        for (byte row = 0; row < 3; row++) {
+            for (byte column = 0; column < 4; column++) {
+                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[row][column];
                 Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
                 Button button = new Button();
                 ImageView view = new ImageView(image);
 
                 button.setGraphic(view);
                 button.setOnAction(event -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Card Clicked");
-                    alert.setHeaderText(null);
-                    alert.setContentText(card.showCard());
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Buying development card");
+                    alert.setHeaderText(card.showCard());
+                    alert.setContentText("Do you wish to buy this development card?");
 
-                    alert.showAndWait();
+                    ButtonType buttonTypeOne = new ButtonType("Yes");
+
+                    ButtonType buttonTypeCancel = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                    alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == buttonTypeOne) {
+                        // if canPlayerAffordCard then takeDevelopmentCard
+                        if (ApplicationStart.getInstance().getController().canPlayerAffordCard(card)) {
+                            ApplicationStart.getInstance().getController().takeDevelopmentCard(card);
+                        }
+                    } else {
+                        // alertje toevoegen
+                    }
                 });
 
-                pane.add(button, c + 1, 2 - b);
+                pane.add(button, column + 1, 2 - row);
             }
         }
     }
