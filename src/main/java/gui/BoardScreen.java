@@ -121,6 +121,11 @@ public final class BoardScreen extends Pane {
             Button playerButton = new Button(playerText);
             playerButton.setFont(font);
             playerButton.setMaxWidth(Double.MAX_VALUE);
+
+            if (i == ApplicationStart.getInstance().getController().getCurrentPlayerIndex()) {
+                playerButton.setStyle("-fx-background-color: yellow;");
+            }
+
             playersBox.getChildren().add(playerButton);
         }
 
