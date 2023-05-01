@@ -45,7 +45,7 @@ public final class BoardScreen extends Pane {
     public void ShowGems() {
         int rowCounter = 0;
         for (GemAmount gemAmount : ApplicationStart.getInstance().getController().getGemStack()){
-            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+gemAmount.getType()+".PNG")));
+            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+gemAmount.getType().name().toLowerCase()+".png")));
             ImageView imgView = new ImageView(img);
             gridPane.add(imgView, 0, rowCounter);
             rowCounter++;
@@ -55,7 +55,7 @@ public final class BoardScreen extends Pane {
     public void ShowNobles() {
         int colCounter = 1;
         for (NobleCard noble : ApplicationStart.getInstance().getController().getNobles()){
-            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+noble.getAssetName()+".JPG")));
+            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+noble.getAssetName()+".jpg")));
             ImageView imgView = new ImageView(img);
             gridPane.add(imgView, colCounter, 0);
             colCounter++;
@@ -63,15 +63,15 @@ public final class BoardScreen extends Pane {
     }
 
     public void ShowDevelopmentCardPiles() {
-        Image img1 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/DevLevel3Back.JPG")));
+        Image img1 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel3back.jpg")));
         ImageView imgView1 = new ImageView(img1);
         gridPane.add(imgView1, 1, 1);
 
-        Image img2 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/DevLevel2Back.JPG")));
+        Image img2 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel2back.jpg")));
         ImageView imgView2 = new ImageView(img2);
         gridPane.add(imgView2, 1, 2);
 
-        Image img3 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/DevLevel1Back.JPG")));
+        Image img3 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel1back.jpg")));
         ImageView imgView3 = new ImageView(img3);
         gridPane.add(imgView3, 1, 3);
     }
@@ -81,7 +81,7 @@ public final class BoardScreen extends Pane {
         for (int row = 3;row>=1;row--) {
             for (int column = 2; column < 6; column++) {
                 DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[3-row][column-2];
-                Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+card.getAssetName()+".JPG")));
+                Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+card.getAssetName()+".jpg")));
                 Button b = new Button();
                 ImageView imgView = new ImageView(img);
                 imgView.setFitHeight(300);
