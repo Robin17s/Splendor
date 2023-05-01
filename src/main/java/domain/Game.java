@@ -135,6 +135,12 @@ public class Game {
         }
     }
 
+    public void setPlayerIndexes(){
+        for (int i = 0; i<=3; i++){
+            players.get(i).setIndex(i);
+        }
+    }
+
     private List<? extends Card> readCardsFromFile(String fileName, String cardType) throws IOException {
         //csv info development: [Level, Gem, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]
         //csv info noble: [Filler, Filler, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]

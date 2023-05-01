@@ -27,6 +27,7 @@ public class DomainController{
         splendor.placeCardsOnBoard();
         splendor.sortPlayers();
         splendor.preparePlayerGems();
+        splendor.setPlayerIndexes();
     }
 
     public List<NobleCard> getNobles(){
@@ -48,7 +49,7 @@ public class DomainController{
         gems.add(new GemAmount(Crystal.Ruby, 1));
         for (Player player : splendor.getPlayers()){
             player.addGems(gems);
-            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][0].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
         }
     }
     /**

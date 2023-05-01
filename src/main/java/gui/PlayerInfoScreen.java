@@ -18,7 +18,9 @@ import java.util.Objects;
 public class PlayerInfoScreen extends BorderPane {
     private final GridPane pane = new GridPane();
     DomainController domainController = ApplicationStart.getInstance().getController();
-    public PlayerInfoScreen() {
+    private int selectedPlayerIndex;
+    public PlayerInfoScreen(int selectedPlayerIndex) {
+        this.selectedPlayerIndex = selectedPlayerIndex;
         this.setBackground(new Background(
                 new BackgroundImage(
                         new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/title_screen_felt.jpg"))),
@@ -60,7 +62,7 @@ public class PlayerInfoScreen extends BorderPane {
                 pane.add(button, c + 1, 2 - b);
             }
         }*/
-            for (DevelopmentCard card : domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getDevelopmentCards()){
+            for (DevelopmentCard card : domainController.givePlayers().get(selectedPlayerIndex).getDevelopmentCards()){
                 Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
                 Button button = new Button();
                 ImageView view = new ImageView(image);
