@@ -1,7 +1,6 @@
 package gui;
 
 import domain.Player;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -116,10 +115,10 @@ public final class AddPlayersScreen extends BorderPane {
             BoardScreen boardScreen = new BoardScreen();
             ApplicationStart.getInstance().setScene(boardScreen);
             ApplicationStart.getInstance().getController().startGame();
-            boardScreen.ShowGems();
-            boardScreen.ShowNobles();
-            boardScreen.ShowDevelopmentCardPiles();
-            boardScreen.ShowDevelopmentCards();
+            boardScreen.showGems();
+            boardScreen.showNobles();
+            boardScreen.showDevelopmentCardPiles();
+            boardScreen.showDevelopmentCards();
             boardScreen.showPlayers();
         } catch (IOException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

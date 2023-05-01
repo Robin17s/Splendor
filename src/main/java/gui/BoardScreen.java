@@ -3,23 +3,21 @@ package gui;
 import domain.DevelopmentCard;
 import domain.GemAmount;
 import domain.NobleCard;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import java.util.Objects;
 
 
-public final class BoardScreen extends Pane {
+public final class BoardScreen extends BorderPane {
+    private final GridPane pane = new GridPane();
 
-    private GridPane gridPane;
     public BoardScreen() {
         this.setBackground(new Background(
                 new BackgroundImage(
@@ -30,76 +28,72 @@ public final class BoardScreen extends Pane {
                         BackgroundSize.DEFAULT)
         ));
 
-        gridPane = new GridPane();
-        gridPane.setLayoutX(10);
-        gridPane.setLayoutY(10);
-        gridPane.setPadding(new Insets(10));
-        gridPane.setHgap(10);
-        gridPane.setVgap(15);
-        gridPane.setScaleX(0.5);
-        gridPane.setScaleY(0.5);
-        // Add the grid to the pane
-        this.getChildren().add(gridPane);
+        this.setCenter(pane);
     }
 
-    public void ShowGems() {
-        int rowCounter = 0;
-        for (GemAmount gemAmount : ApplicationStart.getInstance().getController().getGemStack()){
-            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+gemAmount.getType().name().toLowerCase()+".png")));
-            ImageView imgView = new ImageView(img);
-            gridPane.add(imgView, 0, rowCounter);
-            rowCounter++;
+    public void showGems() {
+        VBox box = new VBox(2);
+
+        for (GemAmount amount : ApplicationStart.getInstance().getController().getGemStack()) {
+            Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + amount.getType().name().toLowerCase() + ".png")));
+            ImageView view = new ImageView(image);
+
+            view.setFitWidth(100);
+            view.setFitHeight(100);
+            view.setPreserveRatio(true);
+
+            box.getChildren().add(view);
         }
+
+        this.setLeft(box);
     }
 
-    public void ShowNobles() {
-        int colCounter = 1;
-        for (NobleCard noble : ApplicationStart.getInstance().getController().getNobles()){
-            Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+noble.getAssetName()+".jpg")));
-            ImageView imgView = new ImageView(img);
-            gridPane.add(imgView, colCounter, 0);
-            colCounter++;
+    public void showNobles() {
+        HBox box = new HBox(2);
+
+        for (NobleCard noble : ApplicationStart.getInstance().getController().getNobles()) {
+            Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + noble.getAssetName() + ".jpg")));
+            ImageView view = new ImageView(image);
+            box.getChildren().add(view);
         }
+
+        this.setTop(box);
     }
 
-    public void ShowDevelopmentCardPiles() {
-        Image img1 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel3back.jpg")));
-        ImageView imgView1 = new ImageView(img1);
-        gridPane.add(imgView1, 1, 1);
+    public void showDevelopmentCardPiles() {
+        Image level3Image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel3back.jpg")));
+        ImageView level3View = new ImageView(level3Image);
 
-        Image img2 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel2back.jpg")));
-        ImageView imgView2 = new ImageView(img2);
-        gridPane.add(imgView2, 1, 2);
+        Image level2Image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel2back.jpg")));
+        ImageView level2View = new ImageView(level2Image);
 
-        Image img3 = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel1back.jpg")));
-        ImageView imgView3 = new ImageView(img3);
-        gridPane.add(imgView3, 1, 3);
+        Image level1Image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel1back.jpg")));
+        ImageView level1View = new ImageView(level1Image);
+
+        pane.add(level3View, 0, 0);
+        pane.add(level2View, 0, 1);
+        pane.add(level1View, 0, 2);
     }
 
-    public void ShowDevelopmentCards() {
+    public void showDevelopmentCards() {
+        for (byte b = 0; b < 3; b++) {
+            for (byte c = 0; c < 4; c++) {
+                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[b][c];
+                Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
+                Button button = new Button();
+                ImageView view = new ImageView(image);
 
-        for (int row = 3;row>=1;row--) {
-            for (int column = 2; column < 6; column++) {
-                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[3-row][column-2];
-                Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/"+card.getAssetName()+".jpg")));
-                Button b = new Button();
-                ImageView imgView = new ImageView(img);
-                imgView.setFitHeight(300);
-                imgView.setFitWidth(200);
-                b.setGraphic(imgView);
-                b.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Card Clicked");
-                        alert.setHeaderText(null);
-                        alert.setContentText(card.showCard());
+                button.setGraphic(view);
+                button.setOnAction(event -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Card Clicked");
+                    alert.setHeaderText(null);
+                    alert.setContentText(card.showCard());
 
-                        alert.showAndWait();
-                        //controller.takeDevelopmentCard(card);
-                    }
+                    alert.showAndWait();
                 });
-                gridPane.add(b, column, row);
+
+                pane.add(button, c + 1, 2 - b);
             }
         }
     }
@@ -130,7 +124,7 @@ public final class BoardScreen extends Pane {
         }
 
         // Add the VBox to the BoardScreen
-        gridPane.add(playersBox, gridPane.getColumnCount(), 0, 1, 3);
+        this.setRight(playersBox);
     }
 
 }
