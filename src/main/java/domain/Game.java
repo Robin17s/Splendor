@@ -137,7 +137,7 @@ public class Game {
     }
 
     public void setPlayerIndexes(){
-        for (int i = 0; i<=3; i++){
+        for (int i = 0; i<=players.size() - 1; i++){
             players.get(i).setIndex(i);
         }
     }

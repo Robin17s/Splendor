@@ -92,10 +92,10 @@ public final class AddPlayersScreen extends BorderPane {
         addPlayerToPane("thomas", 1987);
         ApplicationStart.getInstance().getController().playerLogOn("brent", 2005);
         addPlayerToPane("brent", 2005);
-        ApplicationStart.getInstance().getController().playerLogOn("robin", 2000);
+        /*ApplicationStart.getInstance().getController().playerLogOn("robin", 2000);
         addPlayerToPane("robin", 2000);
         ApplicationStart.getInstance().getController().playerLogOn("friso", 2004);
-        addPlayerToPane("friso", 2004);
+        addPlayerToPane("friso", 2004);*/
     }
 
     private void onBackButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new StartScreen()); }
