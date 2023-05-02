@@ -21,6 +21,8 @@ public class Game {
     private List<GemAmount> gemStack;
     private DevelopmentCard[][] matrix;
     private int currentPlayerIndex;
+    private final int MIN_PLAYERS = 2;
+    private final int MAX_PLAYERS = 4;
 
     public Game() {
         players = new ArrayList<>();
@@ -51,6 +53,12 @@ public class Game {
 
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
+    }
+    public int getMIN_PLAYERS(){
+        return MIN_PLAYERS;
+    }
+    public int getMAX_PLAYERS(){
+        return MAX_PLAYERS;
     }
 
     //endregion
@@ -261,6 +269,20 @@ public class Game {
 
     private int getIndexOfGem(GemAmount gem){
         return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().getAsInt();
+    }
+
+
+    public boolean canTakeTwoGems(GemAmount gem){
+        return compareGemValue(gem, 4);
+    }
+
+    public boolean canTakeOneGem(GemAmount gem){
+        return compareGemValue(gem, 1);
+    }
+
+    private boolean compareGemValue(GemAmount gem, int value){
+        GemAmount temp = gemStack.stream().filter(x -> x.getType() == gem.getType()).toList().get(0);
+        return temp.getAmount() >= value ;
     }
 
     public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth); }
