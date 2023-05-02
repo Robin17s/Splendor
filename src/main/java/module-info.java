@@ -3,6 +3,7 @@ module splendor {
     exports domain;
     exports gui;
     exports main;
+    exports persistence;
 
     requires javafx.base;
     requires javafx.graphics;

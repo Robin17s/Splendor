@@ -1,4 +1,6 @@
-package domain;
+package persistence;
+
+import domain.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
