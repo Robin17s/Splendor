@@ -35,6 +35,14 @@ public final class BoardScreen extends BorderPane {
         this.setCenter(pane);
     }
 
+    public void refreshScreen(){
+        showGems();
+        showPlayers();
+        showNobles();
+        showDevelopmentCardPiles();
+        showDevelopmentCards();
+    }
+
 
     public void showGems() {
         VBox box = new VBox(2);
@@ -125,6 +133,7 @@ public final class BoardScreen extends BorderPane {
                         // if canPlayerAffordCard then takeDevelopmentCard
                         if (ApplicationStart.getInstance().getController().canPlayerAffordCard(card)) {
                             ApplicationStart.getInstance().getController().takeDevelopmentCard(card);
+                            refreshScreen();
                         }
                     } else {
                         // alertje toevoegen
