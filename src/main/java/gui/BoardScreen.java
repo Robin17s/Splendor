@@ -156,18 +156,24 @@ public final class BoardScreen extends BorderPane {
                     ButtonType buttonTypeCancel = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
 
                     alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
-                    if (!ApplicationStart.getInstance().getController().canPlayerAffordCard(card)) {
+                    /*if (!ApplicationStart.getInstance().getController().canPlayerAffordCard(card)) {
                         Node yesButton = alert.getDialogPane().lookupButton(buttonTypeOne);
                         yesButton.setDisable(true);
-                    }
+                    }*/
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
-                        // if canPlayerAffordCard then takeDevelopmentCard
+                        /*// if canPlayerAffordCard then takeDevelopmentCard
                         if (ApplicationStart.getInstance().getController().canPlayerAffordCard(card)) {
                             ApplicationStart.getInstance().getController().takeDevelopmentCard(card);
                             refreshScreen();
-                        }
+                        }*/
+                        String actionResult = ApplicationStart.getInstance().getController().takeDevelopmentCard(card);
+                        Alert buyAlert = new Alert(Alert.AlertType.INFORMATION);
+                        buyAlert.setTitle("Action");
+                        buyAlert.setHeaderText(null);
+                        buyAlert.setContentText(actionResult);
+                        buyAlert.showAndWait();
                     } else {
                         // alertje toevoegen
                     }

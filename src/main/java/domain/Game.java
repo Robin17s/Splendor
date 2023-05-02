@@ -233,20 +233,26 @@ public class Game {
         players.get(currentPlayerIndex).addGems(gemList);
     }
 
-    public void takeDevelopmentCard(DevelopmentCard card){
-        int index = 0;
-        for (int i = 0; i<4; i++){
-            if (matrix[card.getLevel()-1][i] == card){
-                index = i;
-                break;
+    public boolean takeDevelopmentCard(DevelopmentCard card, String[] msg){
+        if (canPlayerAffordCard(card)){
+            int index = 0;
+            for (int i = 0; i<4; i++){
+                if (matrix[card.getLevel()-1][i] == card){
+                    index = i;
+                    break;
+                }
             }
+            matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
+            developmentCards.remove(matrix[card.getLevel()-1][index]);
+            players.get(currentPlayerIndex).addDevelopmentCard(card);
+            msg[0] = "Card bought successfully!";
+            return true;
         }
-        matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
-        developmentCards.remove(matrix[card.getLevel()-1][index]);
-        players.get(currentPlayerIndex).addDevelopmentCard(card);
+        msg[0] = "Cannot afford card!";
+        return false;
     }
 
-    public boolean canPlayerAffordCard(DevelopmentCard card){
+    private boolean canPlayerAffordCard(DevelopmentCard card){
         for (GemAmount cost : card.getPrice()) {
             boolean hasGem = false;
             for (GemAmount temp : players.get(currentPlayerIndex).getGems()) {

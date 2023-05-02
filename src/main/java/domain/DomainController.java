@@ -78,13 +78,13 @@ public class DomainController{
      *
      * @param card the development card the player wants to take.
      */
-    public void takeDevelopmentCard(DevelopmentCard card){
-        splendor.takeDevelopmentCard(card);
-        splendor.endTurn();
-    }
-
-    public boolean canPlayerAffordCard(DevelopmentCard card){
-        return splendor.canPlayerAffordCard(card);
+    public String takeDevelopmentCard(DevelopmentCard card){
+        String[] msg = { "placeholder" };
+        if (splendor.takeDevelopmentCard(card, msg)){
+            splendor.endTurn();
+            return msg[0];
+        }
+        return msg[0];
     }
 
     /**
