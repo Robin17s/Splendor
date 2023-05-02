@@ -118,6 +118,17 @@ public class PlayerInfoScreen extends BorderPane {
             playersBox.getChildren().add(playerButton);
         }
 
+        // Player box can take up to 20% of the available screen width, and 90% of its height
+        playersBox.  minWidthProperty().bind(this. widthProperty().multiply(0.20));
+        playersBox. prefWidthProperty().bind(this. widthProperty().multiply(0.20));
+        playersBox.  maxWidthProperty().bind(this. widthProperty().multiply(0.20));
+        playersBox. minHeightProperty().bind(this.heightProperty().multiply(0.90));
+        playersBox.prefHeightProperty().bind(this.heightProperty().multiply(0.90));
+        playersBox. maxHeightProperty().bind(this.heightProperty().multiply(0.90));
+
+        playersBox.setTranslateX(-65);
+        playersBox.setTranslateY(145);
+
         // Add the VBox to the BoardScreen
         this.setRight(playersBox);
     }
