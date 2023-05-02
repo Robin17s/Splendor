@@ -94,4 +94,10 @@ public class DomainController{
     public int getCurrentPlayerIndex(){
         return splendor.getCurrentPlayerIndex();
     }
+    public boolean canTakeOneGem(GemAmount gem){
+        return splendor.canTakeOneGem(gem);
+    }
+    public boolean canTakeTwoGems(GemAmount gem){
+        return splendor.canTakeTwoGems(gem);
+    }
 }

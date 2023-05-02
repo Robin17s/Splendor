@@ -21,8 +21,8 @@ public class Game {
     private List<GemAmount> gemStack;
     private DevelopmentCard[][] matrix;
     private int currentPlayerIndex;
-    private final int MIN_PLAYERS = 2;
-    private final int MAX_PLAYERS = 4;
+    public static final int MIN_PLAYERS = 2;
+    public static final int MAX_PLAYERS = 4;
 
     public Game() {
         players = new ArrayList<>();
@@ -54,13 +54,6 @@ public class Game {
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
-    public int getMIN_PLAYERS(){
-        return MIN_PLAYERS;
-    }
-    public int getMAX_PLAYERS(){
-        return MAX_PLAYERS;
-    }
-
     //endregion
 
     //region [Game preparation methods]
