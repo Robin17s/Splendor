@@ -32,6 +32,20 @@ public final class BoardScreen extends BorderPane {
                         BackgroundSize.DEFAULT)
         ));
 
+        // Middle screen can take up to 75% of the available screen width, and 85% of its height
+        pane.  minWidthProperty().bind(this. widthProperty().multiply(0.75));
+        pane. prefWidthProperty().bind(this. widthProperty().multiply(0.75));
+        pane.  maxWidthProperty().bind(this. widthProperty().multiply(0.75));
+        pane. minHeightProperty().bind(this.heightProperty().multiply(0.85));
+        pane.prefHeightProperty().bind(this.heightProperty().multiply(0.85));
+        pane. maxHeightProperty().bind(this.heightProperty().multiply(0.85));
+
+        pane.setScaleX(0.75);
+        pane.setScaleY(0.75);
+        pane.setScaleShape(true);
+        pane.setTranslateX(-100);
+        pane.setTranslateY(-100);
+
         this.setCenter(pane);
     }
 
@@ -73,6 +87,14 @@ public final class BoardScreen extends BorderPane {
             box.getChildren().add(view);
         }
 
+        // Gem box can take up to 10% of the available screen width, and 100% of its height
+        box.  minWidthProperty().bind(this. widthProperty().multiply(0.1));
+        box. prefWidthProperty().bind(this. widthProperty().multiply(0.1));
+        box.  maxWidthProperty().bind(this. widthProperty().multiply(0.1));
+        box. minHeightProperty().bind(this.heightProperty());
+        box.prefHeightProperty().bind(this.heightProperty());
+        box. maxHeightProperty().bind(this.heightProperty());
+
         this.setLeft(box);
     }
 
@@ -84,6 +106,17 @@ public final class BoardScreen extends BorderPane {
             ImageView view = new ImageView(image);
             box.getChildren().add(view);
         }
+
+        // Noble box can take up to 90% of the available screen width, and 15% of its height
+        box.  minWidthProperty().bind(this. widthProperty().multiply(0.90));
+        box. prefWidthProperty().bind(this. widthProperty().multiply(0.90));
+        box.  maxWidthProperty().bind(this. widthProperty().multiply(0.90));
+        box. minHeightProperty().bind(this.heightProperty().multiply(0.15));
+        box.prefHeightProperty().bind(this.heightProperty().multiply(0.15));
+        box. maxHeightProperty().bind(this.heightProperty().multiply(0.15));
+
+        box.setTranslateX(250);
+        box.translateXProperty().bind(this.widthProperty().multiply(0.25).divide(2));
 
         this.setTop(box);
     }
@@ -176,6 +209,16 @@ public final class BoardScreen extends BorderPane {
 
             playersBox.getChildren().add(playerButton);
         }
+
+        // Player box can take up to 20% of the available screen width, and 90% of its height
+        playersBox.  minWidthProperty().bind(this. widthProperty().multiply(0.20));
+        playersBox. prefWidthProperty().bind(this. widthProperty().multiply(0.20));
+        playersBox.  maxWidthProperty().bind(this. widthProperty().multiply(0.20));
+        playersBox. minHeightProperty().bind(this.heightProperty().multiply(0.90));
+        playersBox.prefHeightProperty().bind(this.heightProperty().multiply(0.90));
+        playersBox. maxHeightProperty().bind(this.heightProperty().multiply(0.90));
+
+        playersBox.setTranslateX(-150);
 
         // Add the VBox to the BoardScreen
         this.setRight(playersBox);
