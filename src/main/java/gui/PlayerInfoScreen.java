@@ -4,6 +4,7 @@ import domain.DevelopmentCard;
 import domain.DomainController;
 import domain.GemAmount;
 import domain.NobleCard;
+import domain.i18n.I18n;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -53,7 +54,7 @@ public class PlayerInfoScreen extends BorderPane {
                 button.setGraphic(view);
                 button.setOnAction(event -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Card Clicked");
+                    alert.setTitle(I18n.translate("playerinfoscreen.playercards.clicked.title"));
                     alert.setHeaderText(null);
                     alert.setContentText(card.showCard());
 
@@ -77,7 +78,7 @@ public class PlayerInfoScreen extends BorderPane {
             button.setGraphic(view);
             button.setOnAction(event -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Card Clicked");
+                alert.setTitle(I18n.translate("playerinfoscreen.playercards.clicked.title"));
                 alert.setHeaderText(null);
                 alert.setContentText(card.showCard());
 
@@ -101,7 +102,7 @@ public class PlayerInfoScreen extends BorderPane {
         for (int i = 0; i < numPlayers; i++) {
             String playerName = ApplicationStart.getInstance().getController().givePlayers().get(i).getName();
             int playerPoints = ApplicationStart.getInstance().getController().givePlayers().get(i).getPrestige();
-            String playerText = String.format("%s - %d prestige points\n%s", playerName, playerPoints, ApplicationStart.getInstance().getController().givePlayers().get(i).getGemsAsString());
+            String playerText = I18n.translate("boardscreen.players.text", playerName, String.valueOf(playerPoints), ApplicationStart.getInstance().getController().givePlayers().get(i).getGemsAsString());
             Font font = new Font(16);
             Button playerButton = new Button(playerText);
             playerButton.setFont(font);

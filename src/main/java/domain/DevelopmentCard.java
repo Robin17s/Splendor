@@ -1,5 +1,7 @@
 package domain;
 
+import domain.i18n.I18n;
+
 import java.util.List;
 
 public class DevelopmentCard extends Card {
@@ -14,7 +16,7 @@ public class DevelopmentCard extends Card {
         this.level = level;
     }
     public String showCard(){
-        return String.format("[Level: %s] [Bonus gem: %s] [Prestige: %s] [COST: %s]", level, bonus, getPrestige(), makeCostString());
+        return I18n.translate("developmentcard.showcard", String.valueOf(level), String.valueOf(bonus), String.valueOf(getPrestige()), makeCostString());
     }
 
     private String makeCostString(){

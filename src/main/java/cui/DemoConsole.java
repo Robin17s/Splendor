@@ -1,6 +1,7 @@
 package cui;
 
 import domain.*;
+import domain.i18n.I18n;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -8,13 +9,14 @@ import java.util.Scanner;
 
 public class DemoConsole {
     public static void main(String[] args) throws IOException {
+        I18n.loadTranslationFile("en_US");
         DemoConsole app = new DemoConsole();
         app.start();
     }
     public void start() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
-        ask("Do you want to start a game?[Y/N]: ");
+        ask(I18n.translate("console.start.start_game"));
 
         // start gathering info
         if (scanner.next().equalsIgnoreCase("Y")){
@@ -30,7 +32,7 @@ public class DemoConsole {
 
                 // if the game has 2 or more players, ask to add another player
                 if (domainController.givePlayers().size() >= 2)
-                    ask("Do you want to add another player?[Y/N]: ");
+                    ask(I18n.translate("console.start.add_other"));
 
                 // if no additional players need to be added, break out of the loop.
                 // The check if 2 or more players are already added is necessary.
@@ -44,29 +46,29 @@ public class DemoConsole {
             //domainController.givePlayersIndex();
 
             // print players
-            System.out.println("\nGame created with the following players:");
+            System.out.println(I18n.translate("console.start.created.players"));
             printPlayers(domainController);
 
             // print table
-            System.out.println("\nGame created with the following development cards on table:");
+            System.out.println(I18n.translate("console.start.created.developmentcards"));
             printDevelopmentCards(domainController);
 
             // print nobles
-            System.out.println("\nGame created with the following noble cards on table:");
+            System.out.println(I18n.translate("console.start.created.nobles"));
             printNobles(domainController);
 
             // print gems
-            System.out.println("\nGame created with the following gems on table:");
+            System.out.println(I18n.translate("console.start.created.gems"));
             printAvailableGems(domainController);
 
             // print starting player (first player in the list)
-            System.out.print("\nStarting player: ");
+            System.out.println(I18n.translate("console.start.starter"));
             System.out.println(domainController.givePlayers().get(0).getName());
 
             domainController.addItemsToPlayers();
 
             // print all players with the items they have
-            System.out.print("\nPlayers and the items they have: ");
+            System.out.println(I18n.translate("console.start.scenario"));
             printPlayersWithCardsAndGems(domainController);
         }
     }
@@ -78,7 +80,7 @@ public class DemoConsole {
         int cardCount = 1;
         for (int level = 0; level < 3; level++){
             for (int card = 0; card < 4; card++){
-                System.out.println(String.format("Card %d: %s", cardCount, domainController.getDevelopmentCardsOntable()[level][card].showCard()));
+                System.out.println(I18n.translate("console.devcards.print", String.valueOf(cardCount), domainController.getDevelopmentCardsOntable()[level][card].showCard()));
                 cardCount++;
             }
         }
@@ -92,13 +94,13 @@ public class DemoConsole {
 
     private void printAvailableGems(DomainController domainController){
         for (GemAmount gem : domainController.getGemStack()) {
-            System.out.printf("%s %d%n", gem.getType(), gem.getAmount());
+            System.out.println(I18n.translate("console.gems.print", gem.getType().toString(), String.valueOf(gem.getAmount())));
         }
     }
 
     private void printPlayers(DomainController domainController){
         for (Player player : domainController.givePlayers()) {
-            System.out.printf("Name: %s, year of birth: %d, Index: %d\n", player.getName(), player.getDateOfBirth(), player.getIndex());
+            System.out.println(I18n.translate("console.players.print", player.getName(), String.valueOf(player.getDateOfBirth()), String.valueOf(player.getIndex())));
         }
     }
 
@@ -107,13 +109,13 @@ public class DemoConsole {
         int birthYear;
         while (true) {
             try {
-                ask("Enter the player's name: ");
+                ask(I18n.translate("console.addplayer.name"));
                 playerName = scanner.next();
-                ask("Enter the player's year of birth: ");
+                ask(I18n.translate("console.addplayer.birth"));
                 birthYear = scanner.nextInt();
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please try again.");
+                System.out.println(I18n.translate("console.addplayer.exception"));
                 scanner.next(); // consume the invalid input
             }
         }
@@ -122,7 +124,7 @@ public class DemoConsole {
 
     private void printPlayersWithCardsAndGems(DomainController domainController){
         for (Player player : domainController.givePlayers()){
-            System.out.println(String.format("\nPlayer %s has the following items:\n%s\n%s", player.getName(), player.getDevelopmentCardsAsString(), player.getGemsAsString()));
+            System.out.println(I18n.translate("console.printall", player.getName(), player.getDevelopmentCardsAsString(), player.getGemsAsString()));
         }
     }
 }

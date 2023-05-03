@@ -1,5 +1,6 @@
 package gui;
 
+import domain.i18n.I18n;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -41,9 +42,9 @@ public final class StartScreen extends Pane {
         box.setBackground(new Background(new BackgroundFill(new Color(0.9, 0.9, 0.9, 0.5), CornerRadii.EMPTY, new Insets(128, 256, 128, 256))));
 
         Label titleLabel = new Label("Splendor");
-        Label versionLabel = new Label("G53 still somewhat Half-baked Edition");
-        Button playButton = new Button("Play");
-        Button quitButton = new Button("Quit");
+        Label versionLabel = new Label(I18n.translate("startscreen.version"));
+        Button playButton = new Button(I18n.translate("startscreen.play"));
+        Button quitButton = new Button(I18n.translate("startscreen.quit"));
 
         titleLabel.setFont(Font.font(32));
         titleLabel.setStyle("-fx-font-weight: bold");

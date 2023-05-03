@@ -3,6 +3,7 @@ package gui;
 import domain.DevelopmentCard;
 import domain.GemAmount;
 import domain.NobleCard;
+import domain.i18n.I18n;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -79,7 +80,7 @@ public final class BoardScreen extends BorderPane {
             button.setGraphic(view);
             button.setOnAction(event -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Gem Clicked");
+                alert.setTitle(I18n.translate("boardscreen.gems.title"));
                 alert.setHeaderText(null);
                 alert.setContentText(amount.showGems());
                 alert.showAndWait();
@@ -149,13 +150,13 @@ public final class BoardScreen extends BorderPane {
                 button.setGraphic(view);
                 button.setOnAction(event -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Buying development card");
+                    alert.setTitle(I18n.translate("boardscreen.developmentcards.buy.title"));
                     alert.setHeaderText(card.showCard());
-                    alert.setContentText("Do you wish to buy this development card?");
+                    alert.setContentText(I18n.translate("boardscreen.developmentcards.buy.explanation"));
 
-                    ButtonType buttonTypeOne = new ButtonType("Yes");
+                    ButtonType buttonTypeOne = new ButtonType(I18n.translate("message.yes"));
 
-                    ButtonType buttonTypeCancel = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    ButtonType buttonTypeCancel = new ButtonType(I18n.translate("message.no"), ButtonBar.ButtonData.CANCEL_CLOSE);
 
                     alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
                     /*if (!ApplicationStart.getInstance().getController().canPlayerAffordCard(card)) {
@@ -236,7 +237,7 @@ public final class BoardScreen extends BorderPane {
         for (int i = 0; i < numPlayers; i++) {
             String playerName = ApplicationStart.getInstance().getController().givePlayers().get(i).getName();
             int playerPoints = ApplicationStart.getInstance().getController().givePlayers().get(i).getPrestige();
-            String playerText = String.format("%s - %d prestige points\n%s", playerName, playerPoints, ApplicationStart.getInstance().getController().givePlayers().get(i).getGemsAsString());
+            String playerText = I18n.translate("boardscreen.players.text", playerName, String.valueOf(playerPoints), ApplicationStart.getInstance().getController().givePlayers().get(i).getGemsAsString());
             Font font = new Font(16);
             Button playerButton = new Button(playerText);
             playerButton.setFont(font);
