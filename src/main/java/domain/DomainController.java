@@ -50,9 +50,9 @@ public class DomainController{
         for (Player player : splendor.getPlayers()){
             player.addGems(gems);
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+           /* player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
-            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Onyx, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Onyx, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Onyx, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
@@ -68,7 +68,7 @@ public class DomainController{
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
-            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));*/
 
 
             //player.setNobleCard(splendor.getNobleCards().get(0));

@@ -243,6 +243,20 @@ public class Game {
                     break;
                 }
             }
+            List<GemAmount> temp = players.get(currentPlayerIndex).getGems();
+            for (GemAmount cost : card.getPrice()){
+                for (GemAmount inv : players.get(currentPlayerIndex).getBonusGems()){
+                    if (cost.getType() == inv.getType()){
+                        if (cost.getAmount() > inv.getAmount() && cost.getAmount() != 0){
+                            temp.stream().filter(x -> x.getType() == cost.getType()).findFirst().ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex).getTotalGems().stream().filter(c -> c.getType() == inv.getType()).collect(Collectors.toList()).get(0).getAmount() - cost.getAmount())));
+                        }
+                        else{
+                            temp.stream().filter(x -> x.getType() == cost.getType()).findFirst().ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex).getGems().stream().filter(c -> c.getType() == cost.getType()).collect(Collectors.toList()).get(0).getAmount())));
+                        }
+                    }
+                }
+            }
+            players.get(currentPlayerIndex).setGemStack(temp);
             matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
             developmentCards.remove(matrix[card.getLevel()-1][index]);
             players.get(currentPlayerIndex).addDevelopmentCard(card);
@@ -251,6 +265,28 @@ public class Game {
         }
         msg[0] = "Cannot afford card!";
         return false;
+    }
+
+    private List<GemAmount> makeGemList(){
+        List<GemAmount> temp = new ArrayList<>();
+        temp.addAll(Arrays.asList(new GemAmount(Crystal.Diamond, 0),
+                new GemAmount(Crystal.Onyx, 0),
+                new GemAmount(Crystal.Emerald, 0),
+                new GemAmount(Crystal.Sapphire, 0),
+                new GemAmount(Crystal.Ruby, 0)));
+        return temp;
+    }
+
+    private List<GemAmount> subtractTwoGemAmountLists(List<GemAmount> list1, List<GemAmount> list2){
+        List<GemAmount> output = new ArrayList<>();
+        for (GemAmount gem1 : list1){
+            for (GemAmount gem2 : list2){
+                if (gem1.getType() == gem2.getType()){
+                    output.add(new GemAmount(gem1.getType(), gem1.getAmount() - gem2.getAmount()));
+                }
+            }
+        }
+        return output;
     }
 
     private boolean canPlayerAffordCard(DevelopmentCard card){

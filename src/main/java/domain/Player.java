@@ -25,6 +25,9 @@ public class Player {
     public String getName() {
         return name;
     }
+    public void setGemStack(List<GemAmount> input){
+        this.gemStack = input;
+    }
 
     public int getDateOfBirth() {
         return dateOfBirth;
@@ -115,7 +118,7 @@ public class Player {
     public List<GemAmount> getGems() {
     	return gemStack;
     }
-    private List<GemAmount> getTotalGems(){
+    public List<GemAmount> getTotalGems(){
         List<GemAmount> temp = gemStack.stream().collect(Collectors.toList());
         List<GemAmount> bonusGems = getBonusGems();
         for (GemAmount gem : bonusGems){
