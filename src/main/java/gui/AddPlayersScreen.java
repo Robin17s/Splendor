@@ -1,6 +1,7 @@
 package gui;
 
 import domain.Player;
+import domain.i18n.I18n;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -35,13 +36,13 @@ public final class AddPlayersScreen extends BorderPane {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        Button backButton = new Button("< Back");
+        Button backButton = new Button(I18n.translate("addplayersscreen.back"));
         backButton.setOnAction(this::onBackButtonClick);
 
         Region buttonSpacer = new Region();
         buttonSpacer.setPadding(new Insets(4));
 
-        Button playButton = new Button("Play >");
+        Button playButton = new Button(I18n.translate("addplayerssscreen.play"));
         playButton.setOnAction(this::onPlayButtonClick);
 
         bottomBox.setPadding(new Insets(8));
@@ -50,26 +51,26 @@ public final class AddPlayersScreen extends BorderPane {
         VBox center = new VBox();
         center.setPadding(new Insets(16));
 
-        Label usernameLabel = new Label("Username");
+        Label usernameLabel = new Label(I18n.translate("addplayersscreen.username"));
         this.usernameField = new TextField();
 
         Region space = new Region();
         space.setPadding(new Insets(4));
 
-        Label yobLabel = new Label("Year of Birth");
+        Label yobLabel = new Label(I18n.translate("addplayersscreen.yob"));
         this.yobField = new TextField();
 
         Region space2 = new Region();
         space2.setPadding(new Insets(4));
 
-        Button addPlayerButton = new Button("Add");
+        Button addPlayerButton = new Button(I18n.translate("addplayersscreen.add"));
 
         addPlayerButton.setOnAction(this::onAddPlayerButtonClick);
         center.getChildren().addAll(usernameLabel, usernameField, space, yobLabel, yobField, space2, addPlayerButton);
 
         VBox leftPane = new VBox();
         this.playerPane = new ListView<>();
-        Button removePlayerButton = new Button("Remove player");
+        Button removePlayerButton = new Button(I18n.translate("addplayersscreen.removeplayer"));
 
         removePlayerButton.prefWidthProperty().bind(leftPane.widthProperty().subtract(16));
         removePlayerButton.setOnAction(this::onRemovePlayerButtonClick);
@@ -103,9 +104,9 @@ public final class AddPlayersScreen extends BorderPane {
     private void onPlayButtonClick(ActionEvent event) {
         if (ApplicationStart.getInstance().getController().givePlayers().size() < 2) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Splendor | Not Enough Players!");
-            alert.setContentText("There aren't enough players to start the game. Please add more players, and try again.");
+            alert.setTitle(I18n.translate("addplayersscreen.playbuttonclick.warning"));
+            alert.setHeaderText(I18n.translate("addplayersscreen.playbuttonclick.notenoughplayers"));
+            alert.setContentText(I18n.translate("addplayersscreen.playbuttonclick.notenoughplayers.explanation"));
 
             alert.showAndWait();
             return;
@@ -127,9 +128,9 @@ public final class AddPlayersScreen extends BorderPane {
             boardScreen.showPlayers();
         } catch (IOException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Fatal Error");
-            alert.setHeaderText("Splendor | Failed to start game!");
-            alert.setContentText("Something went wrong whilst trying to start the game. Splendor will now exit.");
+            alert.setTitle(I18n.translate("addplayersscreen.playbuttonclick.fatalerror"));
+            alert.setHeaderText(I18n.translate("addplayersscreen.playbuttonclick.failedtostart"));
+            alert.setContentText(I18n.translate("addplayersscreen.playbuttonclick.failedtostart.explanation"));
 
             alert.showAndWait();
             Platform.exit();
@@ -150,9 +151,9 @@ public final class AddPlayersScreen extends BorderPane {
 
         if (username == null || yob == null) {
             alert.setAlertType(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Missing arguments");
-            alert.setContentText("You haven't filled in the required amount of arguments.");
+            alert.setTitle(I18n.translate("addplayersscreen.playerbuttonclick.error"));
+            alert.setHeaderText(I18n.translate("addplayersscreen.playerbuttonclick.missingarguments"));
+            alert.setContentText(I18n.translate("addplayersscreen.playerbuttonclick.missingarguments.arguments"));
             alert.showAndWait();
 
             return;
@@ -164,9 +165,9 @@ public final class AddPlayersScreen extends BorderPane {
             year = Integer.parseInt(yob);
         } catch (NumberFormatException exception) {
             alert.setAlertType(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("NaN");
-            alert.setContentText("The year you entered is not a number.");
+            alert.setTitle(I18n.translate("addplayersscreen.playerbuttonclick.error"));
+            alert.setHeaderText(I18n.translate("addplayersscreen.playerbuttonclick.nan"));
+            alert.setContentText(I18n.translate("addplayersscreen.playerbuttonclick.nan.explanation"));
             alert.showAndWait();
 
             return;
@@ -176,23 +177,24 @@ public final class AddPlayersScreen extends BorderPane {
 
         alert.setHeaderText(result);
         alert.setAlertType(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
+        alert.setTitle(I18n.translate("addplayersscreen.playerbuttonclick.warning"));
 
         boolean proceed = false;
 
         switch (result) {
-            case "Player already added!" -> alert.setContentText("The player is already added.");
-            case "Player not found!" -> alert.setContentText("The requested player has not been found.");
+            case "Player already added!" -> alert.setContentText(I18n.translate("addplayersscreen.playerbuttonclick.alreadyadded"));
+            case "Player not found!" -> alert.setContentText(I18n.translate("addplayersscreen.playerbuttonclick.notfound"));
             case "Player added successfully!" -> {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setContentText("The player has been successfully added to the list.");
+                //alert.setTitle("Success");
+                alert.setTitle(I18n.translate("addplayersscreen.playerbuttonclick.success"));
+                alert.setContentText(I18n.translate("addplayersscreen.playerbuttonclick.success.message"));
                 proceed = true;
             }
             default -> {
                 alert.setAlertType(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Unable to parse the information returned.");
+                alert.setTitle(I18n.translate("addplayersscreen.playerbuttonclick.error"));
+                alert.setContentText(I18n.translate("addplayersscreen.playerbuttonclick.error.parse"));
             }
         }
 

@@ -25,6 +25,9 @@ public class Player {
     public String getName() {
         return name;
     }
+    public void setGemStack(List<GemAmount> input){
+        this.gemStack = input;
+    }
 
     public int getDateOfBirth() {
         return dateOfBirth;
@@ -89,9 +92,6 @@ public class Player {
     
     public void addGems(List<GemAmount> gems) {
     	switch (gems.size()){
-            case 0 -> {
-                break;
-            }
             case 1 -> {
                 gemStack
                         .stream()
@@ -105,7 +105,7 @@ public class Player {
                             .stream()
                             .filter(gem -> gem.getType() == amount.getType())
                             .findFirst()
-                            .ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 1)));
+                            .ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 10)));
                 }
             }
         }
@@ -118,7 +118,7 @@ public class Player {
     public List<GemAmount> getGems() {
     	return gemStack;
     }
-    private List<GemAmount> getTotalGems(){
+    public List<GemAmount> getTotalGems(){
         List<GemAmount> temp = gemStack.stream().collect(Collectors.toList());
         List<GemAmount> bonusGems = getBonusGems();
         for (GemAmount gem : bonusGems){

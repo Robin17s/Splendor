@@ -21,4 +21,7 @@ public class NobleCard extends Card {
         }
         return output.substring(0, output.length() - 1);
     }
+    public List<GemAmount> getPrice(){
+        return price;
+    }
 }
