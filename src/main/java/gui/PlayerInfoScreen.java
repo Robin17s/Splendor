@@ -68,8 +68,8 @@ public class PlayerInfoScreen extends BorderPane {
                 }
             }
         }
-        if (domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getNobleCard() != null){
-            NobleCard card = domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getNobleCard();
+        if (domainController.givePlayers().get(selectedPlayerIndex).getNobleCard() != null){
+            NobleCard card = domainController.givePlayers().get(selectedPlayerIndex).getNobleCard();
             Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
             Button button = new Button();
             ImageView view = new ImageView(image);

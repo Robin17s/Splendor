@@ -15,6 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -174,12 +176,50 @@ public final class BoardScreen extends BorderPane {
                         buyAlert.setHeaderText(null);
                         buyAlert.setContentText(actionResult);
                         buyAlert.showAndWait();
+                        List<NobleCard> ref = new ArrayList<>();
+                        if (ApplicationStart.getInstance().getController().canPlayerGetNobleCard(ref)){
+                            Alert nobleAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                            nobleAlert.setTitle("You can take a noble card!");
+                            String nobleString = "";
+                            List<ButtonType> buttons = new ArrayList<>();
+                            for (int i = 1; i < ref.size() + 1; i++){
+                                nobleString += String.format("%d: %s ", i, ref.get(i-1).showCard());
+                                buttons.add(new ButtonType(String.format("%d", i)));
+                            }
+                            nobleAlert.getButtonTypes().setAll(buttons);
+                            nobleAlert.setHeaderText(nobleString);
+                            Optional<ButtonType> nobleChoice = nobleAlert.showAndWait();
+                            if (nobleChoice.isPresent()){
+                                ButtonType iets = nobleChoice.get();
+                                ApplicationStart.getInstance().getController().setPlayerNoble(ref.get(Integer.parseInt(iets.getText())));
+                            }
+                        }
+                        refreshScreen();
                     } else {
                         // alertje toevoegen
                     }
                 });
 
                 pane.add(button, column + 1, 2 - row);
+            }
+        }
+    }
+
+    private void nobleAlert(){
+        List<NobleCard> ref = new ArrayList<>();
+        if (ApplicationStart.getInstance().getController().canPlayerGetNobleCard(ref)){
+            Alert nobleAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            nobleAlert.setTitle("You can take a noble card!");
+            String nobleString = "";
+            for (int i = 1; i < ref.size(); i++){
+                nobleString += String.format("%d: %s ", i, ref.get(i-1));
+                nobleAlert.getButtonTypes().add(new ButtonType(String.format("%d", i)));
+            }
+            nobleAlert.setHeaderText(nobleString);
+            Optional<ButtonType> nobleChoice = nobleAlert.showAndWait();
+            if (nobleChoice.isPresent()){
+                ButtonType iets = nobleChoice.get();
+                ApplicationStart.getInstance().getController().setPlayerNoble(ref.get(Integer.parseInt(iets.getText())));
             }
         }
     }

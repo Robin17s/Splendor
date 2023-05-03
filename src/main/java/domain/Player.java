@@ -89,9 +89,6 @@ public class Player {
     
     public void addGems(List<GemAmount> gems) {
     	switch (gems.size()){
-            case 0 -> {
-                break;
-            }
             case 1 -> {
                 gemStack
                         .stream()
@@ -105,7 +102,7 @@ public class Player {
                             .stream()
                             .filter(gem -> gem.getType() == amount.getType())
                             .findFirst()
-                            .ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 1)));
+                            .ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 10)));
                 }
             }
         }

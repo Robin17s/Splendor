@@ -50,6 +50,27 @@ public class DomainController{
         for (Player player : splendor.getPlayers()){
             player.addGems(gems);
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Onyx, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Onyx, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Onyx, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Onyx, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Diamond, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Diamond, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Diamond, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Diamond, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Sapphire, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Sapphire, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Sapphire, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Sapphire, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+            player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Emerald, 2, gems, splendor.getCardsOnBoard()[0][player.getIndex()].getAssetName()));
+
+
             //player.setNobleCard(splendor.getNobleCards().get(0));
         }
         /*for (int i = 0; i<10;i++){
@@ -85,6 +106,18 @@ public class DomainController{
             return msg[0];
         }
         return msg[0];
+    }
+
+    public boolean canPlayerGetNobleCard(List<NobleCard> ref){
+        ref.addAll(splendor.candidateNobles());
+        if (ref.size() > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public void setPlayerNoble(NobleCard card){
+        splendor.giveNobleToPlayer(card);
     }
 
     /**

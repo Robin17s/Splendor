@@ -214,8 +214,9 @@ public class Game {
         return "Player added successfully!";
     }
 
-    public void endTurn(){
+    public List<NobleCard> endTurn(){
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        return candidateNobles();
     }
 
     public void takeThreeGems(List<GemAmount> gems){
@@ -268,6 +269,37 @@ public class Game {
         return true;
     }
 
+    private boolean canPlayerAffordCard(NobleCard card){
+        int playerIndex = currentPlayerIndex - 1 >= 0 ? currentPlayerIndex - 1 : players.size() - 1;
+        if (players.get(playerIndex).getNobleCard() == null){
+            for (GemAmount cost : card.getPrice()) {
+                boolean hasGem = false;
+                for (GemAmount temp : players.get(playerIndex).getBonusGems()) {
+                    if (temp.getType() == cost.getType() && temp.getAmount() >= cost.getAmount()) {
+                        hasGem = true;
+                        break;
+                    }
+                }
+                if (!hasGem) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void giveNobleToPlayer(NobleCard noble){
+        int playerIndex = currentPlayerIndex - 1 >= 0 ? currentPlayerIndex - 1 : players.size() - 1;
+        for (int i = 0; i<nobleCards.size(); i++){
+            if (nobleCards.get(i).getAssetName() == noble.getAssetName()){
+                players.get(playerIndex).setNobleCard(nobleCards.get(i));
+                nobleCards.remove(i);
+                break;
+            }
+        }
+    }
+
     private int getIndexOfGem(GemAmount gem){
         return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().getAsInt();
     }
@@ -284,6 +316,16 @@ public class Game {
     private boolean compareGemValue(GemAmount gem, int value){
         GemAmount temp = gemStack.stream().filter(x -> x.getType() == gem.getType()).toList().get(0);
         return temp.getAmount() >= value ;
+    }
+
+    public List<NobleCard> candidateNobles(){
+        List<NobleCard> temp = new ArrayList<>();
+        for (NobleCard card : nobleCards){
+            if (canPlayerAffordCard(card)){
+                temp.add(card);
+            }
+        }
+        return temp;
     }
 
     public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth); }
