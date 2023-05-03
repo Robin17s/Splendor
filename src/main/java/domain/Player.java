@@ -3,6 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Player {
     private final String name;
@@ -69,7 +70,10 @@ public class Player {
                 new GemAmount(Crystal.Sapphire, 0),
                 new GemAmount(Crystal.Ruby, 0)));
         for (DevelopmentCard developmentCard : developmentCards){
-            temp.stream().filter(x -> x.getType() == developmentCard.getBonusGem()).findFirst().ifPresent(x -> temp.set(temp.indexOf(x), new GemAmount(x.getType(), x.getAmount() + 1)));
+            temp.stream()
+                    .filter(x -> x.getType() == developmentCard.getBonusGem())
+                    .findFirst()
+                    .ifPresent(x -> temp.set(temp.indexOf(x), new GemAmount(x.getType(), x.getAmount() + 1)));
         }
         return temp;
     }
@@ -114,9 +118,21 @@ public class Player {
     public List<GemAmount> getGems() {
     	return gemStack;
     }
+    private List<GemAmount> getTotalGems(){
+        List<GemAmount> temp = gemStack.stream().collect(Collectors.toList());
+        List<GemAmount> bonusGems = getBonusGems();
+        for (GemAmount gem : bonusGems){
+            if (gem.getAmount() > 0){
+                temp.stream().filter(x -> x.getType() == gem.getType())
+                        .findFirst()
+                        .ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(g.getType(), g.getAmount() + gem.getAmount())));
+            }
+        }
+        return temp;
+    }
     public String getGemsAsString(){
         String output = "";
-        for(GemAmount cost : gemStack){
+        for(GemAmount cost : getTotalGems()){
             //if (cost.getAmount() > 0)
                 output += String.format("[%s: %d]\n", cost.getType(), cost.getAmount());
         }
