@@ -1,6 +1,7 @@
 package gui;
 
 import domain.DomainController;
+import domain.i18n.I18n;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -14,6 +15,8 @@ public class ApplicationStart extends Application {
 
     @Override
     public void start(Stage primary) {
+        I18n.loadTranslationFile("nl_BE");
+
         ApplicationStart.instance = this;
         this.primary = primary;
 
