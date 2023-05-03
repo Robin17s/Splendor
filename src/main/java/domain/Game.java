@@ -219,7 +219,7 @@ public class Game {
         return candidateNobles();
     }
 
-    public void takeThreeGems(List<GemAmount> gems){
+    public void takeThreeGemsOfDifferentTypes(List<GemAmount> gems){
         for(GemAmount gem : gems){
             int index = getIndexOfGem(gem);
             gemStack.get(index).subtractOne();
@@ -227,7 +227,7 @@ public class Game {
         players.get(currentPlayerIndex).addGems(gems);
     }
 
-    public void takeOneGem(GemAmount gem){
+    public void takeTwoGemsOfTheSameType(GemAmount gem){
         gemStack.get(getIndexOfGem(gem)).subtractTwo();
         List<GemAmount> gemList = new ArrayList<>();
         gemList.add(gem);
