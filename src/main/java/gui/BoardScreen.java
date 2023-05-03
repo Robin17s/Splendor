@@ -15,12 +15,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 
 public final class BoardScreen extends BorderPane {
     private final GridPane pane = new GridPane();
+    private List<GemAmount> gemsPicked = new ArrayList<>();
 
     public BoardScreen() {
         this.setBackground(new Background(
@@ -33,12 +36,12 @@ public final class BoardScreen extends BorderPane {
         ));
 
         // Middle screen can take up to 75% of the available screen width, and 85% of its height
-        pane.  minWidthProperty().bind(this. widthProperty().multiply(0.75));
-        pane. prefWidthProperty().bind(this. widthProperty().multiply(0.75));
-        pane.  maxWidthProperty().bind(this. widthProperty().multiply(0.75));
-        pane. minHeightProperty().bind(this.heightProperty().multiply(0.85));
+        pane.minWidthProperty().bind(this.widthProperty().multiply(0.75));
+        pane.prefWidthProperty().bind(this.widthProperty().multiply(0.75));
+        pane.maxWidthProperty().bind(this.widthProperty().multiply(0.75));
+        pane.minHeightProperty().bind(this.heightProperty().multiply(0.85));
         pane.prefHeightProperty().bind(this.heightProperty().multiply(0.85));
-        pane. maxHeightProperty().bind(this.heightProperty().multiply(0.85));
+        pane.maxHeightProperty().bind(this.heightProperty().multiply(0.85));
 
         pane.setScaleX(0.75);
         pane.setScaleY(0.75);
@@ -49,7 +52,7 @@ public final class BoardScreen extends BorderPane {
         this.setCenter(pane);
     }
 
-    public void refreshScreen(){
+    public void refreshScreen() {
         showGems();
         showPlayers();
         showNobles();
@@ -76,11 +79,40 @@ public final class BoardScreen extends BorderPane {
 
             button.setGraphic(view);
             button.setOnAction(event -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Gem Clicked");
-                alert.setHeaderText(null);
-                alert.setContentText(amount.showGems());
-                alert.showAndWait();
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Gem selection");
+                alert.setContentText(showGemsPicked());
+                ButtonType buttonTypeOne = new ButtonType("Take " + (gemsPicked.size() + 1) + " of 3 different Gems");
+                ButtonType buttonTypeTwo = new ButtonType("Take 2 of the same Gems");
+
+                ButtonType buttonTypeCancel = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                String actionResult = "";
+                if (result.get() == buttonTypeOne) {
+                    if (!gemsPicked.contains(amount))
+                        gemsPicked.add(amount);
+
+                    if (gemsPicked.size() == 3) {
+                        actionResult = ApplicationStart.getInstance().getController().takeThreeGemsOfDifferentTypes(gemsPicked);
+                        gemsPicked.clear();
+                    }
+                } else if (result.get() == buttonTypeTwo) {
+                    actionResult = ApplicationStart.getInstance().getController().takeTwoGemsOfTheSameType(amount);
+                } else {
+                    alert.close();
+                }
+
+                if (!actionResult.equals(""))
+                {
+                    Alert buyAlert = new Alert(Alert.AlertType.INFORMATION);
+                    buyAlert.setTitle("Action");
+                    buyAlert.setHeaderText(null);
+                    buyAlert.setContentText(actionResult);
+                    buyAlert.showAndWait();
+                }
             });
 
             box.getChildren().add(button);
@@ -88,14 +120,22 @@ public final class BoardScreen extends BorderPane {
         }
 
         // Gem box can take up to 10% of the available screen width, and 100% of its height
-        box.  minWidthProperty().bind(this. widthProperty().multiply(0.1));
-        box. prefWidthProperty().bind(this. widthProperty().multiply(0.1));
-        box.  maxWidthProperty().bind(this. widthProperty().multiply(0.1));
-        box. minHeightProperty().bind(this.heightProperty());
+        box.minWidthProperty().bind(this.widthProperty().multiply(0.1));
+        box.prefWidthProperty().bind(this.widthProperty().multiply(0.1));
+        box.maxWidthProperty().bind(this.widthProperty().multiply(0.1));
+        box.minHeightProperty().bind(this.heightProperty());
         box.prefHeightProperty().bind(this.heightProperty());
-        box. maxHeightProperty().bind(this.heightProperty());
+        box.maxHeightProperty().bind(this.heightProperty());
 
         this.setLeft(box);
+    }
+
+    private String showGemsPicked() {
+        StringBuilder builder = new StringBuilder();
+        for (GemAmount amount : gemsPicked) {
+            builder.append(amount.getType().name()).append(", ");
+        }
+        return builder.toString();
     }
 
     public void showNobles() {
@@ -108,12 +148,12 @@ public final class BoardScreen extends BorderPane {
         }
 
         // Noble box can take up to 90% of the available screen width, and 15% of its height
-        box.  minWidthProperty().bind(this. widthProperty().multiply(0.90));
-        box. prefWidthProperty().bind(this. widthProperty().multiply(0.90));
-        box.  maxWidthProperty().bind(this. widthProperty().multiply(0.90));
-        box. minHeightProperty().bind(this.heightProperty().multiply(0.15));
+        box.minWidthProperty().bind(this.widthProperty().multiply(0.90));
+        box.prefWidthProperty().bind(this.widthProperty().multiply(0.90));
+        box.maxWidthProperty().bind(this.widthProperty().multiply(0.90));
+        box.minHeightProperty().bind(this.heightProperty().multiply(0.15));
         box.prefHeightProperty().bind(this.heightProperty().multiply(0.15));
-        box. maxHeightProperty().bind(this.heightProperty().multiply(0.15));
+        box.maxHeightProperty().bind(this.heightProperty().multiply(0.15));
 
         box.setTranslateX(250);
         box.translateXProperty().bind(this.widthProperty().multiply(0.25).divide(2));
@@ -183,6 +223,7 @@ public final class BoardScreen extends BorderPane {
             }
         }
     }
+
     public void showPlayers() {
         int numPlayers = ApplicationStart.getInstance().getController().givePlayers().size();
 
@@ -205,7 +246,7 @@ public final class BoardScreen extends BorderPane {
             playerButton.setUserData(i);
 
             playerButton.setOnAction(event -> {
-                PlayerInfoScreen playerInfoScreen = new PlayerInfoScreen((int)playerButton.getUserData());
+                PlayerInfoScreen playerInfoScreen = new PlayerInfoScreen((int) playerButton.getUserData());
                 ApplicationStart.getInstance().setScene(playerInfoScreen);
             });
 
@@ -217,12 +258,12 @@ public final class BoardScreen extends BorderPane {
         }
 
         // Player box can take up to 20% of the available screen width, and 90% of its height
-        playersBox.  minWidthProperty().bind(this. widthProperty().multiply(0.20));
-        playersBox. prefWidthProperty().bind(this. widthProperty().multiply(0.20));
-        playersBox.  maxWidthProperty().bind(this. widthProperty().multiply(0.20));
-        playersBox. minHeightProperty().bind(this.heightProperty().multiply(0.90));
+        playersBox.minWidthProperty().bind(this.widthProperty().multiply(0.20));
+        playersBox.prefWidthProperty().bind(this.widthProperty().multiply(0.20));
+        playersBox.maxWidthProperty().bind(this.widthProperty().multiply(0.20));
+        playersBox.minHeightProperty().bind(this.heightProperty().multiply(0.90));
         playersBox.prefHeightProperty().bind(this.heightProperty().multiply(0.90));
-        playersBox. maxHeightProperty().bind(this.heightProperty().multiply(0.90));
+        playersBox.maxHeightProperty().bind(this.heightProperty().multiply(0.90));
 
         playersBox.setTranslateX(-150);
 

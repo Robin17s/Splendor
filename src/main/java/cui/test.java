@@ -71,7 +71,7 @@ public class test {
             System.out.print("\nPlayers and the items they have: ");
             printPlayersWithCardsAndGems(domainController);
 
-            domainController.takeOneGem(new GemAmount(Crystal.Diamond, 0));
+            domainController.takeTwoGemsOfTheSameType(new GemAmount(Crystal.Diamond, 0));
 
             // print gems
             System.out.println("\nGame created with the following gems on table:");
@@ -88,7 +88,7 @@ public class test {
             gems.add(new GemAmount(Crystal.Onyx, 1));
             gems.add(new GemAmount(Crystal.Ruby, 1));
 
-            domainController.takeThreeGems(gems);
+            domainController.takeThreeGemsOfDifferentTypes(gems);
 
             // print gems
             System.out.println("\nGame created with the following gems on table:");

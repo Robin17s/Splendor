@@ -60,18 +60,20 @@ public class DomainController{
      *
      * @param gem the gem the player takes. The amount does not matter!
      */
-    public void takeOneGem(GemAmount gem){
-        splendor.takeOneGem(gem);
+    public String takeTwoGemsOfTheSameType(GemAmount gem){
+        splendor.takeTwoGemsOfTheSameType(gem);
         splendor.endTurn();
+        return "You took two gems";
     }
 
     /**
      *
      * @param gems a list of gems that the player wants to take. The amounts do not matter!
      */
-    public void takeThreeGems(List<GemAmount> gems){
-        splendor.takeThreeGems(gems);
+    public String takeThreeGemsOfDifferentTypes(List<GemAmount> gems){
+        splendor.takeThreeGemsOfDifferentTypes(gems);
         splendor.endTurn();
+        return "You took three gems";
     }
 
     /**
