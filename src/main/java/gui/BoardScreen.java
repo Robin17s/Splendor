@@ -200,14 +200,14 @@ public final class BoardScreen extends BorderPane {
                         }*/
                         String actionResult = ApplicationStart.getInstance().getController().takeDevelopmentCard(card);
                         Alert buyAlert = new Alert(Alert.AlertType.INFORMATION);
-                        buyAlert.setTitle("Action");
+                        buyAlert.setTitle(I18n.translate("boardscreen.devcards.print.action"));
                         buyAlert.setHeaderText(null);
                         buyAlert.setContentText(actionResult);
                         buyAlert.showAndWait();
                         List<NobleCard> ref = new ArrayList<>();
                         if (ApplicationStart.getInstance().getController().canPlayerGetNobleCard(ref)) {
                             Alert nobleAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                            nobleAlert.setTitle("You can take a noble card!");
+                            nobleAlert.setTitle(I18n.translate("boardscreen.devcards.print.noble"));
                             String nobleString = "";
                             List<ButtonType> buttons = new ArrayList<>();
                             for (int i = 1; i < ref.size() + 1; i++) {
@@ -237,7 +237,7 @@ public final class BoardScreen extends BorderPane {
         List<NobleCard> ref = new ArrayList<>();
         if (ApplicationStart.getInstance().getController().canPlayerGetNobleCard(ref)) {
             Alert nobleAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            nobleAlert.setTitle("You can take a noble card!");
+            nobleAlert.setTitle(I18n.translate("boardscreen.devcards.print.noble"));
             String nobleString = "";
             for (int i = 1; i < ref.size(); i++) {
                 nobleString += String.format("%d: %s ", i, ref.get(i - 1));
