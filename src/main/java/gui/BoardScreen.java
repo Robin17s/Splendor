@@ -116,6 +116,12 @@ public final class BoardScreen extends BorderPane {
             box.getChildren().add(button);
             box.getChildren().add(view);
         }
+        Button skipTurnButton = new Button(I18n.translate("player.skip.turn"));
+        skipTurnButton.setOnAction(event -> {
+           ApplicationStart.getInstance().getController().skipTurn();
+           refreshScreen();
+        });
+        box.getChildren().add(skipTurnButton);
 
         // Gem box can take up to 10% of the available screen width, and 100% of its height
         box.minWidthProperty().bind(this.widthProperty().multiply(0.1));
