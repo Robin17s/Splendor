@@ -8,13 +8,11 @@ import domain.i18n.I18n;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
@@ -64,10 +62,12 @@ public final class BoardScreen extends BorderPane {
 
 
     public void showGems() {
+        //rode box in paint
         VBox box = new VBox(2);
 
         for (GemAmount amount : ApplicationStart.getInstance().getController().getGemStack()) {
             Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + amount.getType().name().toLowerCase() + ".png")));
+            // zwarte rondjes in paint
             Button button = new Button();
             button.setBackground(null);
             ImageView view = new ImageView(image);
@@ -84,11 +84,11 @@ public final class BoardScreen extends BorderPane {
                 alert.setHeaderText(amount.getType().name());
                 alert.setContentText(I18n.translate("boardscreen.gems.explanation"));
 
-                ButtonType buttonTypeOne = new ButtonType(I18n.translate("boardscreen.gems.takethree",""+(gemsPicked.size() + 1)));
+                ButtonType buttonTypeOne = new ButtonType(I18n.translate("boardscreen.gems.takethree", "" + (gemsPicked.size() + 1)));
                 ButtonType buttonTypeTwo = new ButtonType(I18n.translate("boardscreen.gems.taketwo"));
                 ButtonType buttonTypeCancel = new ButtonType(I18n.translate("message.no"), ButtonBar.ButtonData.CANCEL_CLOSE);
 
-                alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo,buttonTypeCancel);
+                alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
                 Optional<ButtonType> result = alert.showAndWait();
                 String actionResult = "";
@@ -110,16 +110,29 @@ public final class BoardScreen extends BorderPane {
                     alert2.setHeaderText(I18n.translate("boardscreen.gems.title"));
                     alert2.setContentText(actionResult);
                     alert2.showAndWait();
+
+                    refreshScreen();
                 }
+
             });
 
-            box.getChildren().add(button);
-            box.getChildren().add(view);
+            //label voor aantal beschikbare gems in een stapel
+            Label lbl = new Label("" + amount.getAmount());
+            lbl.setFont(Font.font("Impact", 27));
+            lbl.setTextFill(Color.WHITE);
+
+            //button (met view van asset) toevoegen aan Horizontal box
+            //label toevoegen na de button
+            //groene boxen in paint
+            HBox hbox = new HBox(button, lbl);
+            hbox.setAlignment(Pos.BOTTOM_LEFT);
+            box.getChildren().add(hbox);
+            HBox.setMargin(lbl, new Insets(2, 2, 2, -15));
         }
         Button skipTurnButton = new Button(I18n.translate("player.skip.turn"));
         skipTurnButton.setOnAction(event -> {
-           ApplicationStart.getInstance().getController().skipTurn();
-           refreshScreen();
+            ApplicationStart.getInstance().getController().skipTurn();
+            refreshScreen();
         });
         box.getChildren().add(skipTurnButton);
 
