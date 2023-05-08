@@ -102,6 +102,7 @@ public final class BoardScreen extends BorderPane {
                     }
                 } else if (result.get() == buttonTypeTwo) {
                     actionResult = ApplicationStart.getInstance().getController().takeTwoGemsOfTheSameType(amount);
+                    gemsPicked.clear();
                 }
 
                 if (!actionResult.equals("")) {
