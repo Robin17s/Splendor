@@ -337,7 +337,7 @@ public class Game {
         }
     }
 
-    private int getIndexOfGem(GemAmount gem){
+    public int getIndexOfGem(GemAmount gem){
         return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().getAsInt();
     }
 
@@ -365,5 +365,5 @@ public class Game {
         return temp;
     }
 
-    public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth); }
+    public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().toLowerCase().equals(name.toLowerCase()) && player.getDateOfBirth() == yearOfBirth); }
 }
