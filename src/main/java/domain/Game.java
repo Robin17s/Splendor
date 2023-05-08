@@ -1,5 +1,6 @@
 package domain;
 
+import domain.i18n.I18n;
 import persistence.PlayerMapper;
 
 import java.io.IOException;
@@ -260,10 +261,10 @@ public class Game {
             matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
             developmentCards.remove(matrix[card.getLevel()-1][index]);
             players.get(currentPlayerIndex).addDevelopmentCard(card);
-            msg[0] = "Card bought successfully!";
+            msg[0] = I18n.translate("game.card.buy.success");
             return true;
         }
-        msg[0] = "Cannot afford card!";
+        msg[0] = I18n.translate("game.card.buy.fail");
         return false;
     }
 

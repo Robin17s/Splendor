@@ -121,6 +121,9 @@ public class DomainController{
     public void setPlayerNoble(NobleCard card){
         splendor.giveNobleToPlayer(card);
     }
+    public void skipTurn(){
+        splendor.endTurn();
+    }
 
     /**
      *
@@ -129,6 +132,7 @@ public class DomainController{
     public int getCurrentPlayerIndex(){
         return splendor.getCurrentPlayerIndex();
     }
+
     public boolean canTakeOneGem(GemAmount gem){
         return splendor.canTakeOneGem(gem);
     }
