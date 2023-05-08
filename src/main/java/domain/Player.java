@@ -134,7 +134,7 @@ public class Player {
         String output = "";
         for(GemAmount cost : getTotalGems()){
             //if (cost.getAmount() > 0)
-                output += String.format("[%s: %d]\n", cost.getType(), cost.getAmount());
+                output += String.format("%s: %d\n", cost.getType(), cost.getAmount());
         }
         return output.substring(0, output.length() - (output.isEmpty() ? 0 : 1));
     }

@@ -180,11 +180,11 @@ public class Game {
 
     private Crystal parseCrystal(String string) {
         return switch (string) {
-            case "Onyx" -> Crystal.Onyx;
-            case "Diamond" -> Crystal.Diamond;
-            case "Sapphire" -> Crystal.Sapphire;
-            case "Ruby" -> Crystal.Ruby;
-            case "Emerald" -> Crystal.Emerald;
+            case "onyx" -> Crystal.Onyx;
+            case "diamond" -> Crystal.Diamond;
+            case "sapphire" -> Crystal.Sapphire;
+            case "ruby" -> Crystal.Ruby;
+            case "emerald" -> Crystal.Emerald;
             default -> null;
         };
     }
