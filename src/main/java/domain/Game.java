@@ -337,7 +337,7 @@ public class Game {
         }
     }
 
-    private int getIndexOfGem(GemAmount gem){
+    public int getIndexOfGem(GemAmount gem){
         return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().getAsInt();
     }
 
