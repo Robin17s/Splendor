@@ -25,6 +25,8 @@ public final class BoardScreen extends BorderPane {
     private final GridPane pane = new GridPane();
     private List<GemAmount> gemsPicked = new ArrayList<>();
 
+    private boolean finalRoundPopupFlag = false;
+
     public BoardScreen() {
         this.setBackground(new Background(
                 new BackgroundImage(
@@ -58,8 +60,26 @@ public final class BoardScreen extends BorderPane {
         showNobles();
         showDevelopmentCardPiles();
         showDevelopmentCards();
+        finalRoundPopup();
+        switchToWinnerScreen();
     }
 
+    public void finalRoundPopup(){
+        if (ApplicationStart.getInstance().getController().isFinalRound() && !finalRoundPopupFlag){
+            Alert popup = new Alert(Alert.AlertType.INFORMATION);
+            popup.setTitle("Message");
+            popup.setHeaderText(null);
+            popup.setContentText("Final round");
+            popup.showAndWait();
+            finalRoundPopupFlag = true;
+        }
+    }
+
+    public void switchToWinnerScreen(){
+        if (ApplicationStart.getInstance().getController().getCurrentPlayerIndex() == ApplicationStart.getInstance().getController().givePlayers().size()){
+            ApplicationStart.getInstance().setScene(new WinnerScreen());
+        }
+    }
 
     public void showGems() {
         //rode box in paint
@@ -98,10 +118,12 @@ public final class BoardScreen extends BorderPane {
 
                     if (gemsPicked.size() == 3) {
                         actionResult = ApplicationStart.getInstance().getController().takeThreeGemsOfDifferentTypes(gemsPicked);
+                        nobleAlert();
                         gemsPicked.clear();
                     }
                 } else if (result.get() == buttonTypeTwo) {
                     actionResult = ApplicationStart.getInstance().getController().takeTwoGemsOfTheSameType(amount);
+                    nobleAlert();
                     gemsPicked.clear();
                 }
 
@@ -133,6 +155,7 @@ public final class BoardScreen extends BorderPane {
         Button skipTurnButton = new Button(I18n.translate("player.skip.turn"));
         skipTurnButton.setOnAction(event -> {
             ApplicationStart.getInstance().getController().skipTurn();
+            nobleAlert();
             refreshScreen();
         });
         box.getChildren().add(skipTurnButton);

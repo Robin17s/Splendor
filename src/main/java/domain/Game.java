@@ -26,6 +26,8 @@ public class Game {
     private int currentPlayerIndex;
     public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 4;
+    private boolean finalRound;
+    private List<Player> winners;
 
     public Game() {
         players = new ArrayList<>();
@@ -35,6 +37,8 @@ public class Game {
         playerMapper = new PlayerMapper();
         matrix = new DevelopmentCard[3][4];
         currentPlayerIndex = 0;
+        finalRound = false;
+        winners = new ArrayList<>();
     }
 
     //region [getters and setters]
@@ -56,6 +60,14 @@ public class Game {
 
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
+    }
+
+    public boolean getFinalRound(){
+        return finalRound;
+    }
+
+    public List<Player> getWinners(){
+        return winners;
     }
     //endregion
 
@@ -216,8 +228,50 @@ public class Game {
     }
 
     public List<NobleCard> endTurn(){
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        decideFinalRound();
+        if (!finalRound){
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        }
+        else {
+            if (currentPlayerIndex == players.size() - 1){
+                currentPlayerIndex++;
+            }
+            else{
+                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            }
+        }
         return candidateNobles();
+    }
+
+    public void decideFinalRound(){
+        if (!finalRound){
+            for (Player player : players){
+                if (player.getPrestige() >= 15){
+                    finalRound = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void decideWinners(){
+        int highestPrestige = 0;
+        int devCards = 500;
+        for (Player player : players){
+            if (player.getPrestige() > highestPrestige)
+                highestPrestige = player.getPrestige();
+        }
+        final int p = highestPrestige;
+        winners.addAll(players.stream().filter(x -> x.getPrestige() == p).collect(Collectors.toList()));
+        if (winners.size() != 1){
+            for (Player player : winners){
+                if (player.getDevelopmentCards().size() < devCards)
+                    devCards = player.getDevelopmentCards().size();
+            }
+            final int cards = devCards;
+            winners.clear();
+            winners.addAll(players.stream().filter(x -> x.getPrestige() == p && x.getDevelopmentCards().size() == cards).collect(Collectors.toList()));
+        }
     }
 
     public void takeThreeGemsOfDifferentTypes(List<GemAmount> gems){

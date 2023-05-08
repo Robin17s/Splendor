@@ -43,6 +43,7 @@ public class Player {
 
     public void setNobleCard(NobleCard nobleCard) {
         this.nobleCard = nobleCard;
+        updatePrestige();
     }
 
     public void addDevelopmentCard(DevelopmentCard developmentCard){
@@ -63,6 +64,8 @@ public class Player {
         for(DevelopmentCard developmentCard : developmentCards){
             prestige += developmentCard.getPrestige();
         }
+        if (nobleCard != null)
+            prestige += nobleCard.getPrestige();
     }
 
     public List<GemAmount> getBonusGems(){
