@@ -120,7 +120,7 @@ public final class AddPlayersScreen extends BorderPane {
             BoardScreen boardScreen = new BoardScreen();
             ApplicationStart.getInstance().setScene(boardScreen);
             ApplicationStart.getInstance().getController().startGame();
-            ApplicationStart.getInstance().getController().addItemsToPlayers();
+            //ApplicationStart.getInstance().getController().addItemsToPlayers();
             boardScreen.showGems();
             boardScreen.showNobles();
             boardScreen.showDevelopmentCardPiles();

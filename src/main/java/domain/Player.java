@@ -108,7 +108,7 @@ public class Player {
                             .stream()
                             .filter(gem -> gem.getType() == amount.getType())
                             .findFirst()
-                            .ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 10)));
+                            .ifPresent(gemAmount -> gemStack.set(gemStack.indexOf(gemAmount), new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 1)));
                 }
             }
         }
@@ -122,7 +122,7 @@ public class Player {
     	return gemStack;
     }
     public List<GemAmount> getTotalGems(){
-        List<GemAmount> temp = gemStack.stream().collect(Collectors.toList());
+        List<GemAmount> temp = new ArrayList<>(gemStack);
         List<GemAmount> bonusGems = getBonusGems();
         for (GemAmount gem : bonusGems){
             if (gem.getAmount() > 0){

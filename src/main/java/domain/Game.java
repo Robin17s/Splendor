@@ -28,6 +28,7 @@ public class Game {
     public static final int MAX_PLAYERS = 4;
     private boolean finalRound;
     private List<Player> winners;
+    private final int DR_GAME_END = 15;
 
     public Game() {
         players = new ArrayList<>();
@@ -246,7 +247,7 @@ public class Game {
     public void decideFinalRound(){
         if (!finalRound){
             for (Player player : players){
-                if (player.getPrestige() >= 15){
+                if (player.getPrestige() >= DR_GAME_END){
                     finalRound = true;
                     break;
                 }
@@ -299,14 +300,31 @@ public class Game {
                 }
             }
             List<GemAmount> temp = players.get(currentPlayerIndex).getGems();
+            List<GemAmount> originalPlayerGems = new ArrayList<>(players.get(currentPlayerIndex).getGems());
+
             for (GemAmount cost : card.getPrice()){
                 for (GemAmount inv : players.get(currentPlayerIndex).getBonusGems()){
                     if (cost.getType() == inv.getType()){
                         if (cost.getAmount() > inv.getAmount() && cost.getAmount() != 0){
-                            temp.stream().filter(x -> x.getType() == cost.getType()).findFirst().ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex).getTotalGems().stream().filter(c -> c.getType() == inv.getType()).collect(Collectors.toList()).get(0).getAmount() - cost.getAmount())));
+                            temp.stream()
+                                    .filter(x -> x.getType() == cost.getType())
+                                    .findFirst()
+                                    .ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex)
+                                            .getTotalGems()
+                                            .stream().filter(c -> c.getType() == inv.getType())
+                                            .collect(Collectors.toList())
+                                            .get(0)
+                                            .getAmount() - cost.getAmount())));
                         }
                         else{
-                            temp.stream().filter(x -> x.getType() == cost.getType()).findFirst().ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex).getGems().stream().filter(c -> c.getType() == cost.getType()).collect(Collectors.toList()).get(0).getAmount())));
+                            temp.stream()
+                                    .filter(x -> x.getType() == cost.getType()).findFirst()
+                                    .ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex)
+                                            .getGems()
+                                            .stream()
+                                            .filter(c -> c.getType() == cost.getType())
+                                            .collect(Collectors.toList()).
+                                            get(0).getAmount())));
                         }
                     }
                 }
@@ -315,6 +333,21 @@ public class Game {
             matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
             developmentCards.remove(matrix[card.getLevel()-1][index]);
             players.get(currentPlayerIndex).addDevelopmentCard(card);
+            List<GemAmount> trueCardCost = new ArrayList<>();
+            for (GemAmount current : players.get(currentPlayerIndex).getGems()){
+                for (GemAmount old : originalPlayerGems){
+                    if (current.getType() == old.getType()){
+                        trueCardCost.add(new GemAmount(old.getType(), old.getAmount() - current.getAmount()));
+                    }
+                }
+            }
+            for (GemAmount gemReturn : trueCardCost){
+                for (GemAmount gem : gemStack){
+                    if (gem.getType() == gemReturn.getType()){
+                        gemStack.set(gemStack.indexOf(gem), new GemAmount(gem.getType(), gem.getAmount() + gemReturn.getAmount()));
+                    }
+                }
+            }
             msg[0] = I18n.translate("game.card.buy.success");
             return true;
         }
@@ -347,7 +380,7 @@ public class Game {
     private boolean canPlayerAffordCard(DevelopmentCard card){
         for (GemAmount cost : card.getPrice()) {
             boolean hasGem = false;
-            for (GemAmount temp : players.get(currentPlayerIndex).getGems()) {
+            for (GemAmount temp : players.get(currentPlayerIndex).getTotalGems()) {
                 if (temp.getType() == cost.getType() && temp.getAmount() >= cost.getAmount()) {
                     hasGem = true;
                     break;
