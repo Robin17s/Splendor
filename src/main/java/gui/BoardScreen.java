@@ -217,30 +217,15 @@ public final class BoardScreen extends BorderPane {
                             ApplicationStart.getInstance().getController().takeDevelopmentCard(card);
                             refreshScreen();
                         }*/
+                        int playerIndexBeforeAction = ApplicationStart.getInstance().getController().getCurrentPlayerIndex();
                         String actionResult = ApplicationStart.getInstance().getController().takeDevelopmentCard(card);
                         Alert buyAlert = new Alert(Alert.AlertType.INFORMATION);
                         buyAlert.setTitle(I18n.translate("boardscreen.devcards.print.action"));
                         buyAlert.setHeaderText(null);
                         buyAlert.setContentText(actionResult);
                         buyAlert.showAndWait();
-                        List<NobleCard> ref = new ArrayList<>();
-                        if (ApplicationStart.getInstance().getController().canPlayerGetNobleCard(ref)) {
-                            Alert nobleAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                            nobleAlert.setTitle(I18n.translate("boardscreen.devcards.print.noble"));
-                            String nobleString = "";
-                            List<ButtonType> buttons = new ArrayList<>();
-                            for (int i = 1; i < ref.size() + 1; i++) {
-                                nobleString += String.format("%d: %s ", i, ref.get(i - 1).showCard());
-                                buttons.add(new ButtonType(String.format("%d", i)));
-                            }
-                            nobleAlert.getButtonTypes().setAll(buttons);
-                            nobleAlert.setHeaderText(nobleString);
-                            Optional<ButtonType> nobleChoice = nobleAlert.showAndWait();
-                            if (nobleChoice.isPresent()) {
-                                ButtonType iets = nobleChoice.get();
-                                ApplicationStart.getInstance().getController().setPlayerNoble(ref.get(Integer.parseInt(iets.getText())));
-                            }
-                        }
+                        if (playerIndexBeforeAction != ApplicationStart.getInstance().getController().getCurrentPlayerIndex())
+                            nobleAlert();
                         refreshScreen();
                     } else {
                         // alertje toevoegen
@@ -258,15 +243,17 @@ public final class BoardScreen extends BorderPane {
             Alert nobleAlert = new Alert(Alert.AlertType.CONFIRMATION);
             nobleAlert.setTitle(I18n.translate("boardscreen.devcards.print.noble"));
             String nobleString = "";
-            for (int i = 1; i < ref.size(); i++) {
-                nobleString += String.format("%d: %s ", i, ref.get(i - 1));
-                nobleAlert.getButtonTypes().add(new ButtonType(String.format("%d", i)));
+            List<ButtonType> buttons = new ArrayList<>();
+            for (int i = 1; i < ref.size() + 1; i++) {
+                nobleString += String.format("%d: %s \n", i, ref.get(i - 1).showCard());
+                buttons.add(new ButtonType(String.format("%d", i)));
             }
+            nobleAlert.getButtonTypes().setAll(buttons);
             nobleAlert.setHeaderText(nobleString);
             Optional<ButtonType> nobleChoice = nobleAlert.showAndWait();
             if (nobleChoice.isPresent()) {
                 ButtonType iets = nobleChoice.get();
-                ApplicationStart.getInstance().getController().setPlayerNoble(ref.get(Integer.parseInt(iets.getText())));
+                ApplicationStart.getInstance().getController().setPlayerNoble(ref.get(Integer.parseInt(iets.getText()) - 1));
             }
         }
     }
