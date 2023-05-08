@@ -197,8 +197,8 @@ public final class BoardScreen extends BorderPane {
                 button.setOnAction(event -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle(I18n.translate("boardscreen.developmentcards.buy.title"));
-                    alert.setHeaderText(card.showCard());
-                    alert.setContentText(I18n.translate("boardscreen.developmentcards.buy.explanation"));
+                    //alert.setHeaderText(card.showCard());
+                    alert.setHeaderText(I18n.translate("boardscreen.developmentcards.buy.explanation"));
 
                     ButtonType buttonTypeOne = new ButtonType(I18n.translate("message.yes"));
 
