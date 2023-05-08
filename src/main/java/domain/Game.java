@@ -365,5 +365,5 @@ public class Game {
         return temp;
     }
 
-    public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth); }
+    public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().toLowerCase().equals(name.toLowerCase()) && player.getDateOfBirth() == yearOfBirth); }
 }
