@@ -82,9 +82,12 @@ public class DomainController{
      * @param gem the gem the player takes. The amount does not matter!
      */
     public String takeTwoGemsOfTheSameType(GemAmount gem){
-        splendor.takeTwoGemsOfTheSameType(gem);
-        splendor.endTurn();
-        return "You took two gems";
+        if(splendor.getGemStack().get(splendor.getIndexOfGem(gem)).getAmount() >= 4){
+            splendor.takeTwoGemsOfTheSameType(gem);
+            splendor.endTurn();
+            return "You took two gems";
+        }
+        return "there need to be at least 4 gems on the pile to take 2";
     }
 
     /**
@@ -92,9 +95,12 @@ public class DomainController{
      * @param gems a list of gems that the player wants to take. The amounts do not matter!
      */
     public String takeThreeGemsOfDifferentTypes(List<GemAmount> gems){
-        splendor.takeThreeGemsOfDifferentTypes(gems);
-        splendor.endTurn();
-        return "You took three gems";
+        if(gems.stream().allMatch(gem -> splendor.getGemStack().get(splendor.getIndexOfGem(gem)).getAmount() > 0)){
+            splendor.takeThreeGemsOfDifferentTypes(gems);
+            splendor.endTurn();
+            return "You took three gems";
+        }
+        return "At least 1 type of the chosen gems is not available";
     }
 
     /**
