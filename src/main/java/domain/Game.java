@@ -239,21 +239,23 @@ public class Game {
 
     public void decideWinners(){
         int highestPrestige = 0;
-        int devCards = 500;
-        for (Player player : players){
-            if (player.getPrestige() > highestPrestige)
-                highestPrestige = player.getPrestige();
+        int maxDevCards = Integer.MAX_VALUE;
+        for (Player player : players) {
+            int prestige = player.getPrestige();
+            if (prestige > highestPrestige)
+                highestPrestige = prestige;
         }
-        final int p = highestPrestige;
-        winners.addAll(players.stream().filter(x -> x.getPrestige() == p).toList());
+        final int finalHighestPrestige = highestPrestige;
+        winners.addAll(players.stream().filter(x -> x.getPrestige() == finalHighestPrestige).toList());
         if (winners.size() != 1){
-            for (Player player : winners){
-                if (player.getDevelopmentCards().size() < devCards)
-                    devCards = player.getDevelopmentCards().size();
+            for (Player player : winners) {
+                int numDevCards = player.getDevelopmentCards().size();
+                if (numDevCards < maxDevCards)
+                    maxDevCards = numDevCards;
             }
-            final int cards = devCards;
+            final int finalMaxDevCards = maxDevCards;
             winners.clear();
-            winners.addAll(players.stream().filter(x -> x.getPrestige() == p && x.getDevelopmentCards().size() == cards).toList());
+            winners.addAll(players.stream().filter(x -> x.getPrestige() == finalHighestPrestige && x.getDevelopmentCards().size() == finalMaxDevCards).toList());
         }
     }
 
@@ -355,6 +357,7 @@ public class Game {
     }
 
     private boolean canPlayerAffordCard(NobleCard card){
+        //currentPlayerIndex already incremented with 1, so we have to get the previous index
         int playerIndex = currentPlayerIndex - 1 >= 0 ? currentPlayerIndex - 1 : players.size() - 1;
         if (players.get(playerIndex).getNobleCard() == null){
             for (GemAmount cost : card.getPrice()) {
@@ -375,6 +378,7 @@ public class Game {
     }
 
     public void giveNobleToPlayer(NobleCard noble){
+        //currentPlayerIndex already incremented with 1, so we have to get the previous index
         int playerIndex = currentPlayerIndex - 1 >= 0 ? currentPlayerIndex - 1 : players.size() - 1;
         for (int i = 0; i<nobleCards.size(); i++){
             if (nobleCards.get(i).getAssetName().equals(noble.getAssetName())){
