@@ -382,58 +382,6 @@ public class Game {
 
         msg[0] = I18n.translate("game.card.buy.success");
         return true;
-        /*List<GemAmount> temp = players.get(currentPlayerIndex).getGems();
-        List<GemAmount> originalPlayerGems = new ArrayList<>(players.get(currentPlayerIndex).getGems());
-
-        for (GemAmount cost : card.getPrice()){
-            for (GemAmount inv : players.get(currentPlayerIndex).getBonusGems()){
-                if (cost.getType() == inv.getType()){
-                    if (cost.getAmount() > inv.getAmount() && cost.getAmount() != 0){
-                        temp.stream()
-                                .filter(x -> x.getType() == cost.getType())
-                                .findFirst()
-                                .ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex)
-                                        .getTotalGems()
-                                        .stream().filter(c -> c.getType() == inv.getType())
-                                        .toList()
-                                        .get(0)
-                                        .getAmount() - cost.getAmount())));
-                    }
-                    else{
-                        temp.stream()
-                                .filter(x -> x.getType() == cost.getType()).findFirst()
-                                .ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex)
-                                        .getGems()
-                                        .stream()
-                                        .filter(c -> c.getType() == cost.getType())
-                                        .toList().
-                                        get(0).getAmount())));
-                    }
-                }
-            }
-        }
-        players.get(currentPlayerIndex).setGemStack(temp);
-        matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst()
-                .orElseThrow(() -> new RuntimeException("Card not found"));
-        developmentCards.remove(matrix[card.getLevel()-1][index]);
-        players.get(currentPlayerIndex).addDevelopmentCard(card);
-        List<GemAmount> trueCardCost = new ArrayList<>();
-        for (GemAmount current : players.get(currentPlayerIndex).getGems()){
-            for (GemAmount old : originalPlayerGems){
-                if (current.getType() == old.getType()){
-                    trueCardCost.add(new GemAmount(old.getType(), old.getAmount() - current.getAmount()));
-                }
-            }
-        }
-        for (GemAmount gemReturn : trueCardCost){
-            for (GemAmount gem : gemStack){
-                if (gem.getType() == gemReturn.getType()){
-                    gemStack.set(gemStack.indexOf(gem), new GemAmount(gem.getType(), gem.getAmount() + gemReturn.getAmount()));
-                }
-            }
-        }
-        msg[0] = I18n.translate("game.card.buy.success");
-        return true;*/
     }
 
     private boolean canPlayerAffordCard(DevelopmentCard card){

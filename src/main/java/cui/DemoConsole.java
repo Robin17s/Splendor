@@ -68,6 +68,7 @@ public class DemoConsole {
             domainController.addItemsToPlayers();
 
             // print all players with the items they have
+            // TODO: fix 1 item displaying 2 times
             System.out.println(I18n.translate("console.start.scenario"));
             printPlayersWithCardsAndGems(domainController);
         }
