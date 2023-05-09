@@ -222,17 +222,9 @@ public class Game {
     public void endTurn(){
         decideTooManyGems();
         decideFinalRound();
-        if (!finalRound){
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-        }
-        else {
-            if (currentPlayerIndex == players.size() - 1){
-                currentPlayerIndex++;
-            }
-            else{
-                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-            }
-        }
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        if (finalRound && currentPlayerIndex == 0)
+            currentPlayerIndex = players.size();
         candidateNobles();
     }
 
@@ -250,12 +242,12 @@ public class Game {
         alert.setTitle(I18n.translate("game.toomanygems.title"));
         alert.setHeaderText(I18n.translate("game.toomanygems.title"));
         alert.setContentText(I18n.translate("game.toomanygems.message",
-                        amountOfGems.get(Crystal.Diamond).toString(),
-                        amountOfGems.get(Crystal.Sapphire).toString(),
-                        amountOfGems.get(Crystal.Emerald).toString(),
-                        amountOfGems.get(Crystal.Ruby).toString(),
-                        amountOfGems.get(Crystal.Onyx).toString(),
-                        String.valueOf(amount)));
+                amountOfGems.get(Crystal.Diamond).toString(),
+                amountOfGems.get(Crystal.Sapphire).toString(),
+                amountOfGems.get(Crystal.Emerald).toString(),
+                amountOfGems.get(Crystal.Ruby).toString(),
+                amountOfGems.get(Crystal.Onyx).toString(),
+                String.valueOf(amount)));
         alert.getButtonTypes().add(new ButtonType(I18n.translate("gem.diamond")));
         alert.getButtonTypes().add(new ButtonType(I18n.translate("gem.sapphire")));
         alert.getButtonTypes().add(new ButtonType(I18n.translate("gem.emerald")));
@@ -271,10 +263,10 @@ public class Game {
 
         Crystal crystal =
                 result.equalsIgnoreCase(I18n.translate("gem.diamond")) ? Crystal.Diamond :
-                result.equalsIgnoreCase(I18n.translate("gem.sapphire")) ? Crystal.Sapphire :
-                result.equalsIgnoreCase(I18n.translate("gem.emerald")) ? Crystal.Emerald :
-                result.equalsIgnoreCase(I18n.translate("gem.ruby")) ? Crystal.Ruby :
-                result.equalsIgnoreCase(I18n.translate("gem.onyx")) ? Crystal.Onyx : null;
+                        result.equalsIgnoreCase(I18n.translate("gem.sapphire")) ? Crystal.Sapphire :
+                                result.equalsIgnoreCase(I18n.translate("gem.emerald")) ? Crystal.Emerald :
+                                        result.equalsIgnoreCase(I18n.translate("gem.ruby")) ? Crystal.Ruby :
+                                                result.equalsIgnoreCase(I18n.translate("gem.onyx")) ? Crystal.Onyx : null;
 
         if (crystal == null) {
             decideTooManyGems();
@@ -289,35 +281,33 @@ public class Game {
         decideTooManyGems();
     }
 
-    public void decideFinalRound(){
-        if (!finalRound){
-            for (Player player : players){
-                int DR_GAME_END = 15;
-                if (player.getPrestige() >= DR_GAME_END){
-                    finalRound = true;
-                    break;
-                }
-            }
+    public void decideFinalRound() {
+        final int PRESTIGE_LEVEL_GAME_END = 5;
+        if (!finalRound) {
+            finalRound = players.stream()
+                    .anyMatch(player -> player.getPrestige() >= PRESTIGE_LEVEL_GAME_END);
         }
     }
 
     public void decideWinners(){
         int highestPrestige = 0;
-        int devCards = 500;
-        for (Player player : players){
-            if (player.getPrestige() > highestPrestige)
-                highestPrestige = player.getPrestige();
+        int maxDevCards = Integer.MAX_VALUE;
+        for (Player player : players) {
+            int prestige = player.getPrestige();
+            if (prestige > highestPrestige)
+                highestPrestige = prestige;
         }
-        final int p = highestPrestige;
-        winners.addAll(players.stream().filter(x -> x.getPrestige() == p).toList());
+        final int finalHighestPrestige = highestPrestige;
+        winners.addAll(players.stream().filter(x -> x.getPrestige() == finalHighestPrestige).toList());
         if (winners.size() != 1){
-            for (Player player : winners){
-                if (player.getDevelopmentCards().size() < devCards)
-                    devCards = player.getDevelopmentCards().size();
+            for (Player player : winners) {
+                int numDevCards = player.getDevelopmentCards().size();
+                if (numDevCards < maxDevCards)
+                    maxDevCards = numDevCards;
             }
-            final int cards = devCards;
+            final int finalMaxDevCards = maxDevCards;
             winners.clear();
-            winners.addAll(players.stream().filter(x -> x.getPrestige() == p && x.getDevelopmentCards().size() == cards).toList());
+            winners.addAll(players.stream().filter(x -> x.getPrestige() == finalHighestPrestige && x.getDevelopmentCards().size() == finalMaxDevCards).toList());
         }
     }
 
