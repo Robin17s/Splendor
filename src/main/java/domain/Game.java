@@ -35,6 +35,10 @@ public class Game {
         nobleCards = new ArrayList<>();
         gemStack = new ArrayList<>();
         playerMapper = new PlayerMapper();
+
+        // Load players in background
+        new Thread(playerMapper::loadPlayers, "PlayerLoader-Worker").start();
+
         matrix = new DevelopmentCard[3][4];
         currentPlayerIndex = 0;
         finalRound = false;
