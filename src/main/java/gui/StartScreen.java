@@ -5,7 +5,9 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -21,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public final class StartScreen extends Pane {
     public StartScreen() {
@@ -44,6 +47,7 @@ public final class StartScreen extends Pane {
         Label titleLabel = new Label("Splendor");
         Label versionLabel = new Label(I18n.translate("startscreen.version"));
         Button playButton = new Button(I18n.translate("startscreen.play"));
+        Button languageButton = new Button(I18n.translate("startscreen.language"));
         Button quitButton = new Button(I18n.translate("startscreen.quit"));
 
         titleLabel.setFont(Font.font(32));
@@ -57,18 +61,43 @@ public final class StartScreen extends Pane {
         VBox.setMargin(playButton, new Insets(8, 0, 8, 0));
         playButton.setOnAction(this::onPlayButtonClick);
 
+        languageButton.setMinWidth(250);
+        languageButton.setMinHeight(50);
+        VBox.setMargin(languageButton, new Insets(8, 0, 8, 0));
+        languageButton.setOnAction(this::onLanguageButtonClick);
+
         quitButton.setMinWidth(250);
         quitButton.setMinHeight(50);
         VBox.setMargin(quitButton, new Insets(8, 0, 8, 0));
         quitButton.setOnAction(this::onQuitButtonClick);
 
-        box.getChildren().addAll(titleLabel, versionLabel, playButton, quitButton);
+        box.getChildren().addAll(titleLabel, versionLabel, playButton, languageButton, quitButton);
         this.getChildren().add(box);
     }
 
-    private void onPlayButtonClick(ActionEvent event) {
-        ApplicationStart.getInstance().setScene(new AddPlayersScreen());
-        }
+    private void onPlayButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new AddPlayersScreen()); }
+
+    private void onLanguageButtonClick(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        alert.setTitle(I18n.translate("startscreen.language"));
+        alert.setHeaderText(I18n.translate("startscreen.language"));
+        alert.setContentText(I18n.translate("startscreen.language.message"));
+        alert.getButtonTypes().add(new ButtonType("English (US)"));
+        alert.getButtonTypes().add(new ButtonType("Nederlands (België)"));
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isEmpty()) return;
+
+        String locale = switch (result.get().getText()) {
+            case "English (US)" -> "en_US";
+            case "Nederlands (België)" -> "nl_BE";
+            default -> I18n.current_locale;
+        };
+
+        I18n.loadTranslationFile(locale);
+        ApplicationStart.getInstance().setScene(new StartScreen()); // Reload pane
+    }
 
     private void onQuitButtonClick(ActionEvent event) { Platform.exit(); }
 }

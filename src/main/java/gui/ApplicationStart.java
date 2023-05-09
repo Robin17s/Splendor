@@ -15,7 +15,7 @@ public class ApplicationStart extends Application {
 
     @Override
     public void start(Stage primary) {
-        I18n.loadTranslationFile("nl_BE");
+        I18n.loadTranslationFile("en_US");
 
         ApplicationStart.instance = this;
         this.primary = primary;

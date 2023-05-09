@@ -12,11 +12,17 @@ import java.util.Objects;
 public final class I18n {
     private static final Map<String, String> TRANSLATION_KEYS = new HashMap<>();
 
+    public static String current_locale = "";
+
     private I18n() {}
 
     public static void loadTranslationFile(String language) {
+        if (current_locale.equals(language)) return;
         try {
             List<String> content = Files.readAllLines(Path.of(Objects.requireNonNull(I18n.class.getClassLoader().getResource("lang/" + language + ".lang")).toURI()));
+
+            current_locale = language;
+            TRANSLATION_KEYS.clear();
 
             for (String line : content) {
                 String[] split = line.split("=");
