@@ -274,6 +274,12 @@ public class Game {
         }
 
         List<GemAmount> amounts = player.getGems();
+
+        if (amounts.stream().filter(gemAmount -> gemAmount.getType() == crystal).findFirst().orElseGet(() -> new GemAmount(crystal, 0)).getAmount() == 0) {
+            decideTooManyGems();
+            return;
+        }
+
         List<GemAmount> newAmounts = amounts.stream().map(gemAmount -> gemAmount.getType() == crystal ? new GemAmount(gemAmount.getType(), gemAmount.getAmount() - 1) : gemAmount).collect(Collectors.toList());
         gemStack = gemStack.stream().map(gemAmount -> gemAmount.getType() == crystal ? new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 1) : gemAmount).collect(Collectors.toList());
 
