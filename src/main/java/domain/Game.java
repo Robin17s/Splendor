@@ -1,17 +1,15 @@
 package domain;
 
 import domain.i18n.I18n;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import persistence.PlayerMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -222,6 +220,7 @@ public class Game {
     }
 
     public void endTurn(){
+        decideTooManyGems();
         decideFinalRound();
         if (!finalRound){
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
@@ -235,6 +234,59 @@ public class Game {
             }
         }
         candidateNobles();
+    }
+
+    public void decideTooManyGems() {
+        Player player = players.get(currentPlayerIndex);
+        int amount = player.getGems().stream().mapToInt(GemAmount::getAmount).sum();
+
+        if (amount <= 10) return;
+
+        Map<Crystal, Integer> amountOfGems = new HashMap<>();
+        player.getGems().forEach(gemAmount -> amountOfGems.put(gemAmount.getType(), gemAmount.getAmount()));
+
+        // TODO Move to gui
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        alert.setTitle(I18n.translate("game.toomanygems.title"));
+        alert.setHeaderText(I18n.translate("game.toomanygems.title"));
+        alert.setContentText(I18n.translate("game.toomanygems.message",
+                        amountOfGems.get(Crystal.Diamond).toString(),
+                        amountOfGems.get(Crystal.Sapphire).toString(),
+                        amountOfGems.get(Crystal.Emerald).toString(),
+                        amountOfGems.get(Crystal.Ruby).toString(),
+                        amountOfGems.get(Crystal.Onyx).toString(),
+                        String.valueOf(amount)));
+        alert.getButtonTypes().add(new ButtonType(I18n.translate("gem.diamond")));
+        alert.getButtonTypes().add(new ButtonType(I18n.translate("gem.sapphire")));
+        alert.getButtonTypes().add(new ButtonType(I18n.translate("gem.emerald")));
+        alert.getButtonTypes().add(new ButtonType(I18n.translate("gem.ruby")));
+        alert.getButtonTypes().add(new ButtonType(I18n.translate("gem.onyx")));
+
+        String result = alert.showAndWait().orElseGet(() -> new ButtonType("")).getText().toLowerCase();
+
+        if (result.isEmpty()) {
+            decideTooManyGems();
+            return;
+        }
+
+        Crystal crystal =
+                result.equalsIgnoreCase(I18n.translate("gem.diamond")) ? Crystal.Diamond :
+                result.equalsIgnoreCase(I18n.translate("gem.sapphire")) ? Crystal.Sapphire :
+                result.equalsIgnoreCase(I18n.translate("gem.emerald")) ? Crystal.Emerald :
+                result.equalsIgnoreCase(I18n.translate("gem.ruby")) ? Crystal.Ruby :
+                result.equalsIgnoreCase(I18n.translate("gem.onyx")) ? Crystal.Onyx : null;
+
+        if (crystal == null) {
+            decideTooManyGems();
+            return;
+        }
+
+        List<GemAmount> amounts = player.getGems();
+        List<GemAmount> newAmounts = amounts.stream().map(gemAmount -> gemAmount.getType() == crystal ? new GemAmount(gemAmount.getType(), gemAmount.getAmount() - 1) : gemAmount).collect(Collectors.toList());
+        gemStack = gemStack.stream().map(gemAmount -> gemAmount.getType() == crystal ? new GemAmount(gemAmount.getType(), gemAmount.getAmount() + 1) : gemAmount).collect(Collectors.toList());
+
+        player.setGemStack(newAmounts);
+        decideTooManyGems();
     }
 
     public void decideFinalRound(){
