@@ -101,7 +101,7 @@ public final class BoardScreen extends BorderPane {
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle(I18n.translate("boardscreen.gems.title"));
-                alert.setHeaderText(amount.getType().name());
+                alert.setHeaderText(I18n.translate(amount.getType().getTranslationKey()));
                 alert.setContentText(I18n.translate("boardscreen.gems.explanation"));
 
                 ButtonType buttonTypeOne = new ButtonType(I18n.translate("boardscreen.gems.takethree", "" + (gemsPicked.size() + 1)));

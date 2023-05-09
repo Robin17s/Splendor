@@ -1,5 +1,7 @@
 package domain;
 
+import domain.i18n.I18n;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -137,7 +139,7 @@ public class Player {
         String output = "";
         for(GemAmount cost : getTotalGems()){
             //if (cost.getAmount() > 0)
-                output += String.format("%s: %d\n", cost.getType(), cost.getAmount());
+                output += String.format("%s: %d\n", I18n.translate(cost.getType().getTranslationKey()), cost.getAmount());
         }
         return output.substring(0, output.length() - (output.isEmpty() ? 0 : 1));
     }
