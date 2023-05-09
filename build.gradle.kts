@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("application")
+    id("java-library")
     id("org.javamodularity.moduleplugin") version "1.8.12"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
@@ -19,6 +20,8 @@ dependencies {
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+
+    withJavadocJar()
 }
 
 javafx {
@@ -28,11 +31,11 @@ javafx {
 
 application {
     mainModule.set("splendor")
-    mainClass.set("gui.ApplicationStart")
+    mainClass.set("main.Main")
 }
 
 tasks.withType<Jar> {
     manifest {
-        attributes["Main-Class"] = "gui.ApplicationStart"
+        attributes["Main-Class"] = "main.Main"
     }
 }
