@@ -1,5 +1,7 @@
 package domain;
 
+import domain.i18n.I18n;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,9 +95,9 @@ public class DomainController{
         if(splendor.getGemStack().get(splendor.getIndexOfGem(gem)).getAmount() >= 4){
             splendor.takeTwoGemsOfTheSameType(gem);
             splendor.endTurn();
-            return "You took two gems";
+            return I18n.translate("boardscreen.gems.succesfullytooktwo");
         }
-        return "there need to be at least 4 gems on the pile to take 2";
+        return I18n.translate("boardscreen.gems.failedtotaketwo");
     }
 
     /**
@@ -106,9 +108,9 @@ public class DomainController{
         if(gems.stream().allMatch(gem -> splendor.getGemStack().get(splendor.getIndexOfGem(gem)).getAmount() > 0)){
             splendor.takeThreeGemsOfDifferentTypes(gems);
             splendor.endTurn();
-            return "You took three gems";
+            return I18n.translate("boardscreen.gems.succesfullytookthree");
         }
-        return "At least 1 type of the chosen gems is not available";
+        return I18n.translate("boardscreen.gems.failedtotakethree");
     }
 
     /**
