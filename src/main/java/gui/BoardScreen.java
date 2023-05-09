@@ -154,6 +154,10 @@ public final class BoardScreen extends BorderPane {
         }
         Button skipTurnButton = new Button(I18n.translate("player.skip.turn"));
         skipTurnButton.setOnAction(event -> {
+            Alert turnSkippedAlert = new Alert(Alert.AlertType.INFORMATION);
+            turnSkippedAlert.setTitle(I18n.translate("player.skip.turn.popup.title"));
+            turnSkippedAlert.setHeaderText(I18n.translate("player.skip.turn.popup.info", ApplicationStart.getInstance().getController().givePlayers().get(ApplicationStart.getInstance().getController().getCurrentPlayerIndex()).getName()));
+            turnSkippedAlert.showAndWait();
             ApplicationStart.getInstance().getController().skipTurn();
             nobleAlert();
             refreshScreen();
