@@ -223,29 +223,17 @@ public class Game {
 
     public void endTurn(){
         decideFinalRound();
-        if (!finalRound){
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-        }
-        else {
-            if (currentPlayerIndex == players.size() - 1){
-                currentPlayerIndex++;
-            }
-            else{
-                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-            }
-        }
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        if (finalRound && currentPlayerIndex == 0)
+            currentPlayerIndex = players.size();
         candidateNobles();
     }
 
-    public void decideFinalRound(){
-        if (!finalRound){
-            for (Player player : players){
-                int DR_GAME_END = 15;
-                if (player.getPrestige() >= DR_GAME_END){
-                    finalRound = true;
-                    break;
-                }
-            }
+    public void decideFinalRound() {
+        final int PRESTIGE_LEVEL_GAME_END = 5;
+        if (!finalRound) {
+            finalRound = players.stream()
+                    .anyMatch(player -> player.getPrestige() >= PRESTIGE_LEVEL_GAME_END);
         }
     }
 
