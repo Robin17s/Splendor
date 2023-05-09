@@ -5,13 +5,11 @@ import domain.i18n.I18n;
 import java.util.List;
 
 public class DevelopmentCard extends Card {
-    private final List<GemAmount> price;
     private final Crystal bonus;
     private final int level;
 
     public DevelopmentCard(int prestige, Crystal bonus, int level, List<GemAmount> price, String assetName) {
-        super (prestige,assetName);
-        this.price = price;
+        super (prestige, assetName, price);
         this.bonus = bonus;
         this.level = level;
     }
@@ -20,16 +18,12 @@ public class DevelopmentCard extends Card {
     }
 
     private String makeCostString(){
-        String output = "";
-        for(GemAmount cost : price){
+        StringBuilder output = new StringBuilder();
+        for(GemAmount cost : getPrice()){
             if (cost.getAmount() > 0)
-                output += String.format("[%s: %d] ", cost.getType(), cost.getAmount());
+                output.append(String.format("[%s: %d] ", cost.getType(), cost.getAmount()));
         }
         return output.substring(0, output.length() - 1);
-    }
-
-    public List<GemAmount> getPrice(){
-        return price;
     }
 
     public Crystal getBonusGem(){

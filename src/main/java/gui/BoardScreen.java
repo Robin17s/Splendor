@@ -212,7 +212,7 @@ public final class BoardScreen extends BorderPane {
     public void showDevelopmentCards() {
         for (byte row = 0; row < 3; row++) {
             for (byte column = 0; column < 4; column++) {
-                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOntable()[row][column];
+                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOnTable()[row][column];
                 Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
                 Button button = new Button();
                 ImageView view = new ImageView(image);

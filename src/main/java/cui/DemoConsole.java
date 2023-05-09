@@ -22,22 +22,22 @@ public class DemoConsole {
         if (scanner.next().equalsIgnoreCase("Y")){
             DomainController domainController = new DomainController();
 
-            while (domainController.givePlayers().size() < 2 || domainController.givePlayers().size() < 4){
+            while (domainController.givePlayers().size() < Game.MIN_PLAYERS || domainController.givePlayers().size() < Game.MAX_PLAYERS){
                 // add a player to the game
                 addPlayer(scanner, domainController);
 
                 // break out of the loop when 4 players have been added to the game
-                if (domainController.givePlayers().size() == 4)
+                if (domainController.givePlayers().size() == Game.MAX_PLAYERS)
                     break;
 
                 // if the game has 2 or more players, ask to add another player
-                if (domainController.givePlayers().size() >= 2)
+                if (domainController.givePlayers().size() >= Game.MIN_PLAYERS)
                     ask(I18n.translate("console.start.add_other"));
 
                 // if no additional players need to be added, break out of the loop.
                 // The check if 2 or more players are already added is necessary.
                 // Without this, the scanner will listen after a player is added without the question being asked if another player should be added
-                if (domainController.givePlayers().size() >= 2 && scanner.next().equalsIgnoreCase("N"))
+                if (domainController.givePlayers().size() >= Game.MIN_PLAYERS && scanner.next().equalsIgnoreCase("N"))
                     break;
             }
 
@@ -80,7 +80,7 @@ public class DemoConsole {
         int cardCount = 1;
         for (int level = 0; level < 3; level++){
             for (int card = 0; card < 4; card++){
-                System.out.println(I18n.translate("console.devcards.print", String.valueOf(cardCount), domainController.getDevelopmentCardsOntable()[level][card].showCard()));
+                System.out.println(I18n.translate("console.devcards.print", String.valueOf(cardCount), domainController.getDevelopmentCardsOnTable()[level][card].showCard()));
                 cardCount++;
             }
         }
@@ -100,7 +100,7 @@ public class DemoConsole {
 
     private void printPlayers(DomainController domainController){
         for (Player player : domainController.givePlayers()) {
-            System.out.println(I18n.translate("console.players.print", player.getName(), String.valueOf(player.getDateOfBirth()), String.valueOf(player.getIndex())));
+            System.out.println(I18n.translate("console.players.print", player.getName(), String.valueOf(player.getDateOfBirth()), String.valueOf(domainController.givePlayers().indexOf(player))));
         }
     }
 

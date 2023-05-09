@@ -9,10 +9,6 @@ public class GemAmount {
         this.amount = amount;
     }
 
-    public String showGems(){
-        return String.format("[%s: %d]", type, amount);
-    }
-
     public Crystal getType() { return type; }
 
     public int getAmount() { return amount; }
@@ -21,15 +17,7 @@ public class GemAmount {
         amount--;
     }
 
-    public void addOne(){
-        amount++;
-    }
-
     public void subtractTwo(){
         amount -= 2;
-    }
-
-    public void addTwo(){
-        amount += 2;
     }
 }

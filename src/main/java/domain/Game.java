@@ -22,13 +22,12 @@ public class Game {
     private List<DevelopmentCard> developmentCards;
     private List<NobleCard> nobleCards;
     private List<GemAmount> gemStack;
-    private DevelopmentCard[][] matrix;
+    private final DevelopmentCard[][] matrix;
     private int currentPlayerIndex;
     public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 4;
     private boolean finalRound;
-    private List<Player> winners;
-    private final int DR_GAME_END = 15;
+    private final List<Player> winners;
 
     public Game() {
         players = new ArrayList<>();
@@ -152,12 +151,6 @@ public class Game {
         }
     }
 
-    public void setPlayerIndexes(){
-        for (int i = 0; i<=players.size() - 1; i++){
-            players.get(i).setIndex(i);
-        }
-    }
-
     private List<? extends Card> readCardsFromFile(String fileName, String cardType) throws IOException {
         //csv info development: [Level, Gem, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]
         //csv info noble: [Filler, Filler, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]
@@ -228,7 +221,7 @@ public class Game {
         return "Player added successfully!";
     }
 
-    public List<NobleCard> endTurn(){
+    public void endTurn(){
         decideFinalRound();
         if (!finalRound){
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
@@ -241,12 +234,13 @@ public class Game {
                 currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             }
         }
-        return candidateNobles();
+        candidateNobles();
     }
 
     public void decideFinalRound(){
         if (!finalRound){
             for (Player player : players){
+                int DR_GAME_END = 15;
                 if (player.getPrestige() >= DR_GAME_END){
                     finalRound = true;
                     break;
@@ -263,7 +257,7 @@ public class Game {
                 highestPrestige = player.getPrestige();
         }
         final int p = highestPrestige;
-        winners.addAll(players.stream().filter(x -> x.getPrestige() == p).collect(Collectors.toList()));
+        winners.addAll(players.stream().filter(x -> x.getPrestige() == p).toList());
         if (winners.size() != 1){
             for (Player player : winners){
                 if (player.getDevelopmentCards().size() < devCards)
@@ -271,7 +265,7 @@ public class Game {
             }
             final int cards = devCards;
             winners.clear();
-            winners.addAll(players.stream().filter(x -> x.getPrestige() == p && x.getDevelopmentCards().size() == cards).collect(Collectors.toList()));
+            winners.addAll(players.stream().filter(x -> x.getPrestige() == p && x.getDevelopmentCards().size() == cards).toList());
         }
     }
 
@@ -312,7 +306,7 @@ public class Game {
                                     .ifPresent(g -> temp.set(temp.indexOf(g), new GemAmount(inv.getType(), players.get(currentPlayerIndex)
                                             .getTotalGems()
                                             .stream().filter(c -> c.getType() == inv.getType())
-                                            .collect(Collectors.toList())
+                                            .toList()
                                             .get(0)
                                             .getAmount() - cost.getAmount())));
                         }
@@ -323,14 +317,15 @@ public class Game {
                                             .getGems()
                                             .stream()
                                             .filter(c -> c.getType() == cost.getType())
-                                            .collect(Collectors.toList()).
+                                            .toList().
                                             get(0).getAmount())));
                         }
                     }
                 }
             }
             players.get(currentPlayerIndex).setGemStack(temp);
-            matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst().get();
+            matrix[card.getLevel()-1][index] = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst()
+                    .orElseThrow(() -> new RuntimeException("Card not found"));
             developmentCards.remove(matrix[card.getLevel()-1][index]);
             players.get(currentPlayerIndex).addDevelopmentCard(card);
             List<GemAmount> trueCardCost = new ArrayList<>();
@@ -353,28 +348,6 @@ public class Game {
         }
         msg[0] = I18n.translate("game.card.buy.fail");
         return false;
-    }
-
-    private List<GemAmount> makeGemList(){
-        List<GemAmount> temp = new ArrayList<>();
-        temp.addAll(Arrays.asList(new GemAmount(Crystal.Diamond, 0),
-                new GemAmount(Crystal.Onyx, 0),
-                new GemAmount(Crystal.Emerald, 0),
-                new GemAmount(Crystal.Sapphire, 0),
-                new GemAmount(Crystal.Ruby, 0)));
-        return temp;
-    }
-
-    private List<GemAmount> subtractTwoGemAmountLists(List<GemAmount> list1, List<GemAmount> list2){
-        List<GemAmount> output = new ArrayList<>();
-        for (GemAmount gem1 : list1){
-            for (GemAmount gem2 : list2){
-                if (gem1.getType() == gem2.getType()){
-                    output.add(new GemAmount(gem1.getType(), gem1.getAmount() - gem2.getAmount()));
-                }
-            }
-        }
-        return output;
     }
 
     private boolean canPlayerAffordCard(DevelopmentCard card){
@@ -416,7 +389,7 @@ public class Game {
     public void giveNobleToPlayer(NobleCard noble){
         int playerIndex = currentPlayerIndex - 1 >= 0 ? currentPlayerIndex - 1 : players.size() - 1;
         for (int i = 0; i<nobleCards.size(); i++){
-            if (nobleCards.get(i).getAssetName() == noble.getAssetName()){
+            if (nobleCards.get(i).getAssetName().equals(noble.getAssetName())){
                 players.get(playerIndex).setNobleCard(nobleCards.get(i));
                 nobleCards.remove(i);
                 break;
@@ -425,21 +398,7 @@ public class Game {
     }
 
     public int getIndexOfGem(GemAmount gem){
-        return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().getAsInt();
-    }
-
-
-    public boolean canTakeTwoGems(GemAmount gem){
-        return compareGemValue(gem, 4);
-    }
-
-    public boolean canTakeOneGem(GemAmount gem){
-        return compareGemValue(gem, 1);
-    }
-
-    private boolean compareGemValue(GemAmount gem, int value){
-        GemAmount temp = gemStack.stream().filter(x -> x.getType() == gem.getType()).toList().get(0);
-        return temp.getAmount() >= value ;
+        return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().orElseThrow(() -> new RuntimeException("Gem not found"));
     }
 
     public List<NobleCard> candidateNobles(){
@@ -452,5 +411,5 @@ public class Game {
         return temp;
     }
 
-    public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().toLowerCase().equals(name.toLowerCase()) && player.getDateOfBirth() == yearOfBirth); }
+    public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equalsIgnoreCase(name) && player.getDateOfBirth() == yearOfBirth); }
 }
