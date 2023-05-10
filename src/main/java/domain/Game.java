@@ -182,8 +182,12 @@ public class Game {
      * Sorts the player, to determine who can start.
      */
     public void sortPlayers() {
-        players.sort(Comparator.comparingInt(Player::getDateOfBirth));
-        Collections.reverse(players);
+        // DR_SPEL_STARTER De startspeler is de jongste speler.
+        // Zijn er meerder spelers even oud dan wordt de speler met de langste gebruikersnaam genomen.
+        // Als ook die gelijk is wordt de speler genomen van wie de gebruikersnaam na omgekeerd alfabetisch sorteren (Z -> A) het eerste voorkomt.
+
+        // sort players
+        players.sort(Comparator.comparingInt(Player::getDateOfBirth).thenComparingInt((Player p) -> p.getName().length()).thenComparing((Player p) -> p.getName().substring(0, 1)).reversed());
     }
 
     /**
