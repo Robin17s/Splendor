@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * Main game class.
+ */
 public class Game {
     private final PlayerMapper playerMapper;
     private final List<Player> players;
@@ -27,6 +30,9 @@ public class Game {
     private boolean finalRound;
     private final List<Player> winners;
 
+    /**
+     * Instantiates a new Game instance, along with all data needed to make it work.
+     */
     public Game() {
         players = new ArrayList<>();
         developmentCards = new ArrayList<>();
@@ -40,30 +46,52 @@ public class Game {
     }
 
     //region [getters and setters]
+
+    /**
+     * @return The List of nobles.
+     */
     public List<NobleCard> getNobleCards() {
         return nobleCards;
     }
 
+    /**
+     * @return The List of Gem-Amount tuples.
+     */
     public List<GemAmount> getGemStack() {
         return gemStack;
     }
 
+    /**
+     * @return The list of Players
+     */
     public List<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * @return The matrix of cards on the board
+     */
     public DevelopmentCard[][] getCardsOnBoard(){
         return matrix;
     }
 
+    /**
+     * @return The index of the current player
+     */
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
 
+    /**
+     * @return Whether or not this is the final round.
+     */
     public boolean getFinalRound(){
         return finalRound;
     }
 
+    /**
+     * @return The list of winners, if applicable.
+     */
     public List<Player> getWinners(){
         return winners;
     }
@@ -123,6 +151,9 @@ public class Game {
                 new GemAmount(Crystal.Ruby, numGems));
     }
 
+    /**
+     * Places the cards on the board.
+     */
     public void placeCardsOnBoard() {
         for(int level = 0; level < 3; level++) {
             int lvl = level + 1;
@@ -138,17 +169,30 @@ public class Game {
         }
     }
 
+    /**
+     * Sorts the player, to determine who can start.
+     */
     public void sortPlayers() {
         players.sort(Comparator.comparingInt(Player::getDateOfBirth));
         Collections.reverse(players);
     }
 
+    /**
+     * Generates a Gem Stack for every player.
+     */
     public void preparePlayerGems(){
         for (Player player : players){
             player.generateGemStack();
         }
     }
 
+    /**
+     * Parses a csv file, and read the contents into a List of cards
+     * @param fileName The file to read
+     * @param cardType The card type [e.g. noble, development]
+     * @return A List of parsed cards
+     * @throws IOException If something goes wrong whilst parsing.
+     */
     private List<? extends Card> readCardsFromFile(String fileName, String cardType) throws IOException {
         //csv info development: [Level, Gem, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]
         //csv info noble: [Filler, Filler, Prestige value, Diamond, Sapphire, Emerald, Ruby, Onyx]
@@ -182,6 +226,11 @@ public class Game {
         return result;
     }
 
+    /**
+     * Parses a crystal, based on a String
+     * @param string The crystal type, as a String
+     * @return The Crystal type, as a Crystal
+     */
     private Crystal parseCrystal(String string) {
         return switch (string) {
             case "onyx" -> Crystal.Onyx;
@@ -193,6 +242,11 @@ public class Game {
         };
     }
 
+    /**
+     * Parses a list of Crystal-Amount Tuples, based on a StringArray.
+     * @param values The array to parse data from
+     * @return The parsed list
+     */
     private List<GemAmount> parseCost(String[] values) {
         List<GemAmount> list = new ArrayList<>();
         for (int i = 3; i < values.length-1; i++) {
@@ -205,6 +259,12 @@ public class Game {
     }
     //endregion
 
+    /**
+     * Tries to add a Player to the game
+     * @param name The name of the player
+     * @param yearOfBirth The year the player was born in
+     * @return The status message, e.g. success; failure
+     */
     public String addPlayerToGame(String name, int yearOfBirth) {
         for (Player player : players) {
             if (player.getName().equals(name) && player.getDateOfBirth() == yearOfBirth) {
@@ -219,6 +279,9 @@ public class Game {
         return "Player added successfully!";
     }
 
+    /**
+     * Ends the player's turn.
+     */
     public void endTurn(){
         decideTooManyGems();
         decideFinalRound();
@@ -228,6 +291,9 @@ public class Game {
         candidateNobles();
     }
 
+    /**
+     * Determines whether or not the player has too much gems in their inventory, and shows a popup if that's the case
+     */
     public void decideTooManyGems() {
         Player player = players.get(currentPlayerIndex);
         int amount = player.getGems().stream().mapToInt(GemAmount::getAmount).sum();
@@ -287,6 +353,9 @@ public class Game {
         decideTooManyGems();
     }
 
+    /**
+     * Decides whether or not the final round should be played.
+     */
     public void decideFinalRound() {
         final int PRESTIGE_LEVEL_GAME_END = 5;
         if (!finalRound) {
@@ -295,6 +364,9 @@ public class Game {
         }
     }
 
+    /**
+     * Determines the winner of the game.
+     */
     public void decideWinners(){
         int highestPrestige = 0;
         int maxDevCards = Integer.MAX_VALUE;
@@ -317,6 +389,10 @@ public class Game {
         }
     }
 
+    /**
+     * Provides the logic to subtract 3x1 gems from the gem stack in the board.
+     * @param gems The gems to remove
+     */
     public void takeThreeGemsOfDifferentTypes(List<GemAmount> gems){
         for(GemAmount gem : gems){
             int index = getIndexOfGem(gem);
@@ -325,6 +401,10 @@ public class Game {
         players.get(currentPlayerIndex).addGems(gems);
     }
 
+    /**
+     * Provides the logic to subtract 1x2 gems from the gem stack in the board.
+     * @param gem The gem to remove
+     */
     public void takeTwoGemsOfTheSameType(GemAmount gem){
         gemStack.get(getIndexOfGem(gem)).subtractTwo();
         List<GemAmount> gemList = new ArrayList<>();
@@ -332,6 +412,12 @@ public class Game {
         players.get(currentPlayerIndex).addGems(gemList);
     }
 
+    /**
+     * Adds the possibility to buy a development card
+     * @param card What developmentcard will be bought
+     * @param msg A reference to a message
+     * @return Whether or not a Development Card may be bought, with more details in the 'msg' pointer
+     */
     public boolean takeDevelopmentCard(DevelopmentCard card, String[] msg){
         if (!canPlayerAffordCard(card)){
             msg[0] = I18n.translate("game.card.buy.fail");
@@ -384,6 +470,11 @@ public class Game {
         return true;
     }
 
+    /**
+     * Determines whether or not a player is able to afford a card
+     * @param card The card the player wants to buy
+     * @return true if the player can afford the card; false otherwise
+     */
     private boolean canPlayerAffordCard(DevelopmentCard card){
         for (GemAmount cost : card.getPrice()) {
             boolean hasGem = false;
@@ -400,6 +491,11 @@ public class Game {
         return true;
     }
 
+    /**
+     * Determines whether or not the player is eligible to be visited by a noble
+     * @param card The noble
+     * @return true if the player can be visited, false otherwise
+     */
     private boolean canPlayerAffordCard(NobleCard card){
         int playerIndex = currentPlayerIndex - 1 >= 0 ? currentPlayerIndex - 1 : players.size() - 1;
         if (players.get(playerIndex).getNobleCard() == null){
@@ -420,6 +516,10 @@ public class Game {
         return false;
     }
 
+    /**
+     * Lets a noble visit the player
+     * @param noble The noble visiting
+     */
     public void giveNobleToPlayer(NobleCard noble){
         int playerIndex = currentPlayerIndex - 1 >= 0 ? currentPlayerIndex - 1 : players.size() - 1;
         for (int i = 0; i<nobleCards.size(); i++){
@@ -431,10 +531,18 @@ public class Game {
         }
     }
 
+    /**
+     * @param gem The gem to fetch the index of
+     * @return The index of the gem
+     */
     public int getIndexOfGem(GemAmount gem){
         return IntStream.range(0, gemStack.size()).filter(x -> gemStack.get(x).getType() == gem.getType()).findFirst().orElseThrow(() -> new RuntimeException("Gem not found"));
     }
 
+    /**
+     * Returns a List with all nobles that may be able to visit a player.
+     * @return The list
+     */
     public List<NobleCard> candidateNobles(){
         List<NobleCard> temp = new ArrayList<>();
         for (NobleCard card : nobleCards){
@@ -445,5 +553,10 @@ public class Game {
         return temp;
     }
 
+    /**
+     * Removes a player from the game
+     * @param name The name of the player
+     * @param yearOfBirth The year they were born in
+     */
     public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equalsIgnoreCase(name) && player.getDateOfBirth() == yearOfBirth); }
 }

@@ -6,22 +6,47 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the entire game. It holds the game instance, and interfaces with all other parts of the application.
+ */
 public class DomainController{
     private final Game splendor;
+
+    /**
+     * Instantiates the Domain Controller.
+     */
     public DomainController(){
         splendor = new Game();
     }
 
+    /**
+     * Adds a player to the game.
+     * @param name The name of the player
+     * @param yearOfBirth The year of birth of the player
+     * @return The status of the registration, e.g. success; failure
+     */
     public String playerLogOn(String name, int yearOfBirth){
         return splendor.addPlayerToGame(name, yearOfBirth);
     }
 
+    /**
+     * Removes a player from the game.
+     * @param name The name of the player
+     * @param yearOfBirth The year the player is born
+     */
     public void removePlayerFromGame(String name, int yearOfBirth) { splendor.removePlayerFromGame(name, yearOfBirth); }
 
+    /**
+     * @return The list of players taking part in the game.
+     */
     public List<Player> givePlayers(){
         return splendor.getPlayers();
     }
 
+    /**
+     * Starts the game.
+     * @throws IOException When an I/O error occurs.
+     */
     public void startGame() throws IOException {
         splendor.generateDevelopmentCards();
         splendor.generateGemStack();
@@ -31,27 +56,43 @@ public class DomainController{
         splendor.preparePlayerGems();
     }
 
+    /**
+     * @return The list of nobles in-game.
+     */
     public List<NobleCard> getNobles(){
         return splendor.getNobleCards();
     }
 
+    /**
+     * @return The list of DevelopmentCards in-game
+     */
     public DevelopmentCard[][] getDevelopmentCardsOnTable(){
         return splendor.getCardsOnBoard();
     }
 
+    /**
+     * @return The list of gems in-game.
+     */
     public List<GemAmount> getGemStack(){
         return splendor.getGemStack();
     }
 
+    /**
+     * @return Whether or not the game is in its final round.
+     */
     public boolean isFinalRound(){
         return splendor.getFinalRound();
     }
+
+    /**
+     * @return The winners of the game.
+     */
     public List<Player> getWinners(){
         splendor.decideWinners();
         return splendor.getWinners();
     }
+
     /**
-     *
      * @param gem the gem the player takes. The amount does not matter!
      */
     public String takeTwoGemsOfTheSameType(GemAmount gem){
@@ -89,15 +130,27 @@ public class DomainController{
         return msg[0];
     }
 
+    /**
+     * @param ref The list of nobles
+     * @return Whether or not the Player is able to be visited by a noble.
+     */
     public boolean canPlayerGetNobleCard(List<NobleCard> ref){
         ref.addAll(splendor.candidateNobles());
         return ref.size() > 0;
     }
 
+    /**
+     * Makes a noble visit the player.
+     * @param card The nobe visiting the player
+     */
     public void setPlayerNoble(NobleCard card){
         splendor.giveNobleToPlayer(card);
         splendor.decideFinalRound();
     }
+
+    /**
+     * Skips the turn of the current player.
+     */
     public void skipTurn(){
         splendor.endTurn();
     }

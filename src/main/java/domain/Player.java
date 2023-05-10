@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * User playing the game
+ */
 public class Player {
     private final String name;
     private final int dateOfBirth;
@@ -13,7 +16,12 @@ public class Player {
     private final List<DevelopmentCard> developmentCards;
     private NobleCard nobleCard;
     private List<GemAmount> gemStack;
-    
+
+    /**
+     * Instantiates a new player, based on the given parameters
+     * @param name The name of the player
+     * @param dateOfBirth The year they were born in
+     */
     public Player(String name, int dateOfBirth){
         developmentCards = new ArrayList<>();
         this.name = name;
@@ -22,43 +30,77 @@ public class Player {
         prestige = 0;
     }
 
+    /**
+     * @return The name of the player
+     */
     public String getName() {
         return name;
     }
+
+    /**
+     * Sets the Player's Gem Stack to the given input
+     * @param input The Gem Stack to set
+     */
     public void setGemStack(List<GemAmount> input){
         this.gemStack = input;
     }
 
+    /**
+     * @return The year the player was born in
+     */
     public int getDateOfBirth() {
         return dateOfBirth;
     }
-    
+
+    /**
+     * @return A List of the development cards the player has
+     */
     public List<DevelopmentCard> getDevelopmentCards() {
         return developmentCards;
     }
 
+    /**
+     * @return The noble card that visited the player
+     */
     public NobleCard getNobleCard() {
         return nobleCard;
     }
 
+    /**
+     * Makes a noble visit the player
+     * @param nobleCard The noble visiting the player
+     */
     public void setNobleCard(NobleCard nobleCard) {
         this.nobleCard = nobleCard;
         updatePrestige();
     }
 
+    /**
+     * @return The amount of prestige the player has
+     */
     public int getPrestige() {
         return prestige;
     }
 
+    /**
+     * @return Which gems, along with their amount the player has
+     */
     public List<GemAmount> getGems() {
         return gemStack;
     }
 
+    /**
+     * Adds a development card to the player inventory
+     * @param developmentCard The card to add
+     */
     public void addDevelopmentCard(DevelopmentCard developmentCard){
         developmentCards.add(developmentCard);
         updatePrestige();
     }
 
+    /**
+     * Recalculates the player prestige, based on the cards they own, and the noble that might have visited them
+     */
     private void updatePrestige(){
         prestige = 0;
         for(DevelopmentCard developmentCard : developmentCards){
@@ -68,6 +110,10 @@ public class Player {
             prestige += nobleCard.getPrestige();
     }
 
+    /**
+     * Calculates the extra gems the player own, based on what their development cards give them
+     * @return The extra gems
+     */
     public List<GemAmount> getBonusGems(){
         List<GemAmount> temp = new ArrayList<>(Arrays.asList(new GemAmount(Crystal.Diamond, 0),
                 new GemAmount(Crystal.Onyx, 0),
@@ -83,6 +129,9 @@ public class Player {
         return temp;
     }
 
+    /**
+     * Initialises the Player's gem stack
+     */
     public void generateGemStack() {
         gemStack = Arrays.asList(
                 new GemAmount(Crystal.Diamond, 0),
@@ -91,7 +140,11 @@ public class Player {
                 new GemAmount(Crystal.Sapphire, 0),
                 new GemAmount(Crystal.Ruby, 0));
     }
-    
+
+    /**
+     * Adds gems to the Player's Gem Stack
+     * @param gems The gems to add
+     */
     public void addGems(List<GemAmount> gems) {
     	switch (gems.size()){
             case 1 -> gemStack
@@ -111,6 +164,10 @@ public class Player {
         }
     }
 
+    /**
+     * Calculates how much gems the player has, including passive noble- and development card bonuses
+     * @return The amount of gems the player has in total
+     */
     public List<GemAmount> getTotalGems(){
         List<GemAmount> temp = new ArrayList<>(gemStack);
         List<GemAmount> bonusGems = getBonusGems();
@@ -123,6 +180,10 @@ public class Player {
         }
         return temp;
     }
+
+    /**
+     * @return A String representation of the amount of gems the player has
+     */
     public String getGemsAsString(){
         StringBuilder output = new StringBuilder();
         for(GemAmount cost : getTotalGems()){
