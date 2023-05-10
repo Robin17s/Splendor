@@ -1,13 +1,11 @@
 package gui;
 
 import domain.DevelopmentCard;
-import domain.Game;
 import domain.GemAmount;
 import domain.NobleCard;
 import domain.i18n.I18n;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,13 +18,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-
+/**
+ * Screen responsible for rendering the game board, and its data.
+ */
 public final class BoardScreen extends BorderPane {
     private final GridPane pane = new GridPane();
     private List<GemAmount> gemsPicked = new ArrayList<>();
 
     private boolean finalRoundPopupFlag = false;
 
+    /**
+     * Instantiates a new BoardScreen, and initialises everything for the screen to start rendering.
+     * <p>
+     * Note: Calling this constructor only instantiates the screen. This doesn't mean it will start rendering. You will have to set that using {@link ApplicationStart#setScene(Pane)}
+     */
     public BoardScreen() {
         this.setBackground(new Background(
                 new BackgroundImage(
@@ -54,6 +59,9 @@ public final class BoardScreen extends BorderPane {
         this.setCenter(pane);
     }
 
+    /**
+     * Re-renders every component on the screen.
+     */
     public void refreshScreen() {
         showGems();
         showPlayers();
@@ -64,6 +72,9 @@ public final class BoardScreen extends BorderPane {
         switchToWinnerScreen();
     }
 
+    /**
+     * Checks whether or not the final round should be played, and if so, displays a popup showing it.
+     */
     public void finalRoundPopup(){
         if (ApplicationStart.getInstance().getController().isFinalRound() && !finalRoundPopupFlag){
             Alert popup = new Alert(Alert.AlertType.INFORMATION);
@@ -75,12 +86,18 @@ public final class BoardScreen extends BorderPane {
         }
     }
 
+    /**
+     * Checks whether or not a winner has been decided, and if so, displays the winner screen.
+     */
     public void switchToWinnerScreen(){
         if (ApplicationStart.getInstance().getController().getCurrentPlayerIndex() == ApplicationStart.getInstance().getController().givePlayers().size()){
             ApplicationStart.getInstance().setScene(new WinnerScreen());
         }
     }
 
+    /**
+     * Renders the part of the screen where the gems are rendered.
+     */
     public void showGems() {
         //rode box in paint
         VBox box = new VBox(2);
@@ -175,6 +192,9 @@ public final class BoardScreen extends BorderPane {
         this.setLeft(box);
     }
 
+    /**
+     * Renders the part of the screen where the nobles are present.
+     */
     public void showNobles() {
         HBox box = new HBox(2);
 
@@ -198,6 +218,9 @@ public final class BoardScreen extends BorderPane {
         this.setTop(box);
     }
 
+    /**
+     * Renders the piles of (invisible) development cards.
+     */
     public void showDevelopmentCardPiles() {
         Image level3Image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/devlevel3back.jpg")));
         ImageView level3View = new ImageView(level3Image);
@@ -213,6 +236,9 @@ public final class BoardScreen extends BorderPane {
         pane.add(level1View, 0, 2);
     }
 
+    /**
+     * Renders the visible development cards on screen.
+     */
     public void showDevelopmentCards() {
         for (byte row = 0; row < 3; row++) {
             for (byte column = 0; column < 4; column++) {
@@ -265,6 +291,9 @@ public final class BoardScreen extends BorderPane {
         }
     }
 
+    /**
+     * Checks whether or not the current player can be visited by a Noble, and shows the popup when true.
+     */
     private void nobleAlert() {
         List<NobleCard> ref = new ArrayList<>();
         if (ApplicationStart.getInstance().getController().canPlayerGetNobleCard(ref)) {
@@ -286,6 +315,9 @@ public final class BoardScreen extends BorderPane {
         }
     }
 
+    /**
+     * Renders the players on screen.
+     */
     public void showPlayers() {
         int numPlayers = ApplicationStart.getInstance().getController().givePlayers().size();
 

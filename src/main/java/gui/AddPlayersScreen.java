@@ -1,34 +1,28 @@
 package gui;
 
-import domain.Player;
 import domain.i18n.I18n;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * Screen responsible for adding Players to the game.
+ */
 public final class AddPlayersScreen extends BorderPane {
     private final TextField usernameField;
     private final TextField yobField;
     private final ListView<String> playerPane;
 
+    /**
+     * Instantiates a new screen, and initialises everything needed for the screen to start rendering.
+     * <p>
+     * Note: Calling this constructor only instantiates the screen. This doesn't mean it will start rendering. You will have to set that using {@link ApplicationStart#setScene(Pane)}
+     */
     public AddPlayersScreen() {
         HBox bottomBox = new HBox();
         bottomBox.setBackground(new Background(new BackgroundFill(new Color(0.9, 0.9, 0.9, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -89,18 +83,26 @@ public final class AddPlayersScreen extends BorderPane {
 
 
         // Quick Debug bypass method, PUT IN COMMENT IF YOU DONT NEED
-        ApplicationStart.getInstance().getController().playerLogOn("thomas", 1987);
-        addPlayerToPane("thomas", 1987);
-        ApplicationStart.getInstance().getController().playerLogOn("brent", 2005);
-        addPlayerToPane("brent", 2005);
+        //ApplicationStart.getInstance().getController().playerLogOn("thomas", 1987);
+        //addPlayerToPane("thomas", 1987);
+        //ApplicationStart.getInstance().getController().playerLogOn("brent", 2005);
+        //addPlayerToPane("brent", 2005);
         /*ApplicationStart.getInstance().getController().playerLogOn("robin", 2000);
         addPlayerToPane("robin", 2000);
         ApplicationStart.getInstance().getController().playerLogOn("friso", 2004);
         addPlayerToPane("friso", 2004);*/
     }
 
+    /**
+     * Callback for when the "Back" button is clicked.
+     * @param event The dispatched event.
+     */
     private void onBackButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new StartScreen()); }
 
+    /**
+     * Callback for when the "Play" button is clicked.
+     * @param event The dispatched event.
+     */
     private void onPlayButtonClick(ActionEvent event) {
         if (ApplicationStart.getInstance().getController().givePlayers().size() < 2) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -137,12 +139,10 @@ public final class AddPlayersScreen extends BorderPane {
         }
     }
 
-    private String addPlayerList() {
-        List<Player> players = ApplicationStart.getInstance().getController().givePlayers();
-
-        return players.stream().map(player -> String.format("%s - %d", player.getName(), player.getDateOfBirth())).collect(Collectors.joining("\n"));
-    }
-
+    /**
+     * Callback for when the "Add Player" button is clicked.
+     * @param event The dispatched event.
+     */
     private void onAddPlayerButtonClick(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
@@ -205,8 +205,17 @@ public final class AddPlayersScreen extends BorderPane {
         addPlayerToPane(username, year);
     }
 
+    /**
+     * Adds the given player to the pane of players.
+     * @param username The username of the player.
+     * @param year The year of birth of the player.
+     */
     private void addPlayerToPane(String username, int year) { playerPane.getItems().add("%s - %d".formatted(username, year)); }
 
+    /**
+     * Callback for when the "Remove Player" button is clicked.
+     * @param event The dispatched event.
+     */
     private void onRemovePlayerButtonClick(ActionEvent event) {
         if (playerPane.selectionModelProperty().get().getSelectedItems().size() != 0){
             String selectedItem = playerPane.selectionModelProperty().get().getSelectedItems().get(0);

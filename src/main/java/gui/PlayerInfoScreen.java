@@ -16,10 +16,19 @@ import javafx.scene.text.Font;
 
 import java.util.Objects;
 
+/**
+ * Screen responsible for showing a specific Player's info.
+ */
 public class PlayerInfoScreen extends BorderPane {
     private final GridPane pane = new GridPane();
     DomainController domainController = ApplicationStart.getInstance().getController();
     private int selectedPlayerIndex;
+
+    /**
+     * Instantiates a new PlayerInfoScreen, and initialises everything for the screen to start rendering.
+     * <p>
+     * Note: Calling this constructor only instantiates the screen. This doesn't mean it will start rendering. You will have to set that using {@link ApplicationStart#setScene(Pane)}
+     */
     public PlayerInfoScreen(int selectedPlayerIndex) {
         this.selectedPlayerIndex = selectedPlayerIndex;
         this.setBackground(new Background(
@@ -38,10 +47,9 @@ public class PlayerInfoScreen extends BorderPane {
         showPlayerCards();
     }
 
-    public void refresh(){
-        showPlayers();
-    }
-
+    /**
+     * Renders the specific development cards owned by the player.
+     */
     public void showPlayerCards() {
         int row = 0;
         int column = 0;
@@ -89,6 +97,9 @@ public class PlayerInfoScreen extends BorderPane {
         }
     }
 
+    /**
+     * Renders the players on screen.
+     */
     public void showPlayers() {
         int numPlayers = ApplicationStart.getInstance().getController().givePlayers().size();
 
@@ -134,6 +145,9 @@ public class PlayerInfoScreen extends BorderPane {
         this.setRight(playersBox);
     }
 
+    /**
+     * Returns to the board screen.
+     */
     private void loadBoardScreen(){
         BoardScreen boardScreen = new BoardScreen();
         ApplicationStart.getInstance().setScene(boardScreen);

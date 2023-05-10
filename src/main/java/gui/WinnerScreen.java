@@ -13,9 +13,15 @@ import javafx.scene.text.Font;
 
 import java.util.Objects;
 
+/**
+ * Screen responsible for showing the winner of the game.
+ */
 public class WinnerScreen extends BorderPane {
     private DomainController domainController = ApplicationStart.getInstance().getController();
 
+    /**
+     * Instantiates the screen, and sets it up for rendering.
+     */
     public WinnerScreen() {
         this.setBackground(new Background(
                 new BackgroundImage(

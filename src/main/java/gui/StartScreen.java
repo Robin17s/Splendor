@@ -25,7 +25,13 @@ import javafx.scene.text.Font;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * First screen being shown when the game starts up.
+ */
 public final class StartScreen extends Pane {
+    /**
+     * Instantiates a new StartScreen, and sets it up for rendering.
+     */
     public StartScreen() {
         // TODO wrap in something safer
         this.setBackground(new Background(
@@ -75,8 +81,16 @@ public final class StartScreen extends Pane {
         this.getChildren().add(box);
     }
 
+    /**
+     * Callback for when the "Play" button is clicked
+     * @param event The dispatched event
+     */
     private void onPlayButtonClick(ActionEvent event) { ApplicationStart.getInstance().setScene(new AddPlayersScreen()); }
 
+    /**
+     * Callback for when the "Language" button is clicked
+     * @param event The dispatched event
+     */
     private void onLanguageButtonClick(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setTitle(I18n.translate("startscreen.language"));
@@ -99,5 +113,9 @@ public final class StartScreen extends Pane {
         ApplicationStart.getInstance().setScene(new StartScreen()); // Reload pane
     }
 
+    /**
+     * Callback for when the "Quit" button is clicked
+     * @param event The dispatched event
+     */
     private void onQuitButtonClick(ActionEvent event) { Platform.exit(); }
 }
