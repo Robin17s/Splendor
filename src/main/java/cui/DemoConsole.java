@@ -7,12 +7,29 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Main class for the console edition of Splendor.
+ * <p>
+ * To play the console edition of Splendor, execute the main method of this class.
+ */
 public class DemoConsole {
+    /**
+     * Entrypoint for the console edition of Splendor.
+     * @param args The arguments the JVM started with
+     * @throws IOException When an input is invalid
+     */
     public static void main(String[] args) throws IOException {
         I18n.loadTranslationFile("en_US");
         DemoConsole app = new DemoConsole();
         app.start();
     }
+
+    /**
+     * Starts the game loop of Splendor console edition.
+     * <p>
+     * While it is possible to call this method on its own, it's always recommended to use the {@link #main(String[])} method instead, since this method always initialises the game state the way it should be.
+     * @throws IOException When an input is invalid
+     */
     public void start() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
@@ -73,10 +90,19 @@ public class DemoConsole {
             printPlayersWithCardsAndGems(domainController);
         }
     }
+
+    /**
+     * Prints a question to the console output.
+     * @param question The question to print out
+     */
     private void ask(String question){
         System.out.print(question);
     }
 
+    /**
+     * Prints all development cards present on the board of this game.
+     * @param domainController The DomainController managing this game instance.
+     */
     private void printDevelopmentCards(DomainController domainController){
         int cardCount = 1;
         for (int level = 0; level < 3; level++){
@@ -87,24 +113,41 @@ public class DemoConsole {
         }
     }
 
+    /**
+     * Prints all nobles present on the board of this game.
+     * @param domainController The DomainController managing this game instance.
+     */
     private void printNobles(DomainController domainController){
         for (NobleCard card : domainController.getNobles()) {
             System.out.println(card.showCard());
         }
     }
 
+    /**
+     * Prints all available gems on the board of this game.
+     * @param domainController The DomainController managing this game instance.
+     */
     private void printAvailableGems(DomainController domainController){
         for (GemAmount gem : domainController.getGemStack()) {
             System.out.println(I18n.translate("console.gems.print", gem.getType().toString(), String.valueOf(gem.getAmount())));
         }
     }
 
+    /**
+     * Prints all players taking part in this game.
+     * @param domainController The DomainController managing this game instance.
+     */
     private void printPlayers(DomainController domainController){
         for (Player player : domainController.givePlayers()) {
             System.out.println(I18n.translate("console.players.print", player.getName(), String.valueOf(player.getDateOfBirth()), String.valueOf(domainController.givePlayers().indexOf(player))));
         }
     }
 
+    /**
+     * Queries the console for a valid player, and attempts to add it to the game instance.
+     * @param scanner A Scanner instance used for fetching user input.
+     * @param domainController The DomainController managing this game instance.
+     */
     private void addPlayer(Scanner scanner, DomainController domainController) {
         String playerName;
         int birthYear;
@@ -123,6 +166,10 @@ public class DemoConsole {
         System.out.println(domainController.playerLogOn(playerName, birthYear));
     }
 
+    /**
+     * Prints all players, including their statistics, like gems and cards, taking part in this game.
+     * @param domainController The DomainController managing this game instance.
+     */
     private void printPlayersWithCardsAndGems(DomainController domainController){
         for (Player player : domainController.givePlayers()){
             System.out.println(I18n.translate("console.printall", player.getName(), player.getDevelopmentCardsAsString(), player.getGemsAsString()));
