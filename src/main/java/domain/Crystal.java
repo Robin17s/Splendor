@@ -1,5 +1,8 @@
 package domain;
 
+/**
+ * The types of currency used in-game
+ */
 public enum Crystal {
     /**
      * A Diamond gem.

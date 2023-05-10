@@ -25,8 +25,17 @@ public class Game {
     private List<GemAmount> gemStack;
     private final DevelopmentCard[][] matrix;
     private int currentPlayerIndex;
+
+    /**
+     * The minimum amount of players that can play Splendor
+     */
     public static final int MIN_PLAYERS = 2;
+
+    /**
+     * The maximum amount of players that can play Splendor
+     */
     public static final int MAX_PLAYERS = 4;
+
     private boolean finalRound;
     private final List<Player> winners;
 

@@ -28,6 +28,7 @@ public class PlayerInfoScreen extends BorderPane {
      * Instantiates a new PlayerInfoScreen, and initialises everything for the screen to start rendering.
      * <p>
      * Note: Calling this constructor only instantiates the screen. This doesn't mean it will start rendering. You will have to set that using {@link ApplicationStart#setScene(Pane)}
+     * @param selectedPlayerIndex The index of the Player whose stats are being loaded
      */
     public PlayerInfoScreen(int selectedPlayerIndex) {
         this.selectedPlayerIndex = selectedPlayerIndex;

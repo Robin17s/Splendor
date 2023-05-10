@@ -191,6 +191,10 @@ public class Player {
         }
         return output.substring(0, output.length() - ((output.length() == 0) ? 0 : 1));
     }
+
+    /**
+     * @return A String representation of the development cards the player has
+     */
     public String getDevelopmentCardsAsString(){
         StringBuilder output = new StringBuilder();
         for(DevelopmentCard card : developmentCards){
