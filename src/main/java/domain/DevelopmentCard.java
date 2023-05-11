@@ -61,15 +61,15 @@ public class DevelopmentCard extends Card {
     }
 
     /**
-     *
-     * @return The DevelopmentCard as a DevelopmentCardDTO
+     * Converts the current DevelopmentCard instance to its DTO variant
+     * @return The DTO variant of {@link DevelopmentCard}
      */
     public DevelopmentCardDTO toDTO(){
         return new DevelopmentCardDTO(this.getPrestige(), this.bonus, this.level, this.getPrice(), this.getAssetName());
     }
 
     /**
-     * Instantiates a new DevelopmentCardDTO.
+     * DTO variant of {@link DevelopmentCard}
      * @param prestige The prestige this card brings
      * @param bonus The gem bonus this card brings
      * @param level The level of the card
@@ -78,8 +78,8 @@ public class DevelopmentCard extends Card {
      */
     public record DevelopmentCardDTO(int prestige, Crystal bonus, int level, List<GemAmount> price, String assetName){
         /**
-         * Unpacks the DevelopmentCardDTO to a normal DevelopmentCard
-         * @return The DevelopmentCardDTO as DevelopmentCard
+         * Converts the current DevelopmentCardDTO instance to its normal variant
+         * @return The normal DevelopmentCard variant
          */
         public DevelopmentCard unpack(){
             return new DevelopmentCard(this.prestige, this.bonus, this.level, this.price, this.assetName);

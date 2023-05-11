@@ -38,23 +38,23 @@ public class NobleCard extends Card {
     }
 
     /**
-     *
-     * @return The NobleCard as NobleCardDTO
+     * Converts the current NobleCard instance to its DTO variant
+     * @return The DTO variant of {@link NobleCard}
      */
     public NobleCardDTO toDTO(){
         return new NobleCardDTO(this.getPrestige(), this.getAssetName(), this.getPrice());
     }
 
     /**
-     * Instantiates a new NobleCardDTO.
+     * DTO variant of {@link NobleCard}
      * @param prestige The prestige it brings
      * @param assetName The asset to load from
      * @param price The price to buy it
      */
     public record NobleCardDTO(int prestige, String assetName, List<GemAmount> price){
         /**
-         * Unpacks the NobleCardDTO to a NobleCard
-         * @return The NobleCardDTO as NobleCard
+         * Converts the current NobleCardDTO instance to its normal variant
+         * @return The normal NobleCard variant
          */
         public NobleCard unpack(){
             return new NobleCard(this.prestige, this.assetName, this.price);

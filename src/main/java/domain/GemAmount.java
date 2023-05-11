@@ -42,15 +42,21 @@ public class GemAmount {
     }
 
     /**
-     * Converts the current GemAmount instance to its DTO Variant
+     * Converts the current GemAmount instance to its DTO variant
      * @return The DTO Variant of {@link GemAmount}
      */
     public GemAmountDTO toDTO() { return new GemAmountDTO(this.type, this.amount); }
 
     /**
-     * DTO Variant of {@link GemAmount}
+     * DTO variant of {@link GemAmount}
      * @param type The Crystal type
      * @param amount The amount of said crystal
      */
-    public record GemAmountDTO(Crystal type, int amount) {}
+    public record GemAmountDTO(Crystal type, int amount) {
+        /**
+         * Converts the current GemAmountDTO instance to its normal variant
+         * @return The normal GemAmount variant
+         */
+        public GemAmount unpack() { return new GemAmount(this.type, this.amount); }
+    }
 }

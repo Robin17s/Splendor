@@ -209,15 +209,15 @@ public class Player {
     }
 
     /**
-     *
-     * @return The Player as PlayerDTO
+     * Converts the current Player instance to its DTO variant
+     * @return The DTO variant of {@link Player}
      */
     public PlayerDTO toDTO(){
         return new PlayerDTO(this.name, this.dateOfBirth, this.developmentCards, this.gemStack, this.prestige, this.nobleCard);
     }
 
     /**
-     * Instantiates a new PlayerDTO, based on the given parameters
+     * DTO variant of {@link Player}
      * @param name The name of the player
      * @param dateOfBirth The year they were born in
      * @param developmentCards The development cards from the player
@@ -227,8 +227,8 @@ public class Player {
      */
     public record PlayerDTO(String name, int dateOfBirth, List<DevelopmentCard> developmentCards, List<GemAmount> gemStack, int prestige, NobleCard nobleCard) {
         /**
-         * Unpacks the player from a PlayerDTO to a Player
-         * @return The PlayerDTO as Player
+         * Converts the current PlayerDTO instance to its normal variant
+         * @return The normal Player variant
          */
         public Player unpack(){
             Player player = new Player(this.name, this.dateOfBirth);
