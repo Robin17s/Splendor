@@ -41,7 +41,16 @@ public class GemAmount {
         amount -= 2;
     }
 
+    /**
+     * Converts the current GemAmount instance to its DTO Variant
+     * @return The DTO Variant of {@link GemAmount}
+     */
     public GemAmountDTO toDTO() { return new GemAmountDTO(this.type, this.amount); }
 
+    /**
+     * DTO Variant of {@link GemAmount}
+     * @param type The Crystal type
+     * @param amount The amount of said crystal
+     */
     public record GemAmountDTO(Crystal type, int amount) {}
 }
