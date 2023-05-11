@@ -26,6 +26,7 @@ public final class BoardScreen extends BorderPane {
     private List<GemAmount.GemAmountDTO> gemsPicked = new ArrayList<>();
 
     private boolean finalRoundPopupFlag = false;
+    private boolean noCardFlag = false;
 
     /**
      * Instantiates a new BoardScreen, and initialises everything for the screen to start rendering.
@@ -70,6 +71,26 @@ public final class BoardScreen extends BorderPane {
         showDevelopmentCards();
         finalRoundPopup();
         switchToWinnerScreen();
+        refreshScreenWhenNoCard();
+    }
+
+    public void refreshScreenWhenNoCard(){
+        // :(
+        // refreshScreen leaves the old card displayed
+        if (!noCardFlag)
+            return;
+        BoardScreen boardScreen = new BoardScreen();
+        ApplicationStart.getInstance().setScene(boardScreen);
+
+        //boardScreen.refreshScreen(); -> 100%cpu and 8gb ram
+        boardScreen.showGems();
+        boardScreen.showNobles();
+        boardScreen.showDevelopmentCardPiles();
+        boardScreen.showDevelopmentCards();
+        boardScreen.showPlayers();
+        finalRoundPopup();
+        switchToWinnerScreen();
+        noCardFlag = false;
     }
 
     /**
@@ -243,6 +264,10 @@ public final class BoardScreen extends BorderPane {
         for (byte row = 0; row < 3; row++) {
             for (byte column = 0; column < 4; column++) {
                 DevelopmentCard.DevelopmentCardDTO card = ApplicationStart.getInstance().getController().getDevelopmentCardsOnTable()[row][column];
+                if (card == null){
+                    noCardFlag = true;
+                    continue;
+                }
                 Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.assetName() + ".jpg")));
                 Button button = new Button();
                 ImageView view = new ImageView(image);

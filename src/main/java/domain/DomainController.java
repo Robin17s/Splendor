@@ -100,7 +100,10 @@ public class DomainController{
 
         for (int i = 0; i < cardsOnTable.length; i++) {
             for (int j = 0; j < cardsOnTable[i].length; j++) {
-                cardsOnTableDTO[i][j] = cardsOnTable[i][j].toDTO();
+                if (cardsOnTable[i][j] != null)
+                    cardsOnTableDTO[i][j] = cardsOnTable[i][j].toDTO();
+                else
+                    cardsOnTableDTO[i][j] = null;
             }
         }
         return cardsOnTableDTO;
@@ -218,6 +221,10 @@ public class DomainController{
             player.addGems(gems);
             player.addDevelopmentCard(new DevelopmentCard(2, Crystal.Ruby, 2, gems, splendor.getCardsOnBoard()[0][0].getAssetName()));
         }
+    }
+
+    public void removeCards(){
+        splendor.removeCards();
     }
     //endregion
 }

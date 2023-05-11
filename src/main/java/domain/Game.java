@@ -477,7 +477,6 @@ public class Game {
         }
 
         //place a new card on the board and give the player his card
-        //TODO: catch null in gui
         Optional<DevelopmentCard> newDevelopmentCard = developmentCards.stream().filter(x -> x.getLevel() == card.getLevel()).findFirst();
         matrix[row][column] = newDevelopmentCard.orElse(null);
         developmentCards.remove(matrix[row][column]);
@@ -576,4 +575,9 @@ public class Game {
      * @param yearOfBirth The year they were born in
      */
     public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equalsIgnoreCase(name) && player.getDateOfBirth() == yearOfBirth); }
+
+
+    public void removeCards(){
+        developmentCards.clear();
+    }
 }
