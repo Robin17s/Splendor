@@ -2,7 +2,6 @@ package gui;
 
 import domain.DevelopmentCard;
 import domain.DomainController;
-import domain.GemAmount;
 import domain.NobleCard;
 import domain.i18n.I18n;
 import javafx.geometry.Insets;
@@ -54,8 +53,8 @@ public class PlayerInfoScreen extends BorderPane {
     public void showPlayerCards() {
         int row = 0;
         int column = 0;
-        if (!domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).getDevelopmentCards().equals(0)){
-            for (DevelopmentCard card : domainController.givePlayers().get(selectedPlayerIndex).getDevelopmentCards()){
+        if (!domainController.givePlayers().get(domainController.getCurrentPlayerIndex()).developmentCards().equals(0)){
+            for (DevelopmentCard card : domainController.givePlayers().get(selectedPlayerIndex).developmentCards()){
                 Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
                 Button button = new Button();
                 ImageView view = new ImageView(image);
@@ -78,8 +77,8 @@ public class PlayerInfoScreen extends BorderPane {
                 }
             }
         }
-        if (domainController.givePlayers().get(selectedPlayerIndex).getNobleCard() != null){
-            NobleCard card = domainController.givePlayers().get(selectedPlayerIndex).getNobleCard();
+        if (domainController.givePlayers().get(selectedPlayerIndex).nobleCard() != null){
+            NobleCard card = domainController.givePlayers().get(selectedPlayerIndex).nobleCard();
             Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
             Button button = new Button();
             ImageView view = new ImageView(image);
@@ -112,9 +111,9 @@ public class PlayerInfoScreen extends BorderPane {
 
         // Add the players to the VBox layout
         for (int i = 0; i < numPlayers; i++) {
-            String playerName = ApplicationStart.getInstance().getController().givePlayers().get(i).getName();
-            int playerPoints = ApplicationStart.getInstance().getController().givePlayers().get(i).getPrestige();
-            String playerText = I18n.translate("boardscreen.players.text", playerName, String.valueOf(playerPoints), ApplicationStart.getInstance().getController().givePlayers().get(i).getGemsAsString());
+            String playerName = ApplicationStart.getInstance().getController().givePlayers().get(i).name();
+            int playerPoints = ApplicationStart.getInstance().getController().givePlayers().get(i).prestige();
+            String playerText = I18n.translate("boardscreen.players.text", playerName, String.valueOf(playerPoints), ApplicationStart.getInstance().getController().getPlayerGemsAsString(ApplicationStart.getInstance().getController().givePlayers().get(i)));
             Font font = new Font(16);
             Button playerButton = new Button(playerText);
             playerButton.setFont(font);

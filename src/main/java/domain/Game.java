@@ -441,7 +441,7 @@ public class Game {
         int column = 0;
         int row = card.getLevel()-1;
         for (int i = 0; i<4; i++){
-            if (matrix[row][i] == card){
+            if (matrix[row][i].getPrice() == card.getPrice()){
                 column = i;
                 break;
             }

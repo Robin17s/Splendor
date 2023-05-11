@@ -75,7 +75,7 @@ public final class AddPlayersScreen extends BorderPane {
         VBox.setVgrow(playerPane, Priority.ALWAYS);
         VBox.setMargin(removePlayerButton, new Insets(8));
 
-        ApplicationStart.getInstance().getController().givePlayers().forEach(player -> addPlayerToPane(player.getName(), player.getDateOfBirth()));
+        ApplicationStart.getInstance().getController().givePlayers().forEach(player -> addPlayerToPane(player.name(), player.dateOfBirth()));
 
         this.setLeft(leftPane);
         this.setBottom(bottomBox);

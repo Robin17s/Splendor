@@ -59,4 +59,30 @@ public class DevelopmentCard extends Card {
     public int getLevel() {
         return level;
     }
+
+    /**
+     *
+     * @return The DevelopmentCard as a DevelopmentCardDTO
+     */
+    public DevelopmentCardDTO toDTO(){
+        return new DevelopmentCardDTO(this.getPrestige(), this.bonus, this.level, this.getPrice(), this.getAssetName());
+    }
+
+    /**
+     * Instantiates a new DevelopmentCardDTO.
+     * @param prestige The prestige this card brings
+     * @param bonus The gem bonus this card brings
+     * @param level The level of the card
+     * @param price The price to buy the card
+     * @param assetName The asset that's linked to this card
+     */
+    public record DevelopmentCardDTO(int prestige, Crystal bonus, int level, List<GemAmount> price, String assetName){
+        /**
+         * Unpacks the DevelopmentCardDTO to a normal DevelopmentCard
+         * @return The DevelopmentCardDTO as DevelopmentCard
+         */
+        public DevelopmentCard unpack(){
+            return new DevelopmentCard(this.prestige, this.bonus, this.level, this.price, this.assetName);
+        }
+    }
 }

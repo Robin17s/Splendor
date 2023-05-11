@@ -36,4 +36,28 @@ public class NobleCard extends Card {
         }
         return output.substring(0, output.length() - 1);
     }
+
+    /**
+     *
+     * @return The NobleCard as NobleCardDTO
+     */
+    public NobleCardDTO toDTO(){
+        return new NobleCardDTO(this.getPrestige(), this.getAssetName(), this.getPrice());
+    }
+
+    /**
+     * Instantiates a new NobleCardDTO.
+     * @param prestige The prestige it brings
+     * @param assetName The asset to load from
+     * @param price The price to buy it
+     */
+    public record NobleCardDTO(int prestige, String assetName, List<GemAmount> price){
+        /**
+         * Unpacks the NobleCardDTO to a NobleCard
+         * @return The NobleCardDTO as NobleCard
+         */
+        public NobleCard unpack(){
+            return new NobleCard(this.prestige, this.assetName, this.price);
+        }
+    }
 }

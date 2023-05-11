@@ -5,6 +5,7 @@ import domain.i18n.I18n;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Manages the entire game. It holds the game instance, and interfaces with all other parts of the application.
@@ -39,8 +40,26 @@ public class DomainController{
     /**
      * @return The list of players taking part in the game.
      */
-    public List<Player> givePlayers(){
-        return splendor.getPlayers();
+    public List<Player.PlayerDTO> givePlayers(){
+        return splendor.getPlayers().stream().map(Player::toDTO).collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @param player The player to get the gems from
+     * @return The gems from the player formatted as a string
+     */
+    public String getPlayerGemsAsString(Player.PlayerDTO player){
+        return player.unpack().getGemsAsString();
+    }
+
+    /**
+     *
+     * @param playerDTO The player to get the development cards from
+     * @return The development cards from the player formatted as a string
+     */
+    public String getPlayerDevelopmentcardsAsString(Player.PlayerDTO playerDTO){
+        return playerDTO.unpack().getDevelopmentCardsAsString();
     }
 
     /**
@@ -59,22 +78,48 @@ public class DomainController{
     /**
      * @return The list of nobles in-game.
      */
-    public List<NobleCard> getNobles(){
-        return splendor.getNobleCards();
+    public List<NobleCard.NobleCardDTO> getNobles(){
+        return splendor.getNobleCards().stream().map(NobleCard::toDTO).collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @param nobleCardDTO The noble card to show
+     * @return The noble card formatted as a string
+     */
+    public String showNobleCard(NobleCard.NobleCardDTO nobleCardDTO){
+        return nobleCardDTO.unpack().showCard();
     }
 
     /**
      * @return The list of DevelopmentCards in-game
      */
-    public DevelopmentCard[][] getDevelopmentCardsOnTable(){
-        return splendor.getCardsOnBoard();
+    public DevelopmentCard.DevelopmentCardDTO[][] getDevelopmentCardsOnTable(){
+        DevelopmentCard[][] cardsOnTable = splendor.getCardsOnBoard();
+        DevelopmentCard.DevelopmentCardDTO[][] cardsOnTableDTO = new DevelopmentCard.DevelopmentCardDTO[cardsOnTable.length][cardsOnTable[0].length];
+
+        for (int i = 0; i < cardsOnTable.length; i++) {
+            for (int j = 0; j < cardsOnTable[i].length; j++) {
+                cardsOnTableDTO[i][j] = cardsOnTable[i][j].toDTO();
+            }
+        }
+        return cardsOnTableDTO;
+    }
+
+    /**
+     *
+     * @param developmentCardDTO The development card to show
+     * @return The development card formatted as a string
+     */
+    public String showDevelopmentCard(DevelopmentCard.DevelopmentCardDTO developmentCardDTO){
+        return developmentCardDTO.unpack().showCard();
     }
 
     /**
      * @return The list of gems in-game.
      */
-    public List<GemAmount> getGemStack(){
-        return splendor.getGemStack();
+    public List<GemAmount.GemAmountDTO> getGemStack(){
+        return splendor.getGemStack().stream().map(GemAmount::toDTO).toList();
     }
 
     /**
@@ -87,17 +132,17 @@ public class DomainController{
     /**
      * @return The winners of the game.
      */
-    public List<Player> getWinners(){
+    public List<Player.PlayerDTO> getWinners(){
         splendor.decideWinners();
-        return splendor.getWinners();
+        return splendor.getWinners().stream().map(Player::toDTO).collect(Collectors.toList());
     }
 
     /**
      * @param gem the gem the player takes. The amount does not matter!
      */
-    public String takeTwoGemsOfTheSameType(GemAmount gem){
-        if(splendor.getGemStack().get(splendor.getIndexOfGem(gem)).getAmount() >= 4){
-            splendor.takeTwoGemsOfTheSameType(gem);
+    public String takeTwoGemsOfTheSameType(GemAmount.GemAmountDTO gem){
+        if(splendor.getGemStack().get(splendor.getIndexOfGem(gem.unpack())).getAmount() >= 4){
+            splendor.takeTwoGemsOfTheSameType(gem.unpack());
             splendor.endTurn();
             return I18n.translate("boardscreen.gems.succesfullytooktwo");
         }
@@ -108,9 +153,9 @@ public class DomainController{
      *
      * @param gems a list of gems that the player wants to take. The amounts do not matter!
      */
-    public String takeThreeGemsOfDifferentTypes(List<GemAmount> gems){
-        if(gems.stream().allMatch(gem -> splendor.getGemStack().get(splendor.getIndexOfGem(gem)).getAmount() > 0)){
-            splendor.takeThreeGemsOfDifferentTypes(gems);
+    public String takeThreeGemsOfDifferentTypes(List<GemAmount.GemAmountDTO> gems){
+        if(gems.stream().allMatch(gem -> splendor.getGemStack().get(splendor.getIndexOfGem(gem.unpack())).getAmount() > 0)){
+            splendor.takeThreeGemsOfDifferentTypes(gems.stream().map(GemAmount.GemAmountDTO::unpack).collect(Collectors.toList()));
             splendor.endTurn();
             return I18n.translate("boardscreen.gems.succesfullytookthree");
         }
@@ -121,9 +166,9 @@ public class DomainController{
      *
      * @param card the development card the player wants to take.
      */
-    public String takeDevelopmentCard(DevelopmentCard card){
+    public String takeDevelopmentCard(DevelopmentCard.DevelopmentCardDTO card){
         String[] msg = { "placeholder" };
-        if (splendor.takeDevelopmentCard(card, msg)){
+        if (splendor.takeDevelopmentCard(card.unpack(), msg)){
             splendor.endTurn();
             return msg[0];
         }
@@ -134,8 +179,8 @@ public class DomainController{
      * @param ref The list of nobles
      * @return Whether or not the Player is able to be visited by a noble.
      */
-    public boolean canPlayerGetNobleCard(List<NobleCard> ref){
-        ref.addAll(splendor.candidateNobles());
+    public boolean canPlayerGetNobleCard(List<NobleCard.NobleCardDTO> ref){
+        ref.addAll(splendor.candidateNobles().stream().map(NobleCard::toDTO).toList());
         return ref.size() > 0;
     }
 
@@ -143,8 +188,8 @@ public class DomainController{
      * Makes a noble visit the player.
      * @param card The nobe visiting the player
      */
-    public void setPlayerNoble(NobleCard card){
-        splendor.giveNobleToPlayer(card);
+    public void setPlayerNoble(NobleCard.NobleCardDTO card){
+        splendor.giveNobleToPlayer(card.unpack());
         splendor.decideFinalRound();
     }
 

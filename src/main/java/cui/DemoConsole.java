@@ -80,7 +80,7 @@ public class DemoConsole {
 
             // print starting player (first player in the list)
             System.out.println(I18n.translate("console.start.starter"));
-            System.out.println(domainController.givePlayers().get(0).getName());
+            System.out.println(domainController.givePlayers().get(0).name());
 
             domainController.addItemsToPlayers();
 
@@ -107,7 +107,7 @@ public class DemoConsole {
         int cardCount = 1;
         for (int level = 0; level < 3; level++){
             for (int card = 0; card < 4; card++){
-                System.out.println(I18n.translate("console.devcards.print", String.valueOf(cardCount), domainController.getDevelopmentCardsOnTable()[level][card].showCard()));
+                System.out.println(I18n.translate("console.devcards.print", String.valueOf(cardCount), domainController.showDevelopmentCard(domainController.getDevelopmentCardsOnTable()[level][card])));
                 cardCount++;
             }
         }
@@ -118,8 +118,8 @@ public class DemoConsole {
      * @param domainController The DomainController managing this game instance.
      */
     private void printNobles(DomainController domainController){
-        for (NobleCard card : domainController.getNobles()) {
-            System.out.println(card.showCard());
+        for (NobleCard.NobleCardDTO card : domainController.getNobles()) {
+            System.out.println(domainController.showNobleCard(card));
         }
     }
 
@@ -128,8 +128,8 @@ public class DemoConsole {
      * @param domainController The DomainController managing this game instance.
      */
     private void printAvailableGems(DomainController domainController){
-        for (GemAmount gem : domainController.getGemStack()) {
-            System.out.println(I18n.translate("console.gems.print", gem.getType().toString(), String.valueOf(gem.getAmount())));
+        for (GemAmount.GemAmountDTO gem : domainController.getGemStack()) {
+            System.out.println(I18n.translate("console.gems.print", gem.type().toString(), String.valueOf(gem.amount())));
         }
     }
 
@@ -138,8 +138,8 @@ public class DemoConsole {
      * @param domainController The DomainController managing this game instance.
      */
     private void printPlayers(DomainController domainController){
-        for (Player player : domainController.givePlayers()) {
-            System.out.println(I18n.translate("console.players.print", player.getName(), String.valueOf(player.getDateOfBirth()), String.valueOf(domainController.givePlayers().indexOf(player))));
+        for (Player.PlayerDTO player : domainController.givePlayers()) {
+            System.out.println(I18n.translate("console.players.print", player.name(), String.valueOf(player.dateOfBirth()), String.valueOf(domainController.givePlayers().indexOf(player))));
         }
     }
 
@@ -171,8 +171,8 @@ public class DemoConsole {
      * @param domainController The DomainController managing this game instance.
      */
     private void printPlayersWithCardsAndGems(DomainController domainController){
-        for (Player player : domainController.givePlayers()){
-            System.out.println(I18n.translate("console.printall", player.getName(), player.getDevelopmentCardsAsString(), player.getGemsAsString()));
+        for (Player.PlayerDTO player : domainController.givePlayers()){
+            System.out.println(I18n.translate("console.printall", player.name(), domainController.getPlayerDevelopmentcardsAsString(player), domainController.getPlayerGemsAsString(player)));
         }
     }
 }

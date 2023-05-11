@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 public final class BoardScreen extends BorderPane {
     private final GridPane pane = new GridPane();
-    private List<GemAmount> gemsPicked = new ArrayList<>();
+    private List<GemAmount.GemAmountDTO> gemsPicked = new ArrayList<>();
 
     private boolean finalRoundPopupFlag = false;
 
@@ -102,8 +102,8 @@ public final class BoardScreen extends BorderPane {
         //rode box in paint
         VBox box = new VBox(2);
 
-        for (GemAmount amount : ApplicationStart.getInstance().getController().getGemStack()) {
-            Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + amount.getType().name().toLowerCase() + ".png")));
+        for (GemAmount.GemAmountDTO amount : ApplicationStart.getInstance().getController().getGemStack()) {
+            Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + amount.type().name().toLowerCase() + ".png")));
             // zwarte rondjes in paint
             Button button = new Button();
             button.setBackground(null);
@@ -118,7 +118,7 @@ public final class BoardScreen extends BorderPane {
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle(I18n.translate("boardscreen.gems.title"));
-                alert.setHeaderText(I18n.translate(amount.getType().getTranslationKey()));
+                alert.setHeaderText(I18n.translate(amount.type().getTranslationKey()));
                 alert.setContentText(I18n.translate("boardscreen.gems.explanation"));
 
                 ButtonType buttonTypeOne = new ButtonType(I18n.translate("boardscreen.gems.takethree", "" + (gemsPicked.size() + 1)));
@@ -157,7 +157,7 @@ public final class BoardScreen extends BorderPane {
             });
 
             //label voor aantal beschikbare gems in een stapel
-            Label lbl = new Label("" + amount.getAmount());
+            Label lbl = new Label("" + amount.amount());
             lbl.setFont(Font.font("Impact", 27));
             lbl.setTextFill(Color.WHITE);
 
@@ -173,7 +173,7 @@ public final class BoardScreen extends BorderPane {
         skipTurnButton.setOnAction(event -> {
             Alert turnSkippedAlert = new Alert(Alert.AlertType.INFORMATION);
             turnSkippedAlert.setTitle(I18n.translate("player.skip.turn.popup.title"));
-            turnSkippedAlert.setHeaderText(I18n.translate("player.skip.turn.popup.info", ApplicationStart.getInstance().getController().givePlayers().get(ApplicationStart.getInstance().getController().getCurrentPlayerIndex()).getName()));
+            turnSkippedAlert.setHeaderText(I18n.translate("player.skip.turn.popup.info", ApplicationStart.getInstance().getController().givePlayers().get(ApplicationStart.getInstance().getController().getCurrentPlayerIndex()).name()));
             turnSkippedAlert.showAndWait();
             ApplicationStart.getInstance().getController().skipTurn();
             nobleAlert();
@@ -198,8 +198,8 @@ public final class BoardScreen extends BorderPane {
     public void showNobles() {
         HBox box = new HBox(2);
 
-        for (NobleCard noble : ApplicationStart.getInstance().getController().getNobles()) {
-            Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + noble.getAssetName() + ".jpg")));
+        for (NobleCard.NobleCardDTO noble : ApplicationStart.getInstance().getController().getNobles()) {
+            Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + noble.assetName() + ".jpg")));
             ImageView view = new ImageView(image);
             box.getChildren().add(view);
         }
@@ -242,8 +242,8 @@ public final class BoardScreen extends BorderPane {
     public void showDevelopmentCards() {
         for (byte row = 0; row < 3; row++) {
             for (byte column = 0; column < 4; column++) {
-                DevelopmentCard card = ApplicationStart.getInstance().getController().getDevelopmentCardsOnTable()[row][column];
-                Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.getAssetName() + ".jpg")));
+                DevelopmentCard.DevelopmentCardDTO card = ApplicationStart.getInstance().getController().getDevelopmentCardsOnTable()[row][column];
+                Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/" + card.assetName() + ".jpg")));
                 Button button = new Button();
                 ImageView view = new ImageView(image);
 
@@ -295,14 +295,14 @@ public final class BoardScreen extends BorderPane {
      * Checks whether or not the current player can be visited by a Noble, and shows the popup when true.
      */
     private void nobleAlert() {
-        List<NobleCard> ref = new ArrayList<>();
+        List<NobleCard.NobleCardDTO> ref = new ArrayList<>();
         if (ApplicationStart.getInstance().getController().canPlayerGetNobleCard(ref)) {
             Alert nobleAlert = new Alert(Alert.AlertType.CONFIRMATION);
             nobleAlert.setTitle(I18n.translate("boardscreen.devcards.print.noble"));
             String nobleString = "";
             List<ButtonType> buttons = new ArrayList<>();
             for (int i = 1; i < ref.size() + 1; i++) {
-                nobleString += String.format("%d: %s \n", i, ref.get(i - 1).showCard());
+                nobleString += String.format("%d: %s \n", i, ApplicationStart.getInstance().getController().showNobleCard(ref.get(i - 1)));
                 buttons.add(new ButtonType(String.format("%d", i)));
             }
             nobleAlert.getButtonTypes().setAll(buttons);
@@ -329,9 +329,9 @@ public final class BoardScreen extends BorderPane {
 
         // Add the players to the VBox layout
         for (int i = 0; i < numPlayers; i++) {
-            String playerName = ApplicationStart.getInstance().getController().givePlayers().get(i).getName();
-            int playerPoints = ApplicationStart.getInstance().getController().givePlayers().get(i).getPrestige();
-            String playerText = I18n.translate("boardscreen.players.text", playerName, String.valueOf(playerPoints), ApplicationStart.getInstance().getController().givePlayers().get(i).getGemsAsString());
+            String playerName = ApplicationStart.getInstance().getController().givePlayers().get(i).name();
+            int playerPoints = ApplicationStart.getInstance().getController().givePlayers().get(i).prestige();
+            String playerText = I18n.translate("boardscreen.players.text", playerName, String.valueOf(playerPoints), ApplicationStart.getInstance().getController().getPlayerGemsAsString(ApplicationStart.getInstance().getController().givePlayers().get(i)));
             Font font = new Font(16);
             Button playerButton = new Button(playerText);
             playerButton.setFont(font);

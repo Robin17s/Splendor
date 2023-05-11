@@ -43,8 +43,8 @@ public class WinnerScreen extends BorderPane {
 
         winnersBox.getChildren().add(title);
 
-        for (Player winner : domainController.getWinners()) {
-            Label winnerLabel = new Label(winner.getName());
+        for (Player.PlayerDTO winner : domainController.getWinners()) {
+            Label winnerLabel = new Label(winner.name());
             winnerLabel.setFont(new Font("Arial", 26));
             winnerLabel.setTextFill(Color.WHITE);
             winnersBox.getChildren().add(winnerLabel);

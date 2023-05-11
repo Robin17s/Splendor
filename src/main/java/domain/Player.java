@@ -82,6 +82,10 @@ public class Player {
         return prestige;
     }
 
+    public void setPrestige(int prestige){
+        this.prestige = prestige;
+    }
+
     /**
      * @return Which gems, along with their amount the player has
      */
@@ -202,5 +206,37 @@ public class Player {
         }
         //return output.isEmpty() ? output : output.substring(0, output.length() - 1);
         return output.substring(0, output.length() - ((output.length() == 0) ? 0 : 1));
+    }
+
+    /**
+     *
+     * @return The Player as PlayerDTO
+     */
+    public PlayerDTO toDTO(){
+        return new PlayerDTO(this.name, this.dateOfBirth, this.developmentCards, this.gemStack, this.prestige, this.nobleCard);
+    }
+
+    /**
+     * Instantiates a new PlayerDTO, based on the given parameters
+     * @param name The name of the player
+     * @param dateOfBirth The year they were born in
+     * @param developmentCards The development cards from the player
+     * @param gemStack The gems from the player
+     * @param prestige The prestige the player has
+     * @param nobleCard The noble card from the player
+     */
+    public record PlayerDTO(String name, int dateOfBirth, List<DevelopmentCard> developmentCards, List<GemAmount> gemStack, int prestige, NobleCard nobleCard) {
+        /**
+         * Unpacks the player from a PlayerDTO to a Player
+         * @return The PlayerDTO as Player
+         */
+        public Player unpack(){
+            Player player = new Player(this.name, this.dateOfBirth);
+            player.setGemStack(this.gemStack);
+            this.developmentCards.forEach(player::addDevelopmentCard);
+            player.setPrestige(this.prestige);
+            player.setNobleCard(this.nobleCard);
+            return player;
+        }
     }
 }
