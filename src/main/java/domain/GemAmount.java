@@ -40,4 +40,8 @@ public class GemAmount {
     public void subtractTwo(){
         amount -= 2;
     }
+
+    public GemAmountDTO toDTO() { return new GemAmountDTO(this.type, this.amount); }
+
+    public record GemAmountDTO(Crystal type, int amount) {}
 }
