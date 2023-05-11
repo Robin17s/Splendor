@@ -26,6 +26,9 @@ public class PlayerMapper {
         return PLAYERS.stream().filter(player -> player.getName().equalsIgnoreCase(name) && player.getDateOfBirth() == yearOfBirth).findFirst().orElse(null);
     }
 
+    /**
+     * Loads all player data from the database, and caches it, for later use.
+     */
     public void loadPlayers() {
         try (Connection connection = ConnectionFactory.getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT Name, YearOfBirth FROM Speler"); ResultSet set = statement.executeQuery()) {
             while (set.next()) PLAYERS.add(new Player(set.getString("Name"), set.getInt("YearOfBirth")));
