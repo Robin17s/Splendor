@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 public final class BoardScreen extends BorderPane {
     private final GridPane pane = new GridPane();
-    private List<GemAmount.GemAmountDTO> gemsPicked = new ArrayList<>();
+    private final List<GemAmount.GemAmountDTO> gemsPicked = new ArrayList<>();
 
     private boolean finalRoundPopupFlag = false;
     private boolean noCardFlag = false;
@@ -142,7 +142,7 @@ public final class BoardScreen extends BorderPane {
                 alert.setHeaderText(I18n.translate(amount.type().getTranslationKey()));
                 alert.setContentText(I18n.translate("boardscreen.gems.explanation"));
 
-                ButtonType buttonTypeOne = new ButtonType(I18n.translate("boardscreen.gems.takethree", "" + (gemsPicked.size() + 1)));
+                ButtonType buttonTypeOne = new ButtonType(I18n.translate("boardscreen.gems.takethree", String.valueOf(gemsPicked.size() + 1)));
                 ButtonType buttonTypeTwo = new ButtonType(I18n.translate("boardscreen.gems.taketwo"));
                 ButtonType buttonTypeCancel = new ButtonType(I18n.translate("message.no"), ButtonBar.ButtonData.CANCEL_CLOSE);
 
@@ -178,7 +178,7 @@ public final class BoardScreen extends BorderPane {
             });
 
             //label voor aantal beschikbare gems in een stapel
-            Label lbl = new Label("" + amount.amount());
+            Label lbl = new Label(String.valueOf(amount.amount()));
             lbl.setFont(Font.font("Impact", 27));
             lbl.setTextFill(Color.WHITE);
 
@@ -306,8 +306,6 @@ public final class BoardScreen extends BorderPane {
                         if (playerIndexBeforeAction != ApplicationStart.getInstance().getController().getCurrentPlayerIndex())
                             nobleAlert();
                         refreshScreen();
-                    } else {
-                        // alertje toevoegen
                     }
                 });
 
@@ -324,14 +322,14 @@ public final class BoardScreen extends BorderPane {
         if (ApplicationStart.getInstance().getController().canPlayerGetNobleCard(ref)) {
             Alert nobleAlert = new Alert(Alert.AlertType.CONFIRMATION);
             nobleAlert.setTitle(I18n.translate("boardscreen.devcards.print.noble"));
-            String nobleString = "";
+            StringBuilder nobleString = new StringBuilder();
             List<ButtonType> buttons = new ArrayList<>();
             for (int i = 1; i < ref.size() + 1; i++) {
-                nobleString += String.format("%d: %s \n", i, ApplicationStart.getInstance().getController().showNobleCard(ref.get(i - 1)));
+                nobleString.append(String.format("%d: %s \n", i, ApplicationStart.getInstance().getController().showNobleCard(ref.get(i - 1))));
                 buttons.add(new ButtonType(String.format("%d", i)));
             }
             nobleAlert.getButtonTypes().setAll(buttons);
-            nobleAlert.setHeaderText(nobleString);
+            nobleAlert.setHeaderText(nobleString.toString());
             Optional<ButtonType> nobleChoice = nobleAlert.showAndWait();
             if (nobleChoice.isPresent()) {
                 ButtonType iets = nobleChoice.get();

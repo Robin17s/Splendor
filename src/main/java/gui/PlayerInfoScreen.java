@@ -20,8 +20,8 @@ import java.util.Objects;
  */
 public class PlayerInfoScreen extends BorderPane {
     private final GridPane pane = new GridPane();
-    DomainController domainController = ApplicationStart.getInstance().getController();
-    private int selectedPlayerIndex;
+    private final DomainController domainController = ApplicationStart.getInstance().getController();
+    private final int selectedPlayerIndex;
 
     /**
      * Instantiates a new PlayerInfoScreen, and initialises everything for the screen to start rendering.
@@ -119,9 +119,7 @@ public class PlayerInfoScreen extends BorderPane {
             playerButton.setFont(font);
             playerButton.setMaxWidth(Double.MAX_VALUE);
 
-            playerButton.setOnAction(event -> {
-                loadBoardScreen();
-            });
+            playerButton.setOnAction(event -> loadBoardScreen());
 
             if (i == ApplicationStart.getInstance().getController().getCurrentPlayerIndex()) {
                 playerButton.setStyle("-fx-background-color: yellow;");

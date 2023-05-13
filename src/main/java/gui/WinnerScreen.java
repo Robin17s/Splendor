@@ -1,6 +1,5 @@
 package gui;
 
-import domain.DomainController;
 import domain.Player;
 import domain.i18n.I18n;
 import javafx.geometry.Insets;
@@ -17,7 +16,6 @@ import java.util.Objects;
  * Screen responsible for showing the winner of the game.
  */
 public class WinnerScreen extends BorderPane {
-    private DomainController domainController = ApplicationStart.getInstance().getController();
 
     /**
      * Instantiates the screen, and sets it up for rendering.
@@ -43,7 +41,7 @@ public class WinnerScreen extends BorderPane {
 
         winnersBox.getChildren().add(title);
 
-        for (Player.PlayerDTO winner : domainController.getWinners()) {
+        for (Player.PlayerDTO winner : ApplicationStart.getInstance().getController().getWinners()) {
             Label winnerLabel = new Label(winner.name());
             winnerLabel.setFont(new Font("Arial", 26));
             winnerLabel.setTextFill(Color.WHITE);
