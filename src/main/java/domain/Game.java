@@ -374,7 +374,7 @@ public class Game {
      * Decides whether or not the final round should be played.
      */
     public void decideFinalRound() {
-        final int PRESTIGE_LEVEL_GAME_END = 5;
+        final int PRESTIGE_LEVEL_GAME_END = 15;
         if (!finalRound) {
             finalRound = players.stream()
                     .anyMatch(player -> player.getPrestige() >= PRESTIGE_LEVEL_GAME_END);
