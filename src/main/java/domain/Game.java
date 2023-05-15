@@ -577,6 +577,9 @@ public class Game {
     public void removePlayerFromGame(String name, int yearOfBirth) { players.removeIf(player -> player.getName().equalsIgnoreCase(name) && player.getDateOfBirth() == yearOfBirth); }
 
 
+    /**
+     * Removes all development cards
+     */
     public void removeCards(){
         developmentCards.clear();
     }

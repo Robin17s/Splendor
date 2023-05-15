@@ -82,6 +82,10 @@ public class Player {
         return prestige;
     }
 
+    /**
+     * Sets the prestige of the current player.
+     * @param prestige The prestige to set
+     */
     public void setPrestige(int prestige){
         this.prestige = prestige;
     }

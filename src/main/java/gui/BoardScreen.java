@@ -74,6 +74,9 @@ public final class BoardScreen extends BorderPane {
         refreshScreenWhenNoCard();
     }
 
+    /**
+     * Re-renders every component on-screen, on the condition that no card is taken
+     */
     public void refreshScreenWhenNoCard(){
         // :(
         // refreshScreen leaves the old card displayed

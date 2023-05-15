@@ -141,7 +141,9 @@ public class DomainController{
     }
 
     /**
+     * Takes 2 gems of the same type.
      * @param gem the gem the player takes. The amount does not matter!
+     * @return A Status Response String
      */
     public String takeTwoGemsOfTheSameType(GemAmount.GemAmountDTO gem){
         if(splendor.getGemStack().get(splendor.getIndexOfGem(gem.unpack())).getAmount() >= 4){
@@ -153,8 +155,9 @@ public class DomainController{
     }
 
     /**
-     *
+     * Takes 3 gems, of different types.
      * @param gems a list of gems that the player wants to take. The amounts do not matter!
+     * @return A Status Response String
      */
     public String takeThreeGemsOfDifferentTypes(List<GemAmount.GemAmountDTO> gems){
         if(gems.stream().allMatch(gem -> splendor.getGemStack().get(splendor.getIndexOfGem(gem.unpack())).getAmount() > 0)){
@@ -166,8 +169,9 @@ public class DomainController{
     }
 
     /**
-     *
+     * Purchases a development card.
      * @param card the development card the player wants to take.
+     * @return A Status Response Message
      */
     public String takeDevelopmentCard(DevelopmentCard.DevelopmentCardDTO card){
         String[] msg = { "placeholder" };
@@ -223,6 +227,9 @@ public class DomainController{
         }
     }
 
+    /**
+     * Removes cards from the game
+     */
     public void removeCards(){
         splendor.removeCards();
     }
